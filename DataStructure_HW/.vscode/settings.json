@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "vector": "cpp",
+        "stdlib.h": "c",
+        "ostream": "cpp",
+        "string_view": "cpp",
+        "source_location": "cpp"
+    },
+    "window.zoomLevel": 1.5,
+    "C_Cpp.errorSquiggles": "Disabled"
+}
