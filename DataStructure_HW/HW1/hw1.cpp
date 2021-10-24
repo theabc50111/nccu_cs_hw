@@ -11,7 +11,6 @@ using namespace std;
 
 const int Max = 10000;
 
-
 vector<int> gen_rand_array(int arr_size){
     vector<int> ret_arr;
     random_device rd;  //Will be used to obtain a seed for the random number engine
@@ -201,9 +200,10 @@ void heap_sort(vector<int> &array){
     make_heap(array.begin(), array.end());
     sort_heap(array.begin(), array.end());
 }
+
 void unit_test(char mode[]){
-    int arr_size = pow(2 ,10);
-    // vector<int> test_arr = gen_rand_array(arr_size);
+    /* int arr_size = pow(2 ,10);
+    vector<int> test_arr = gen_rand_array(arr_size); // use larger array */
     vector<int> test_arr({5,10,13,5,5,3,5,6,2,7,1,10,8,12,7,9,6,1,13,4});
     print_array(test_arr);
     if (strcmp(mode, "merge")==0){
@@ -234,8 +234,8 @@ void unit_test(char mode[]){
 }
 
 int main() {
-    char mode[] = "heap";
-    char file_name[] = "heap_records.csv";
+    char mode[] = "heap"; // choose "merge"/"lomuto"/"hoare"/"dutch_flag"/"heap" to change algorithm
+    char file_name[] = "heap_records.csv"; // set output file name for records of each algorith
     unit_test(mode);
     clock_t a,b;
     vector<double> avg_sort_time;
@@ -245,7 +245,6 @@ int main() {
         for(int _=0; _<10; _++){
             vector<int> array = gen_rand_array(arr_size);
             a = clock();
-           // vector<int> array(arr, arr+arr_size);
             if (strcmp(mode, "merge")==0){
                 cout << "Using merge:\n";
                 merge_sort(array, 0, arr_size-1);
