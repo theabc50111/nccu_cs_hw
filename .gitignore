@@ -1,5 +1,5 @@
 # set ignore directories
-Database_HW/Hw3/IMDB
+Database_HW/hw3/IMDB
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

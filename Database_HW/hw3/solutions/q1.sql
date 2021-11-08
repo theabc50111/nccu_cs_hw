@@ -1,0 +1,1 @@
+SELECT DISTINCT category FROM public.crew ORDER BY category ASC;
