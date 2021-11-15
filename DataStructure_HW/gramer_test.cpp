@@ -5,19 +5,18 @@
 static unsigned int seed = 0; // 隨機種子
 
 
-/* 丟硬幣產生隨機值 */
-bool randomVal(float p){
-	if (seed == 0)
-		seed = (unsigned)time(NULL);
+bool randomVal(float threshold){
+            if (seed == 0)
+                seed = (unsigned)time(NULL);
 
-	srand(seed);
-	float K = (float)rand()/RAND_MAX;  // 兩種情況，正反兩面
-	seed = rand();
-	if (K > p)
-		return true;
-	else
-		return false;
-}
+            srand(seed);
+            float K= (float)rand()/RAND_MAX;  // 得到一個0~1 之間的數值
+            seed = rand();
+            if (K > threshold)
+                return true;
+            else
+                return false;
+};
 
 int main() {
     float exp = 0;
