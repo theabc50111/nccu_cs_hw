@@ -106,8 +106,8 @@ class SkipList{
                 newNode->_left = curNode;
             }
             
-            /* 限制升維最高到30層，防止不斷升層，浪費空間 */
-            int maxLevel = 30;
+            /* 限制升維最高到多少層，防止不斷升層，浪費空間，但是為了比較不同機率下的平均層數，先將max level 設為一個很大的數字*/
+            int maxLevel = 10000;
             
             int curLevel = 1;
             /* 根據設定好的機率函數所產生的隨機值決定是否將該元素添加至跳躍層 */
@@ -322,15 +322,16 @@ void test_skip_list_insert(float prob, string file_name_t, string file_name_l, s
         output_file(file_name_t, type_record, time_records);
         output_file(file_name_l, type_record, list_records);
         output_file(file_name_al, type_record, ave_level_records);
-        // sk.print(); 
+        // sk.print();
     }
 
 }
 
 int main(){
-    test_skip_list_insert(0.9, "sl_time_09.csv", "sl_list_number_09.csv", "sl_ave_layer_09.csv" , "Skip List_0.9");
-    test_skip_list_insert(0.5, "sl_time_05.csv", "sl_list_number_05.csv", "sl_ave_layer_05.csv" , "Skip List_0.5");
     test_skip_list_insert(0.1, "sl_time_01.csv", "sl_list_number_01.csv", "sl_ave_layer_01.csv" , "Skip List_0.1");
+    test_skip_list_insert(0.5, "sl_time_05.csv", "sl_list_number_05.csv", "sl_ave_layer_05.csv" , "Skip List_0.5");
+    test_skip_list_insert(0.9, "sl_time_09.csv", "sl_list_number_09.csv", "sl_ave_layer_09.csv" , "Skip List_0.9");
 
     return 0;
 }
+
