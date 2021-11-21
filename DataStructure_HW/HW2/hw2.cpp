@@ -29,6 +29,16 @@ void print_array(vector<int> &array){
     cout << endl;
 }
 
+void output_file(char* file_name, string type_record, vector<double> time_records){
+    ofstream myfile;
+    myfile.open (file_name);
+    myfile << "k, " << type_record << "\n";
+    for(int i=10; i<=30; i++){
+
+        myfile << "k=" << i << "," << time_records[i-10] << "," << "\n";
+    }
+    myfile.close();
+}
 template<typename T>
 class SkipList{
     public:
@@ -96,11 +106,11 @@ class SkipList{
                 newNode->_left = curNode;
             }
             
-            /* 限制升維最高升一層，防止不斷升層，浪費空間 */
+            /* 限制升維最高到30層，防止不斷升層，浪費空間 */
             int maxLevel = 30;
             
             int curLevel = 1;
-            /* 根據拋硬幣產生的隨機值決定是否將該元素添加至跳躍層 */
+            /* 根據設定好的機率函數所產生的隨機值決定是否將該元素添加至跳躍層 */
             while (randomVal(p)){
                 /* 跳躍表層數不能超過最大限制，防止不斷升層 */
                 if (level > maxLevel){
@@ -203,7 +213,7 @@ class SkipList{
             srand(seed);
             float K= (float)rand()/RAND_MAX;  // 得到一個0~1 之間的數值
             seed = rand();
-            if (K < proba)
+            if (K < proba) // 當小於proba時，就增加一層，proba 可以在建立skip list 的時候另外設定
                 return true;
             else
                 return false;
@@ -244,19 +254,42 @@ class SkipList{
         int nodeSum; // 跳躍表的結點個數
 };
 
-int main(){
-    SkipList<int> sk_05;
-    sk_05.p = 0.5;
-    cout << "Now probability is :" << sk_05.p << endl;
-    for (int arr_size=4; arr_size<=6; arr_size++)
+void test_skip_list_insert(SkipList<int> sk, string type_record)
+{
+    int var_range = 30; // the range of variable in skip list 
+    int min_data_qty = 10; // set the min amount of imput data
+    int max_data_qty = 30; // set the max amount of imput data
+    char file_name[] = "skip_list_05.csv"; // set output file name for records of each algorith
+    clock_t begin_time, end_time;
+    vector<double> time_records;
+
+    cout << "Test Skip List insert with probability :" << sk.p << endl;
+    for (int data_qty=min_data_qty; data_qty<=max_data_qty; data_qty++)
     {
-        vector<int> data = gen_rand_array(pow(2,arr_size),10);
+        vector<int> data = gen_rand_array(pow(2,data_qty),var_range);
+        begin_time = clock();
         for (int data_ind=0; data_ind<data.size(); data_ind++)
         {
-            sk_05.insert(data[data_ind]);
+            sk.insert(data[data_ind]);
         }
-        sk_05.print();
+        end_time = clock();
+        double spend_time = (double)(end_time-begin_time) / CLOCKS_PER_SEC;
+        cout << "K=" << data_qty << " time: " << spend_time << endl;
+        time_records.push_back(spend_time);
+        output_file(file_name, type_record, time_records);
+        // sk.print();        
     }
+}
+
+int main(){
+    SkipList<int> sk_05, sk_01, sk_09;
+    sk_01.p = 0.1;
+    sk_05.p = 0.5;
+    sk_09.p = 0.9;
+    test_skip_list_insert(sk_01, "Skip List_0.1");
+    test_skip_list_insert(sk_05, "Skip List_0.5");
+    test_skip_list_insert(sk_09, "Skip List_0.9");
+
 
     return 0;
 }
