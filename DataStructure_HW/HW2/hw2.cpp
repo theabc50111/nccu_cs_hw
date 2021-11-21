@@ -29,7 +29,7 @@ void print_array(vector<int> &array){
     cout << endl;
 }
 
-void output_file(char* file_name, string type_record, vector<double> time_records){
+void output_file(string file_name, string type_record, vector<double> time_records){
     ofstream myfile;
     myfile.open (file_name);
     myfile << "k, " << type_record << "\n";
@@ -114,7 +114,6 @@ class SkipList{
             while (randomVal(p)){
                 /* 跳躍表層數不能超過最大限制，防止不斷升層 */
                 if (level > maxLevel){
-                    cout << "meet max level:30" << endl;
                     return;
                 }
 
@@ -234,6 +233,42 @@ class SkipList{
                 head = head->_down;
             }
         };
+
+        int list_count(){
+            int list_count = 0;
+            Node* head = Listhead;
+            while (head != nullptr){
+                if (head->_down ==nullptr)
+                {
+                    Node* curNode = head->_right;
+                    while (curNode != nullptr){
+                        curNode = curNode->_right;
+                        list_count += 1;
+                    }
+                }
+                /* 跳到下一層 */
+                head = head->_down;
+            }
+            return list_count;
+        };
+
+    int node_count()
+    {
+            int node_count = 0;
+            Node* head = Listhead;
+            while (head != nullptr){
+                Node* curNode = head->_right;
+                while (curNode != nullptr){
+                    curNode = curNode->_right;
+                    node_count += 1;
+                }
+                /* 跳到下一層 */
+                head = head->_down;
+            }
+            return node_count;
+
+    }
+
     private:
         struct Node{
             Node(T data = T())
@@ -254,19 +289,23 @@ class SkipList{
         int nodeSum; // 跳躍表的結點個數
 };
 
-void test_skip_list_insert(SkipList<int> sk, string type_record)
+void test_skip_list_insert(float prob, string file_name_t, string file_name_l, string file_name_al, string type_record)
 {
     int var_range = 30; // the range of variable in skip list 
     int min_data_qty = 10; // set the min amount of imput data
     int max_data_qty = 30; // set the max amount of imput data
-    char file_name[] = "skip_list_05.csv"; // set output file name for records of each algorith
     clock_t begin_time, end_time;
     vector<double> time_records;
+    vector<double> list_records;
+    vector<double> ave_level_records;
 
-    cout << "Test Skip List insert with probability :" << sk.p << endl;
     for (int data_qty=min_data_qty; data_qty<=max_data_qty; data_qty++)
     {
+        SkipList<int> sk;
+        sk.p = prob;
+        cout << "Test Skip List insert with probability :" << sk.p << endl;
         vector<int> data = gen_rand_array(pow(2,data_qty),var_range);
+        // print_array(data);
         begin_time = clock();
         for (int data_ind=0; data_ind<data.size(); data_ind++)
         {
@@ -274,23 +313,24 @@ void test_skip_list_insert(SkipList<int> sk, string type_record)
         }
         end_time = clock();
         double spend_time = (double)(end_time-begin_time) / CLOCKS_PER_SEC;
-        cout << "K=" << data_qty << " time: " << spend_time << endl;
+        int list_count = sk.list_count();
+        int node_count = sk.node_count();
+        cout << "K=" << data_qty << " time: " << spend_time << ", list number:" << list_count << ", node number:" << node_count << ", average level:" << (float) node_count/list_count << endl;
         time_records.push_back(spend_time);
-        output_file(file_name, type_record, time_records);
-        // sk.print();        
+        list_records.push_back(list_count);
+        ave_level_records.push_back((float) node_count/list_count);
+        output_file(file_name_t, type_record, time_records);
+        output_file(file_name_l, type_record, list_records);
+        output_file(file_name_al, type_record, ave_level_records);
+        // sk.print(); 
     }
+
 }
 
 int main(){
-    SkipList<int> sk_05, sk_01, sk_09;
-    sk_01.p = 0.1;
-    sk_05.p = 0.5;
-    sk_09.p = 0.9;
-    test_skip_list_insert(sk_01, "Skip List_0.1");
-    test_skip_list_insert(sk_05, "Skip List_0.5");
-    test_skip_list_insert(sk_09, "Skip List_0.9");
-
+    test_skip_list_insert(0.1, "sl_time_01.csv", "sl_list_number_01.csv", "sl_ave_layer_01.csv" , "Skip List_0.1");
+    test_skip_list_insert(0.5, "sl_time_05.csv", "sl_list_number_05.csv", "sl_ave_layer_05.csv" , "Skip List_0.5");
+    test_skip_list_insert(0.1, "sl_time_09.csv", "sl_list_number_09.csv", "sl_ave_layer_09.csv" , "Skip List_0.9");
 
     return 0;
 }
-
