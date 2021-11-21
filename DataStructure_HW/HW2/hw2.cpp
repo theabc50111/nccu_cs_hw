@@ -328,9 +328,9 @@ void test_skip_list_insert(float prob, string file_name_t, string file_name_l, s
 }
 
 int main(){
-    test_skip_list_insert(0.1, "sl_time_01.csv", "sl_list_number_01.csv", "sl_ave_layer_01.csv" , "Skip List_0.1");
+    test_skip_list_insert(0.9, "sl_time_09.csv", "sl_list_number_09.csv", "sl_ave_layer_09.csv" , "Skip List_0.9");
     test_skip_list_insert(0.5, "sl_time_05.csv", "sl_list_number_05.csv", "sl_ave_layer_05.csv" , "Skip List_0.5");
-    test_skip_list_insert(0.1, "sl_time_09.csv", "sl_list_number_09.csv", "sl_ave_layer_09.csv" , "Skip List_0.9");
+    test_skip_list_insert(0.1, "sl_time_01.csv", "sl_list_number_01.csv", "sl_ave_layer_01.csv" , "Skip List_0.1");
 
     return 0;
 }
