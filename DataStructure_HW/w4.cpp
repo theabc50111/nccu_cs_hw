@@ -9,7 +9,7 @@ using namespace std;
 template<typename T>
 class SkipList{
     public:
-        float p = 0.1;
+        float p = 0.9;
         int seed = 0;
         SkipList() : level(1){ // constructor
             Listhead = new Node();
@@ -130,10 +130,10 @@ class SkipList{
                 skipNode->_down = newNode; // 更新跳躍結點的down指針域
                 newNode->_up = skipNode; // 更新newNode的up指針域
 
-                /* 保證在一層只有一個元素的情況下，不會再向上擴層 */
-                if (curHead->_right == skipNode){
-                    return;
-                }
+                // /* 保證在一層只有一個元素的情況下，不會再向上擴層 */
+                // if (curHead->_right == skipNode){
+                //     return;
+                // }
             }
         };
         
@@ -171,14 +171,14 @@ class SkipList{
         };
         
         /* 產生隨機值 */
-        bool randomVal(float threshold){
+        bool randomVal(float proba){
             if (seed == 0)
                 seed = (unsigned)time(NULL);
 
             srand(seed);
             float K= (float)rand()/RAND_MAX;  // 得到一個0~1 之間的數值
             seed = rand();
-            if (K > threshold)
+            if (K < proba)
                 return true;
             else
                 return false;
@@ -221,6 +221,9 @@ class SkipList{
 
 int main(){
     SkipList<int> tmp;
+    cout << "Now probability is:" << tmp.p << endl;
+    tmp.p = 0.9;
+    cout << "Now probability is:" << tmp.p << endl;
     tmp.insert(0);
     tmp.insert(100);
     tmp.insert(20);
@@ -233,7 +236,5 @@ int main(){
     tmp.insert(158);
     tmp.insert(359);
     tmp.print();
-    bool y_n = tmp.randomVal(0.1);
-    cout << y_n << endl;
     return 0;
 }

@@ -16,6 +16,8 @@ WITH not_pre_name AS
 
 SELECT tmp.name
 FROM not_pre_name AS tmp
+ORDER BY tmp.name
+
 
 EXCEPT
 
@@ -27,4 +29,3 @@ WHERE p.name IN
     'Zheng-Xian Cai',
     'Tzu-Heng Huang'
 )
-ORDER BY tmp.name
