@@ -27,3 +27,4 @@ WHERE p.name IN
     'Zheng-Xian Cai',
     'Tzu-Heng Huang'
 )
+ORDER BY tmp.name
