@@ -41,6 +41,7 @@ void output_file(string file_name, string type_record, vector<double> time_recor
 }
 
 
+
 template<typename T>
 class SkipList{
     public:
@@ -81,12 +82,42 @@ class SkipList{
             }
 
             Node* curHead = curNode;
+            curNode = Listhead;
             Node* newNode = nullptr;
             /* 尋找合適位置進行插入 */
             while (curNode->_right != nullptr)
             { 
                 /* 待插入元素小於表中節點值，找到了合適位置 */
-                if (val < curNode->_right->_data){
+                while (curNode->_down != nullptr)
+                {
+                    if (curNode->_right == nullptr)
+                    {
+                        curNode = curNode->_down;
+                    }
+                    else
+                    {
+                        if (val < curNode->_right->_data)
+                        {
+                            curNode = curNode->_down;
+                        }
+                        else
+                        {
+                            curNode = curNode->_right;
+                        }
+                    }
+                }
+
+
+                if (val == curNode->_data) // 要是值相同的話就取消插入
+                {
+                    return;
+                }
+                else if (curNode->_right == nullptr)
+                {
+                    break;
+                }
+                else if (val < curNode->_right->_data)
+                {
                     newNode = new Node(val);
                     newNode->_right = curNode->_right;
                     curNode->_right->_left = newNode;
@@ -95,7 +126,8 @@ class SkipList{
                     break;
                 }
                 /* 待插入元素等於表中節點值，不進行插入 */
-                else if (val == curNode->_right->_data){
+                else if (val == curNode->_right->_data)
+                {
                     return;
                 }
                 curNode = curNode->_right; // 如果val> curNode => 更新 curNode
@@ -128,7 +160,7 @@ class SkipList{
                     Node* newHead = new Node();
                     newHead->_down = Listhead;
                     Listhead->_up = newHead; // 更新up結點
-                    Listhead = newHead; // 使Listhead指向當前新結點
+                    Listhead = newHead; // 使 Listhead 指向當前新結點
                 }
                 
                 // curHead 升一層（要麼進行了升維，要麼本來層數就大於1）
@@ -166,7 +198,6 @@ class SkipList{
                 }
                 skipNode->_down = newNode; // 更新跳躍結點的down指針域
                 newNode->_up = skipNode; // 更新newNode的up指針域
-
                 // /* 保證在一層只有一個元素的情況下，不會再向上擴層 */
                 // if (curHead->_right == skipNode){
                 //     return;
@@ -237,6 +268,7 @@ class SkipList{
             }
         };
 
+        /* 計算有多少個list */
         int list_count(){
             int list_count = 0;
             Node* head = Listhead;
@@ -255,6 +287,7 @@ class SkipList{
             return list_count;
         };
 
+        /* 計算有多少個node */
         int node_count()
         {
                 int node_count = 0;
@@ -291,6 +324,8 @@ class SkipList{
         int level; // 跳躍表的層數
         int nodeSum; // 跳躍表的結點個數
 };
+
+
 
 template<typename T>
 class TreapNode
@@ -520,9 +555,9 @@ void test_treap_insert(string file_name, string type_record)
 
 int main(){
     // test_skip_list_insert(0.1, "sl_time_01.csv", "sl_list_number_01.csv", "sl_ave_layer_01.csv" , "Skip List_0.1");
-    // test_skip_list_insert(0.5, "sl_time_05.csv", "sl_list_number_05.csv", "sl_ave_layer_05.csv" , "Skip List_0.5");
+    test_skip_list_insert(0.5, "sl_time_05.csv", "sl_list_number_05.csv", "sl_ave_layer_05.csv" , "Skip List_0.5");
     // test_skip_list_insert(0.9, "sl_time_09.csv", "sl_list_number_09.csv", "sl_ave_layer_09.csv" , "Skip List_0.9");
-    test_treap_insert("tr_time.csv","treap insert");
+    // test_treap_insert("tr_time.csv","treap insert");
 
     return 0;
 }

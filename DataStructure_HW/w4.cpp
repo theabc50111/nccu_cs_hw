@@ -15,13 +15,6 @@ class SkipList{
         SkipList() : level(1){ // constructor
             Listhead = new Node();
             nodeSum = 1;
-            cout << "construct skip list:" << Listhead << endl;
-            cout << "construct skip list.data:" << Listhead->_data << endl;
-            cout << "construct skip list.right:" << Listhead->_right << endl;
-            cout << "construct skip list.left:" << Listhead->_left << endl;
-            cout << "construct skip list.up:" << Listhead->_up << endl;
-            cout << "construct skip list.down:" << Listhead->_down << endl;
-
         }
         /* 跳躍表的表銷燬 */
         ~SkipList(){ // destructor
@@ -60,20 +53,36 @@ class SkipList{
             while (curNode->_right != nullptr)
             { 
                 /* 待插入元素小於表中節點值，找到了合適位置 */
-                cout << "before search" << endl;
                 while (curNode->_down != nullptr)
                 {
-                    if (val < curNode->_right->_data)
+                    if (curNode->_right == nullptr)
                     {
                         curNode = curNode->_down;
                     }
                     else
                     {
-                        curNode = curNode->_right;
+                        if (val < curNode->_right->_data)
+                        {
+                            curNode = curNode->_down;
+                        }
+                        else
+                        {
+                            curNode = curNode->_right;
+                        }
                     }
                 }
-                cout << "Listhead:" << Listhead->_data << ", CurHead:" << curHead->_data << ", CurNode:" << curNode->_data << endl;
-                if (val < curNode->_right->_data){
+
+
+                if (val == curNode->_data) // 要是值相同的話就取消插入
+                {
+                    return;
+                }
+                else if (curNode->_right == nullptr)
+                {
+                    break;
+                }
+                else if (val < curNode->_right->_data)
+                {
                     newNode = new Node(val);
                     newNode->_right = curNode->_right;
                     curNode->_right->_left = newNode;
@@ -82,7 +91,8 @@ class SkipList{
                     break;
                 }
                 /* 待插入元素等於表中節點值，不進行插入 */
-                else if (val == curNode->_right->_data){
+                else if (val == curNode->_right->_data)
+                {
                     return;
                 }
                 curNode = curNode->_right; // 如果val> curNode => 更新 curNode
@@ -291,11 +301,11 @@ int main()
     cout << "Test Skip List insert with probability :" << sk.p << endl;
     sk.insert(10);
     sk.insert(20);
-    // sk.insert(50);
-    // sk.insert(80);
-    // sk.insert(20);
-    // sk.insert(90);
-    // sk.insert(100);
+    sk.insert(50);
+    sk.insert(80);
+    sk.insert(20);
+    sk.insert(90);
+    sk.insert(100);
     sk.print();
 	return 0;
 }
