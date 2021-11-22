@@ -290,6 +290,164 @@ class SkipList{
         int nodeSum; // 跳躍表的結點個數
 };
 
+template<typename T>
+class TreapNode
+{
+    public:
+        int key, priority;
+        TreapNode *left, *right;
+        // C function to search a given key in a given BST
+        TreapNode* search(TreapNode* root, const T& key)
+        {
+            // Base Cases: root is null or key is present at root
+            if (root == NULL || root->key == key)
+            return root;
+
+            // Key is greater than root's key
+            if (root->key < key)
+            return search(root->right, key);
+
+            // Key is smaller than root's key
+            return search(root->left, key);
+        }
+
+        /* Recursive implementation of insertion in Treap */
+        TreapNode* insert(TreapNode* root, const T& key)
+        {
+            // If root is NULL, create a new node and return it
+            if (!root)
+                return newNode(key);
+
+            // If key is smaller than root
+            if (key <= root->key)
+            {
+                // Insert in left subtree
+                root->left = insert(root->left, key);
+
+                // Fix Minama Heap property if it is violated
+                if (root->left->priority < root->priority)
+                    root = rightRotate(root);
+            }
+            else // If key is greater
+            {
+                // Insert in right subtree
+                root->right = insert(root->right, key);
+
+                // Fix Minima Heap property if it is violated
+                if (root->right->priority < root->priority)
+                    root = leftRotate(root);
+            }
+            return root;
+        }
+        /* Recursive implementation of Delete() */
+        TreapNode* deleteNode(TreapNode* root, int key)
+        {
+            if (root == NULL)
+                return root;
+
+            if (key < root->key)
+                root->left = deleteNode(root->left, key);
+            else if (key > root->key)
+                root->right = deleteNode(root->right, key);
+
+            // IF KEY IS AT ROOT
+
+            // If left is NULL
+            else if (root->left == NULL)
+            {
+                TreapNode *temp = root->right;
+                delete(root);
+                root = temp; // Make right child as root
+            }
+
+            // If Right is NULL
+            else if (root->right == NULL)
+            {
+                TreapNode *temp = root->left;
+                delete(root);
+                root = temp; // Make left child as root
+            }
+
+            // If ksy is at root and both left and right are not NULL
+            else if (root->left->priority < root->right->priority)
+            {
+                root = leftRotate(root);
+                root->left = deleteNode(root->left, key);
+            }
+            else
+            {
+                root = rightRotate(root);
+                root->right = deleteNode(root->right, key);
+            }
+
+            return root;
+        }
+
+        // A utility function to print tree
+        void inorder(TreapNode* root)
+        {
+            if (root)
+            {
+                inorder(root->left);
+                cout << "key: "<< root->key << " | priority: %d "
+                    << root->priority;
+                if (root->left)
+                    cout << " | left child: " << root->left->key;
+                if (root->right)
+                    cout << " | right child: " << root->right->key;
+                cout << endl;
+                inorder(root->right);
+            }
+        }
+
+    private:
+        /* T1, T2 and T3 are subtrees of the tree rooted with y
+        (on left side) or x (on right side)
+                 y							     x
+                / \	     Right Rotation		    / \
+               x   T3     – – – – – – – >	   T1  y
+              / \	     < - - - - - - -	  / \
+            T1   T2	     Left Rotation		T2   T3 */
+
+        // A utility function to right rotate subtree rooted with y
+        // See the diagram given above.
+        TreapNode *rightRotate(TreapNode *y)
+        {
+            TreapNode *x = y->left, *T2 = x->right;
+
+            // Perform rotation
+            x->right = y;
+            y->left = T2;
+
+            // Return new root
+            return x;
+        }
+
+        // A utility function to left rotate subtree rooted with x
+        // See the diagram given above.
+        TreapNode *leftRotate(TreapNode *x)
+        {
+            TreapNode *y = x->right, *T2 = y->left;
+
+            // Perform rotation
+            y->left = x;
+            x->right = T2;
+
+            // Return new root
+            return y;
+        }
+
+        /* Utility function to add a new key */
+        TreapNode* newNode(int key)
+        {
+            TreapNode* temp = new TreapNode;
+            temp->key = key;
+            temp->priority = rand()%100;
+            temp->left = temp->right = NULL;
+            return temp;
+        }
+};
+
 void test_skip_list_insert(float prob, string file_name_t, string file_name_l, string file_name_al, string type_record)
 {
     int var_range = 30; // the range of variable in skip list 
@@ -328,10 +486,41 @@ void test_skip_list_insert(float prob, string file_name_t, string file_name_l, s
 
 }
 
+
+void test_treap_insert(string file_name, string type_record)
+{
+    int var_range = 10; // the range of variable in skip list 
+    int min_data_qty = 4; // set the min amount of imput data
+    int max_data_qty = 6; // set the max amount of imput data
+    clock_t begin_time, end_time;
+    vector<double> time_records;
+
+    for (int data_qty=min_data_qty; data_qty<=max_data_qty; data_qty++)
+    {
+        TreapNode<int> t;
+        TreapNode<int> *root = nullptr;
+        vector<int> data = gen_rand_array(pow(2,data_qty),var_range);
+        begin_time = clock();
+        for (int data_ind=0; data_ind<data.size(); data_ind++)
+        {
+            root = t.insert(root, data[data_ind]);
+        }
+        end_time = clock();
+        double spend_time = (double)(end_time-begin_time) / CLOCKS_PER_SEC;
+        t.inorder(root);
+        cout << "K=" << data_qty << " time: " << spend_time << endl;
+        time_records.push_back(spend_time);
+        output_file(file_name, type_record, time_records);
+        // sk.print();
+    }
+
+}
+
 int main(){
-    test_skip_list_insert(0.1, "sl_time_01.csv", "sl_list_number_01.csv", "sl_ave_layer_01.csv" , "Skip List_0.1");
-    test_skip_list_insert(0.5, "sl_time_05.csv", "sl_list_number_05.csv", "sl_ave_layer_05.csv" , "Skip List_0.5");
-    test_skip_list_insert(0.9, "sl_time_09.csv", "sl_list_number_09.csv", "sl_ave_layer_09.csv" , "Skip List_0.9");
+    // test_skip_list_insert(0.1, "sl_time_01.csv", "sl_list_number_01.csv", "sl_ave_layer_01.csv" , "Skip List_0.1");
+    // test_skip_list_insert(0.5, "sl_time_05.csv", "sl_list_number_05.csv", "sl_ave_layer_05.csv" , "Skip List_0.5");
+    // test_skip_list_insert(0.9, "sl_time_09.csv", "sl_list_number_09.csv", "sl_ave_layer_09.csv" , "Skip List_0.9");
+    test_treap_insert("tr_time.csv","treap insert");
 
     return 0;
 }
