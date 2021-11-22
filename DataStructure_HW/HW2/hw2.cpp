@@ -70,7 +70,8 @@ class SkipList{
         };
         
         /* 插入元素 */
-        void insert(const T& val){
+        void insert(const T& val)
+        {
             Node* curNode = Listhead;
             /* 向下走到最底層Level 1 */
             while (curNode->_down != nullptr){
@@ -252,22 +253,22 @@ class SkipList{
             return list_count;
         };
 
-    int node_count()
-    {
-            int node_count = 0;
-            Node* head = Listhead;
-            while (head != nullptr){
-                Node* curNode = head->_right;
-                while (curNode != nullptr){
-                    curNode = curNode->_right;
-                    node_count += 1;
+        int node_count()
+        {
+                int node_count = 0;
+                Node* head = Listhead;
+                while (head != nullptr){
+                    Node* curNode = head->_right;
+                    while (curNode != nullptr){
+                        curNode = curNode->_right;
+                        node_count += 1;
+                    }
+                    /* 跳到下一層 */
+                    head = head->_down;
                 }
-                /* 跳到下一層 */
-                head = head->_down;
-            }
-            return node_count;
+                return node_count;
 
-    }
+        }
 
     private:
         struct Node{
