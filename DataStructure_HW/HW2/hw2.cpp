@@ -39,6 +39,8 @@ void output_file(string file_name, string type_record, vector<double> time_recor
     }
     myfile.close();
 }
+
+
 template<typename T>
 class SkipList{
     public:
@@ -442,7 +444,7 @@ class TreapNode
         {
             TreapNode* temp = new TreapNode;
             temp->key = key;
-            temp->priority = rand()%100;
+            temp->priority = rand();
             temp->left = temp->right = NULL;
             return temp;
         }
@@ -489,11 +491,12 @@ void test_skip_list_insert(float prob, string file_name_t, string file_name_l, s
 
 void test_treap_insert(string file_name, string type_record)
 {
-    int var_range = 10; // the range of variable in skip list 
-    int min_data_qty = 4; // set the min amount of imput data
-    int max_data_qty = 6; // set the max amount of imput data
+    int var_range = 30; // the range of variable in skip list 
+    int min_data_qty = 10; // set the min amount of imput data
+    int max_data_qty = 30; // set the max amount of imput data
     clock_t begin_time, end_time;
     vector<double> time_records;
+	srand(time(NULL));
 
     for (int data_qty=min_data_qty; data_qty<=max_data_qty; data_qty++)
     {
@@ -507,11 +510,10 @@ void test_treap_insert(string file_name, string type_record)
         }
         end_time = clock();
         double spend_time = (double)(end_time-begin_time) / CLOCKS_PER_SEC;
-        t.inorder(root);
+        // t.inorder(root);
         cout << "K=" << data_qty << " time: " << spend_time << endl;
         time_records.push_back(spend_time);
         output_file(file_name, type_record, time_records);
-        // sk.print();
     }
 
 }
