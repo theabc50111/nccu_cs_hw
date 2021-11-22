@@ -60,9 +60,10 @@ class SkipList{
             while (curNode->_right != nullptr)
             { 
                 /* 待插入元素小於表中節點值，找到了合適位置 */
+                cout << "before search" << endl;
                 while (curNode->_down != nullptr)
                 {
-                    if (val< curNode->_right->_data)
+                    if (val < curNode->_right->_data)
                     {
                         curNode = curNode->_down;
                     }
