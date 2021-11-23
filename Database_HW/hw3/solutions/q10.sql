@@ -1,6 +1,5 @@
 WITH not_pre_name AS 
-(
-    SELECT p.name
+    (SELECT p.name
     FROM public.people AS p
          JOIN 
          public.crew AS c ON p.person_id = c.person_id
@@ -11,12 +10,10 @@ WITH not_pre_name AS
                JOIN 
                public.crew AS c ON p.person_id = c.person_id
           WHERE p.name = 'Jennifer Lawrence'
-    )
-)
+    ))
 
 SELECT tmp.name
 FROM not_pre_name AS tmp
-ORDER BY tmp.name
 
 
 EXCEPT
