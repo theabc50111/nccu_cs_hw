@@ -483,6 +483,43 @@ class TreapNode
 };
 
 
+template<typename T>
+class SortedArray
+{
+    public:
+
+        void insert(const T& value)
+        {
+            this->arr.push_back(value);
+            sort(this->arr.begin(), this->arr.end());
+        }
+
+        void print()
+        {
+            for (vector<int>::iterator it = this->arr.begin(); it != this->arr.end(); it++)
+            {
+                cout << *it << " ";
+            }
+            cout << endl;
+        }
+
+        void search(const T& value)
+        {
+            if (binary_search(this->arr.begin(), this->arr.end(), value))
+            {
+                cout << "found : " << value << endl;
+            }
+            else
+            {
+                cout << value << "not found.\n";
+            }
+        }
+
+    private:
+        vector<int> arr;
+};
+
+
 void test_skip_list_insert(float prob, string file_name_t, string file_name_l, string file_name_al, string type_record)
 {
     int var_range = 30; // the range of variable in skip list 
@@ -551,11 +588,42 @@ void test_treap_insert(string file_name, string type_record)
 }
 
 
+void test_sorted_array_insert(string file_name, string type_record)
+{
+    int var_range = 30; // the range of variable in skip list 
+    int min_data_qty = 10; // set the min amount of imput data
+    int max_data_qty = 30; // set the max amount of imput data
+    clock_t begin_time, end_time;
+    vector<double> time_records;
+
+    cout << "start test sorted array insert\n";
+    for (int data_qty=min_data_qty; data_qty<=max_data_qty; data_qty++)
+    {
+        SortedArray<int> sa;
+        vector<int> data = gen_rand_array(pow(2,data_qty),var_range);
+        begin_time = clock();
+        for (int data_ind=0; data_ind<data.size(); data_ind++)
+        {
+            sa.insert(data[data_ind]);
+        }
+        end_time = clock();
+        double spend_time = (double)(end_time-begin_time) / CLOCKS_PER_SEC;
+        // t.inorder(root);
+        cout << "K=" << data_qty << " time: " << spend_time << endl;
+        time_records.push_back(spend_time);
+        output_file(file_name, type_record, time_records);
+    }
+
+}
+
+
+
 int main(){
     // test_treap_insert("tr_time.csv","treap insert");
+    test_sorted_array_insert("sa_time.csv", "sorted array insert");
     // test_skip_list_insert(0.1, "sl_time_01.csv", "sl_list_number_01.csv", "sl_ave_layer_01.csv" , "Skip List_0.1");
     // test_skip_list_insert(0.5, "sl_time_05.csv", "sl_list_number_05.csv", "sl_ave_layer_05.csv" , "Skip List_0.5");
-    test_skip_list_insert(0.9, "sl_time_09.csv", "sl_list_number_09.csv", "sl_ave_layer_09.csv" , "Skip List_0.9");
+    // test_skip_list_insert(0.9, "sl_time_09.csv", "sl_list_number_09.csv", "sl_ave_layer_09.csv" , "Skip List_0.9");
 
     return 0;
 }
