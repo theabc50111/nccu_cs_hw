@@ -491,7 +491,7 @@ class SortedArray
         void insert(const T& value)
         {
             this->arr.push_back(value);
-            sort(this->arr.begin(), this->arr.end());
+            sort(this->arr.begin(), this->arr.end()); // O(n*logn)
         }
 
         void print()
@@ -587,7 +587,6 @@ void test_treap_insert(string file_name, string type_record)
 
 }
 
-
 void test_sorted_array_insert(string file_name, string type_record)
 {
     int var_range = 30; // the range of variable in skip list 
@@ -617,6 +616,42 @@ void test_sorted_array_insert(string file_name, string type_record)
 }
 
 
+void test_skip_list_search(float prob, string file_name_t, string file_name_l, string file_name_al, string type_record)
+{
+    int var_range = 30; // the range of variable in skip list 
+    int min_data_qty = 10; // set the min amount of imput data
+    int max_data_qty = 30; // set the max amount of imput data
+    clock_t begin_time, end_time;
+    vector<double> time_records;
+
+    for (int data_qty=min_data_qty; data_qty<=max_data_qty; data_qty++)
+    {
+        SkipList<int> sk;
+        sk.p = prob;
+        cout << "Test Skip List insert with probability :" << sk.p << endl;
+        vector<int> data = gen_rand_array(pow(2,data_qty),var_range);
+        for (int data_ind=0; data_ind<data.size(); data_ind++)
+        {
+            sk.insert(data[data_ind]);
+        }
+
+        vector<int> search_data = gen_rand_array(100000, var_range); // generate search data
+        begin_time = clock();
+        for (int s_data_ind=0; s_data_ind<search_data.size(); s_data_ind++)
+        {
+            sk.search(search_data[s_data_ind]);
+        }
+        end_time = clock();
+
+        double spend_time = (double)(end_time-begin_time) / CLOCKS_PER_SEC;
+        cout << "K=" << data_qty << " time: " << spend_time << endl;
+        time_records.push_back(spend_time);
+
+        output_file(file_name_t, type_record, time_records);
+        // sk.print();
+    }
+
+}
 
 int main(){
     // test_treap_insert("tr_time.csv","treap insert");
