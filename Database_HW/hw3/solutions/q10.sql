@@ -12,13 +12,13 @@ WITH not_pre_name AS
           WHERE p.name = 'Jennifer Lawrence'
     ))
 
-SELECT tmp.name
+SELECT tmp.name AS actor_name
 FROM not_pre_name AS tmp
 
 
 EXCEPT
 
-SELECT p.name
+SELECT p.name 
 FROM public.people AS p
 WHERE p.name IN
 (
@@ -26,3 +26,5 @@ WHERE p.name IN
     'Zheng-Xian Cai',
     'Tzu-Heng Huang'
 )
+
+ORDER BY actor_name
