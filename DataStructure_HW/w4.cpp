@@ -355,7 +355,7 @@ void test_skip_list(float prob, string file_name_it, string file_name_st, string
         
         for (int data_ind=0; data_ind<data.size(); data_ind++)
         {
-            i_spend_time = sk.insert(data[data_ind]);
+            i_spend_time += sk.insert(data[data_ind]);
         }
 
         s_begin_time = clock();
@@ -378,7 +378,7 @@ void test_skip_list(float prob, string file_name_it, string file_name_st, string
         output_file(file_name_st, type_record, s_time_records);
         output_file(file_name_l, type_record, list_records);
         output_file(file_name_al, type_record, ave_level_records);
-        sk.print();
+        // sk.print();
     }
 
 }
@@ -388,8 +388,8 @@ void test_skip_list(float prob, string file_name_it, string file_name_st, string
 int main()
 {
 
-    test_skip_list(0.1, "sl_i_time_01.csv", "sl_s_time_01.csv", "sl_list_number_01.csv", "sl_ave_layer_01.csv" , "Skip List_0.1");
-    test_skip_list(0.5, "sl_i_time_05.csv", "sl_s_time_05.csv", "sl_list_number_05.csv", "sl_ave_layer_05.csv" , "Skip List_0.5");
+    // test_skip_list(0.1, "sl_i_time_01.csv", "sl_s_time_01.csv", "sl_list_number_01.csv", "sl_ave_layer_01.csv" , "Skip List_0.1");
+    // test_skip_list(0.5, "sl_i_time_05.csv", "sl_s_time_05.csv", "sl_list_number_05.csv", "sl_ave_layer_05.csv" , "Skip List_0.5");
     test_skip_list(0.9, "sl_i_time_09.csv", "sl_s_time_09.csv", "sl_list_number_09.csv", "sl_ave_layer_09.csv" , "Skip List_0.9");
 
 	return 0;
