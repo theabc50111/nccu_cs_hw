@@ -44,7 +44,7 @@ void output_file(string file_name, string type_record, vector<double> time_recor
 template<typename T>
 class SkipList{
     public:
-        float p = 0.1;
+        float p = 0.1; // 預設為0.1，在使用之前要另外設定
         int seed = 0;
         SkipList() : level(1){ // constructor
             Listhead = new Node();
