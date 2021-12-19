@@ -6,6 +6,7 @@
 #include <bits/stdc++.h>
 #include <cstdlib> 
 #include <algorithm>
+#include <bitset>
 
 using namespace std;
 
@@ -417,8 +418,8 @@ class TreapNode
             return root;
         }
 
-        // A utility function to print tree
-        void inorder(TreapNode* root)
+        // A utility function to print tree (inorder)
+        void print(TreapNode* root)
         {
             if (root)
             {
@@ -519,6 +520,105 @@ class SortedArray
 
     private:
         vector<int> arr;
+};
+
+
+template<typename T>
+class Hash
+{
+    private:
+        int BUCKET;    // No. of buckets
+        vector<int> rands;    //rand of hash (universal hash);
+        list<int> *table;    // Pointer to an array containing buckets
+        
+        // hash function to map values to key
+        int hash_function(int x) {    
+            string binary = bitset<32>(x).to_string(); //to binary
+            long r_part_decimal_sum=0;
+
+            for(int i=0; i<4; i++)
+            {
+                char buffer[8];
+                size_t length = binary.copy(buffer, 8, 24-(i*8));
+                buffer[length]='\0';
+                unsigned long part_decimal = bitset<32>(buffer).to_ulong();
+                long r_part_decimal = rands[i]*part_decimal;
+                r_part_decimal_sum += r_part_decimal;
+            } 
+
+            return (r_part_decimal_sum % BUCKET);
+        }
+
+    public:
+        Hash(int b)    // Constructor
+        {
+            int prime=b;
+            bool is_prime = true;
+
+            for(int i=0 ; i<4 ; i++)    // generate four random number for hash function
+            {
+                rands.push_back(rand());
+            }
+
+            // find the next large prime of data quantity
+            while(prime<2*b){
+                for (int i = 2; i <= prime/2; ++i) 
+                {
+                    if (prime % i == 0) {
+                        is_prime = false;
+                        break;
+                    }
+                    is_prime = true;
+                }
+                if (is_prime){
+                    break;
+                }
+                else
+                {
+                    prime++;
+                }
+            }
+
+            this->BUCKET = prime;
+            table = new list<int>[BUCKET];
+        }  
+
+        void insert(const T& key)
+        {
+            int index = hash_function(key);
+            table[index].push_back(key);
+            // if (!(this->search(key)))
+            // {
+            //     table[index].push_back(key);
+            // }
+        }
+
+        bool search(const T& key)
+        {
+            int index = hash_function(key);
+            for (auto x : table[index])
+            {
+                cout << "index is " << index << ", key is " << key << ", x is " << x << endl;
+                if (key==x)
+                {
+                    return true; 
+                }
+            }
+            return false;
+        }
+
+        void print() 
+        {
+            for (int i = 0; i < BUCKET; i++) 
+            {
+                cout << i;
+                for (auto x : table[i])
+                {
+                    cout << " --> " << x;
+                }
+                cout << endl;
+            }
+        }
 };
 
 
@@ -658,14 +758,54 @@ void test_sorted_array(string file_name_it, string file_name_st, string type_rec
 
 }
 
+void test_hash(string file_name_it, string file_name_st, string type_record)
+{
+    int var_range = 30; // the range of variable in skip list 
+    int min_data_qty = 10; // set the min amount of imput data
+    int max_data_qty = 30; // set the max amount of imput data
+    clock_t i_begin_time, i_end_time, s_begin_time, s_end_time;
+    vector<double> i_time_records, s_time_records;
+    vector<int> search_data = gen_rand_array(100000, var_range); // generate search data
+
+    for (int data_qty=min_data_qty; data_qty<=max_data_qty; data_qty++)
+    {
+        cout << "start test hash table insert & search\n";
+        Hash<int> ht(pow(2,data_qty));
+        vector<int> data = gen_rand_array(pow(2,data_qty),var_range);
+
+        i_begin_time = clock();
+        for (int data_ind=0; data_ind<data.size(); data_ind++)
+        {
+            ht.insert(data[data_ind]);
+        }
+        i_end_time = clock();
+
+        s_begin_time = clock();
+        for (int s_data_ind=0; s_data_ind<search_data.size(); s_data_ind++)
+        {
+            bool res = ht.search(search_data[s_data_ind]);
+            (res == false)? cout << search_data[s_data_ind] <<" is not found\n" : cout << search_data[s_data_ind] << " found\n";
+        }
+        s_end_time = clock();
+
+        double i_spend_time = (double)(i_end_time-i_begin_time) / CLOCKS_PER_SEC;
+        double s_spend_time = (double)(s_end_time-s_begin_time) / CLOCKS_PER_SEC;
+        cout << "K=" << data_qty << ", insert time: " << i_spend_time << ". search time: " << s_spend_time << endl;
+        i_time_records.push_back(i_spend_time);
+        s_time_records.push_back(s_spend_time);
+        output_file(file_name_it, type_record, i_time_records);
+        output_file(file_name_st, type_record, s_time_records);
+        // ht.print();
+    }
+
+}
+
 
 int main(){
-    // test_skip_list(0.1, "sl_i_time_01.csv", "sl_s_time_01.csv", "sl_list_number_01.csv", "sl_ave_layer_01.csv" , "Skip List_0.1");
     // test_skip_list(0.5, "sl_i_time_05.csv", "sl_s_time_05.csv", "sl_list_number_05.csv", "sl_ave_layer_05.csv" , "Skip List_0.5");
-    // test_skip_list(0.9, "sl_i_time_09.csv", "sl_s_time_09.csv", "sl_list_number_09.csv", "sl_ave_layer_09.csv" , "Skip List_0.9");
     // test_treap("tr_i_time.csv", "tr_s_time.csv", "treap");
     // test_sorted_array("sa_i_time.csv", "sa_s_time.csv", "sorted array");
-
+    test_hash("ht_i_time.csv", "ht_s_time.csv", "hash table");
 
     return 0;
 }
