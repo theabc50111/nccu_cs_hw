@@ -801,9 +801,9 @@ void test_hash(string file_name_it, string file_name_st, string type_record)
 
 
 int main(){
-    test_skip_list(0.5, "sl_i_time_05.csv", "sl_s_time_05.csv", "sl_list_number_05.csv", "sl_ave_layer_05.csv" , "Skip List_0.5");
+    // test_skip_list(0.5, "sl_i_time_05.csv", "sl_s_time_05.csv", "sl_list_number_05.csv", "sl_ave_layer_05.csv" , "Skip List_0.5");
     // test_treap("tr_i_time.csv", "tr_s_time.csv", "treap");
-    // test_sorted_array("sa_i_time.csv", "sa_s_time.csv", "sorted array");
+    test_sorted_array("sa_i_time.csv", "sa_s_time.csv", "sorted array");
     test_hash("ht_i_time.csv", "ht_s_time.csv", "hash table");
 
     return 0;
