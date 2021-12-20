@@ -8,29 +8,15 @@
 using namespace std;
 
 int main()
-{
-    int b = 99735;
-    int prime=b;
-    bool is_prime = true;
-
-    while(prime<2*b){
-        for (int i = 2; i <= prime/2; ++i) 
-        {
-            if (prime % i == 0) {
-                is_prime = false;
-                break;
-            }
-            is_prime = true;
-        }
-        if (is_prime){
-            break;
-        }
-        else
-        {
-            prime++;
-        }
-    }
-
-    cout << prime << "\n";
+{   
+    string ht = "hash table", tr = "treap", sk = "skip list", sa = "sorted array";
+    cout << ht.compare("hash table") << endl;
+    cout << tr.compare("treap") << endl;
+    cout << sk.compare("skip list") << endl;
+    cout << sa.compare("sorted array") << endl;
+    cout << ht.compare("treap") << endl;
+    cout << tr.compare("hash table") << endl;
+    cout << sk.compare("sorted array") << endl;
+    cout << sa.compare("skip list") << endl;
     return 0;
 }

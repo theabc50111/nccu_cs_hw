@@ -10,6 +10,11 @@
 
 using namespace std;
 
+
+int var_range = 30; // the range of variable in skip list 
+int min_data_qty = 10; // set the min amount of imput data
+int max_data_qty = 30; // set the max amount of imput dattya
+
 vector<int> gen_rand_array(int arr_size, int var_range){
     vector<int> ret_arr;
     random_device rd;  //Will be used to obtain a seed for the random number engine
@@ -39,6 +44,108 @@ void output_file(string file_name, string type_record, vector<double> time_recor
         myfile << "k=" << i << "," << time_records[i-10] << "," << "\n";
     }
     myfile.close();
+}
+
+struct tester {
+int data_qty = 0;
+vector<double> i_time_records;
+vector<double> s_time_records;
+string file_name_it;
+string file_name_st; 
+string type_record;
+vector<int> search_data; 
+TreapNode<int> *root = nullptr;
+
+template<typename DATA_STRUCTURE>
+void test(DATA_STRUCTURE& data_structure){
+    clock_t i_begin_time, i_end_time, s_begin_time, s_end_time;
+    vector<int> data = gen_rand_array(pow(2,data_qty),var_range);
+    i_begin_time = clock();
+    for (int data_ind=0; data_ind<data.size(); data_ind++)
+    {
+        if constexpr (std::is_same<DATA_STRUCTURE, TreapNode<int>>::value)
+        {
+
+            root = data_structure.insert(root, data[data_ind]);
+        }
+        else
+        {
+            data_structure.insert(data[data_ind]);
+        }
+
+    }
+    i_end_time = clock();
+
+    s_begin_time = clock();
+    for (int s_data_ind=0; s_data_ind<search_data.size(); s_data_ind++)
+    {
+        if constexpr (std::is_same<DATA_STRUCTURE, TreapNode<int>>::value)
+        {
+            TreapNode<int> *res =  data_structure.search(root, search_data[s_data_ind]);
+            // (res == NULL)? cout << "Not found\n" : cout << "found\n";    //  uncomment to watch if data is found
+        }
+        else
+        {
+            bool res = data_structure.search(search_data[s_data_ind]);
+            // (res == false)? cout << search_data[s_data_ind] <<" is not found\n" : cout << search_data[s_data_ind] << " found\n";    //  uncomment to watch if data is found
+        }
+    }
+    s_end_time = clock();
+
+    double i_spend_time = (double)(i_end_time-i_begin_time) / CLOCKS_PER_SEC;
+    double s_spend_time = (double)(s_end_time-s_begin_time) / CLOCKS_PER_SEC;
+    cout << "K=" << data_qty << ", insert time: " << i_spend_time << ". search time: " << s_spend_time << endl;
+    i_time_records.push_back(i_spend_time);
+    s_time_records.push_back(s_spend_time);
+    output_file(file_name_it, type_record, i_time_records);
+    output_file(file_name_st, type_record, s_time_records);
+    // data_structure.print();    // uncomment to show data structure
+    }
+
+};
+
+
+void test(string file_name_it, string file_name_st, string type_record)
+{
+	srand(time(NULL));
+    tester tester;
+    tester.file_name_it = file_name_it;
+    tester.file_name_st = file_name_st;
+    tester.type_record = type_record;
+    tester.search_data = gen_rand_array(100000, var_range); // generate search data
+
+    for (int data_qty=min_data_qty; data_qty<=max_data_qty; data_qty++)
+    {
+        tester.data_qty = data_qty;
+        if (type_record.compare("hash table")==0)
+        {
+            cout << type_record.compare("hash table") << endl;
+            Hash<int> data_structure(pow(2,data_qty));
+            cout << "start test hash table insert & search\n";
+            tester.test(data_structure);
+        }
+        else if (type_record.compare("skip list")==0)
+        {
+            cout << type_record.compare("skip list") << endl;
+            SkipList<int>  data_structure;
+            cout << "start test Skip List insert with probability :" <<  data_structure.p << endl;
+            tester.test(data_structure);
+        }
+        else if (type_record.compare("sorted array")==0)
+        {
+            cout << type_record.compare("sorted array") << endl;
+            SortedArray<int>  data_structure;
+            cout << "start test sorted array insert & search\n";
+            tester.test(data_structure);
+        }
+        else if (type_record.compare("treap")==0)
+        {
+            cout << type_record.compare("treap") << endl;
+            TreapNode<int> data_structure;
+            cout << "start test treap insert & search\n";
+            tester.test(data_structure);
+        }
+    }
 }
 
 
@@ -325,6 +432,7 @@ class SkipList{
         int nodeSum; // 跳躍表的結點個數
 };
 
+
 template<typename T>
 class TreapNode
 {
@@ -483,7 +591,6 @@ class TreapNode
         }
 };
 
-
 template<typename T>
 class SortedArray
 {
@@ -621,302 +728,11 @@ class Hash
 };
 
 
-void test_skip_list(float prob, string file_name_it, string file_name_st, string file_name_l, string file_name_al, string type_record)
-{
-    int var_range = 30; // the range of variable in skip list 
-    int min_data_qty = 10; // set the min amount of imput data
-    int max_data_qty = 30; // set the max amount of imput data
-    clock_t i_begin_time, i_end_time, s_begin_time, s_end_time;
-    vector<double> i_time_records, s_time_records, list_records, ave_level_records;
-    vector<int> search_data = gen_rand_array(100000, var_range); // generate search data
-	srand(time(NULL));
-
-    for (int data_qty=min_data_qty; data_qty<=max_data_qty; data_qty++)
-    {
-        SkipList<int> sk;
-        sk.p = prob;
-        cout << "Test Skip List insert with probability :" << sk.p << endl;
-        vector<int> data = gen_rand_array(pow(2,data_qty),var_range);
-        
-        i_begin_time = clock();
-        for (int data_ind=0; data_ind<data.size(); data_ind++)
-        {
-            sk.insert(data[data_ind]);
-        }
-        i_end_time = clock();
-
-        s_begin_time = clock();
-        for (int s_data_ind=0; s_data_ind<search_data.size(); s_data_ind++)
-        {
-            sk.search(search_data[s_data_ind]);
-        }
-        s_end_time = clock();
-
-        double i_spend_time = (double)(i_end_time-i_begin_time) / CLOCKS_PER_SEC;
-        double s_spend_time = (double)(s_end_time-s_begin_time) / CLOCKS_PER_SEC;
-        int list_count = sk.list_count();
-        int node_count = sk.node_count();
-        cout << "K=" << data_qty << ", insert time: " << i_spend_time << ", search time: " << s_spend_time << ", list number:" << list_count << ", node number:" << node_count << ", average level:" << (float) node_count/list_count << endl;
-        i_time_records.push_back(i_spend_time);
-        s_time_records.push_back(s_spend_time);
-        list_records.push_back(list_count);
-        ave_level_records.push_back((float) node_count/list_count);
-
-        output_file(file_name_it, type_record, i_time_records);
-        output_file(file_name_st, type_record, s_time_records);
-        output_file(file_name_l, type_record, list_records);
-        output_file(file_name_al, type_record, ave_level_records);
-        // sk.print();
-    }
-
-}
-
-void test_treap(string file_name_it, string file_name_st, string type_record)
-{
-    int var_range = 30; // the range of variable in skip list 
-    int min_data_qty = 10; // set the min amount of imput data
-    int max_data_qty = 30; // set the max amount of imput data
-    clock_t i_begin_time, i_end_time, s_begin_time, s_end_time;
-    vector<double> i_time_records, s_time_records;
-    vector<int> search_data = gen_rand_array(100000, var_range); // generate search data
-	srand(time(NULL));
-
-    for (int data_qty=min_data_qty; data_qty<=max_data_qty; data_qty++)
-    {
-        cout << "start test treap insert & search\n";
-        TreapNode<int> t;
-        TreapNode<int> *root = nullptr;
-        vector<int> data = gen_rand_array(pow(2,data_qty),var_range);
-        
-        i_begin_time = clock();
-        for (int data_ind=0; data_ind<data.size(); data_ind++)
-        {
-            root = t.insert(root, data[data_ind]);
-        }
-        i_end_time = clock();
-
-        s_begin_time = clock();
-        for (int s_data_ind=0; s_data_ind<search_data.size(); s_data_ind++)
-        {
-            TreapNode<int> *res = t.search(root, search_data[s_data_ind]);
-            // (res == NULL)? cout << "Not found\n" : cout << "found\n";
-        }
-        s_end_time = clock();
-
-        double i_spend_time = (double)(i_end_time-i_begin_time) / CLOCKS_PER_SEC;
-        double s_spend_time = (double)(s_end_time-s_begin_time) / CLOCKS_PER_SEC;
-        cout << "K=" << data_qty << ", insert time: " << i_spend_time << ", search time: " << s_spend_time << endl;
-        i_time_records.push_back(i_spend_time);
-        s_time_records.push_back(s_spend_time);
-        output_file(file_name_it, type_record, i_time_records);
-        output_file(file_name_st, type_record, s_time_records);
-        // t.inorder(root);
-    }
-
-}
-
-void test_sorted_array(string file_name_it, string file_name_st, string type_record)
-{
-    int var_range = 30; // the range of variable in skip list 
-    int min_data_qty = 10; // set the min amount of imput data
-    int max_data_qty = 30; // set the max amount of imput data
-    clock_t i_begin_time, i_end_time, s_begin_time, s_end_time;
-    vector<double> i_time_records, s_time_records;
-    vector<int> search_data = gen_rand_array(100000, var_range); // generate search data
-
-    for (int data_qty=min_data_qty; data_qty<=max_data_qty; data_qty++)
-    {
-        cout << "start test sorted array insert & search\n";
-        SortedArray<int> sa;
-        vector<int> data = gen_rand_array(pow(2,data_qty),var_range);
-
-        i_begin_time = clock();
-        for (int data_ind=0; data_ind<data.size(); data_ind++)
-        {
-            sa.insert(data[data_ind]);
-        }
-        i_end_time = clock();
-
-        s_begin_time = clock();
-        for (int s_data_ind=0; s_data_ind<search_data.size(); s_data_ind++)
-        {
-            bool res = sa.search(search_data[s_data_ind]);
-            // (res == false)? cout << "Not found\n" : cout << "found\n";
-        }
-        s_end_time = clock();
-
-        double i_spend_time = (double)(i_end_time-i_begin_time) / CLOCKS_PER_SEC;
-        double s_spend_time = (double)(s_end_time-s_begin_time) / CLOCKS_PER_SEC;
-        cout << "K=" << data_qty << ", insert time: " << i_spend_time << ". search time: " << s_spend_time << endl;
-        i_time_records.push_back(i_spend_time);
-        s_time_records.push_back(s_spend_time);
-        output_file(file_name_it, type_record, i_time_records);
-        output_file(file_name_st, type_record, s_time_records);
-        // sa.print();
-    }
-
-}
-
-void test_hash(string file_name_it, string file_name_st, string type_record)
-{
-    int var_range = 30; // the range of variable in skip list 
-    int min_data_qty = 10; // set the min amount of imput data
-    int max_data_qty = 30; // set the max amount of imput data
-    clock_t i_begin_time, i_end_time, s_begin_time, s_end_time;
-    vector<double> i_time_records, s_time_records;
-    vector<int> search_data = gen_rand_array(100000, var_range); // generate search data
-
-    for (int data_qty=min_data_qty; data_qty<=max_data_qty; data_qty++)
-    {
-        cout << "start test hash table insert & search\n";
-        Hash<int> ht(pow(2,data_qty));
-        vector<int> data = gen_rand_array(pow(2,data_qty),var_range);
-
-        i_begin_time = clock();
-        for (int data_ind=0; data_ind<data.size(); data_ind++)
-        {
-            ht.insert(data[data_ind]);
-        }
-        i_end_time = clock();
-
-        s_begin_time = clock();
-        for (int s_data_ind=0; s_data_ind<search_data.size(); s_data_ind++)
-        {
-            bool res = ht.search(search_data[s_data_ind]);
-            // (res == false)? cout << search_data[s_data_ind] <<" is not found\n" : cout << search_data[s_data_ind] << " found\n";
-        }
-        s_end_time = clock();
-
-        double i_spend_time = (double)(i_end_time-i_begin_time) / CLOCKS_PER_SEC;
-        double s_spend_time = (double)(s_end_time-s_begin_time) / CLOCKS_PER_SEC;
-        cout << "K=" << data_qty << ", insert time: " << i_spend_time << ". search time: " << s_spend_time << endl;
-        i_time_records.push_back(i_spend_time);
-        s_time_records.push_back(s_spend_time);
-        output_file(file_name_it, type_record, i_time_records);
-        output_file(file_name_st, type_record, s_time_records);
-        // ht.print();
-    }
-
-}
-
-
-
-int var_range = 30; // the range of variable in skip list 
-int min_data_qty = 4; // set the min amount of imput data
-int max_data_qty = 4; // set the max amount of imput dattya
-
-struct tester {
-int data_qty = 0;
-vector<double> i_time_records;
-vector<double> s_time_records;
-string file_name_it;
-string file_name_st; 
-string type_record;
-vector<int> search_data; 
-TreapNode<int> *root = nullptr;
-
-template<typename DATA_STRUCTURE>
-void test(DATA_STRUCTURE& data_structure){
-    clock_t i_begin_time, i_end_time, s_begin_time, s_end_time;
-    vector<int> data = gen_rand_array(pow(2,data_qty),var_range);
-    i_begin_time = clock();
-    for (int data_ind=0; data_ind<data.size(); data_ind++)
-    {
-        if constexpr (std::is_same<DATA_STRUCTURE, TreapNode<int>>::value)
-        {
-
-            root = data_structure.insert(root, data[data_ind]);
-        }
-        else
-        {
-            data_structure.insert(data[data_ind]);
-        }
-
-    }
-    i_end_time = clock();
-
-    s_begin_time = clock();
-    for (int s_data_ind=0; s_data_ind<search_data.size(); s_data_ind++)
-    {
-        if constexpr (std::is_same<DATA_STRUCTURE, TreapNode<int>>::value)
-        {
-            TreapNode<int> *res =  data_structure.search(root, search_data[s_data_ind]);
-            // (res == NULL)? cout << "Not found\n" : cout << "found\n";    //  uncomment to watch if data is found
-        }
-        else
-        {
-            bool res = data_structure.search(search_data[s_data_ind]);
-            // (res == false)? cout << search_data[s_data_ind] <<" is not found\n" : cout << search_data[s_data_ind] << " found\n";    //  uncomment to watch if data is found
-        }
-    }
-    s_end_time = clock();
-
-    double i_spend_time = (double)(i_end_time-i_begin_time) / CLOCKS_PER_SEC;
-    double s_spend_time = (double)(s_end_time-s_begin_time) / CLOCKS_PER_SEC;
-    cout << "K=" << data_qty << ", insert time: " << i_spend_time << ". search time: " << s_spend_time << endl;
-    i_time_records.push_back(i_spend_time);
-    s_time_records.push_back(s_spend_time);
-    output_file(file_name_it, type_record, i_time_records);
-    output_file(file_name_st, type_record, s_time_records);
-    // data_structure.print();    // uncomment to show data structure
-    }
-
-};
-
-
-void test(string file_name_it, string file_name_st, string type_record)
-{
-	srand(time(NULL));
-    tester tester;
-    tester.file_name_it = file_name_it;
-    tester.file_name_st = file_name_st;
-    tester.type_record = type_record;
-    tester.search_data = gen_rand_array(100000, var_range); // generate search data
-
-    for (int data_qty=min_data_qty; data_qty<=max_data_qty; data_qty++)
-    {
-        tester.data_qty = data_qty;
-        if (type_record.compare("hash table"))
-        {
-            cout << type_record.compare("hash table") << endl;
-            Hash<int> data_structure(pow(2,data_qty));
-            cout << "start test hash table insert & search\n";
-            tester.test(data_structure);
-        }
-        else if (type_record.compare("skip list"))
-        {
-            cout << type_record.compare("skip list") << endl;
-            SkipList<int>  data_structure;
-            cout << "start test Skip List insert with probability :" <<  data_structure.p << endl;
-            tester.test(data_structure);
-        }
-        else if (type_record.compare("sorted array"))
-        {
-            cout << type_record.compare("sorted array") << endl;
-            SortedArray<int>  data_structure;
-            cout << "start test sorted array insert & search\n";
-            tester.test(data_structure);
-        }
-        else if (type_record.compare("treap"))
-        {
-            cout << type_record.compare("treap") << endl;
-            TreapNode<int> data_structure;
-            cout << "start test treap insert & search\n";
-            tester.test(data_structure);
-        }
-    }
-}
-
-
-
 int main(){
-    // test_skip_list(0.5, "sl_i_time_05.csv", "sl_s_time_05.csv", "sl_list_number_05.csv", "sl_ave_layer_05.csv" , "Skip List_0.5");
-    // test_treap("tr_i_time.csv", "tr_s_time.csv", "treap");
-    // test_sorted_array("sa_i_time.csv", "sa_s_time.csv", "sorted array");
-    // test("sa_i_time.csv", "sa_s_time.csv", "sorted array");
-    // test("ht_i_time.csv", "ht_s_time.csv", "hash table");
-    // test("tr_i_time.csv", "tr_s_time.csv", "treap");
-    // test("sk_i_time.csv", "sk_s_time.csv", "skip liat");
+    test("sa_i_time.csv", "sa_s_time.csv", "sorted array");
+    test("ht_i_time.csv", "ht_s_time.csv", "hash table");
+    test("tr_i_time.csv", "tr_s_time.csv", "treap");
+    test("sk_i_time.csv", "sk_s_time.csv", "skip list");
 
     return 0;
 }
