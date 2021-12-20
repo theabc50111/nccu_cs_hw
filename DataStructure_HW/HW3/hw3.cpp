@@ -598,7 +598,6 @@ class Hash
             int index = hash_function(key);
             for (auto x : table[index])
             {
-                cout << "index is " << index << ", key is " << key << ", x is " << x << endl;
                 if (key==x)
                 {
                     return true; 
@@ -784,7 +783,7 @@ void test_hash(string file_name_it, string file_name_st, string type_record)
         for (int s_data_ind=0; s_data_ind<search_data.size(); s_data_ind++)
         {
             bool res = ht.search(search_data[s_data_ind]);
-            (res == false)? cout << search_data[s_data_ind] <<" is not found\n" : cout << search_data[s_data_ind] << " found\n";
+            // (res == false)? cout << search_data[s_data_ind] <<" is not found\n" : cout << search_data[s_data_ind] << " found\n";
         }
         s_end_time = clock();
 
@@ -802,7 +801,7 @@ void test_hash(string file_name_it, string file_name_st, string type_record)
 
 
 int main(){
-    // test_skip_list(0.5, "sl_i_time_05.csv", "sl_s_time_05.csv", "sl_list_number_05.csv", "sl_ave_layer_05.csv" , "Skip List_0.5");
+    test_skip_list(0.5, "sl_i_time_05.csv", "sl_s_time_05.csv", "sl_list_number_05.csv", "sl_ave_layer_05.csv" , "Skip List_0.5");
     // test_treap("tr_i_time.csv", "tr_s_time.csv", "treap");
     // test_sorted_array("sa_i_time.csv", "sa_s_time.csv", "sorted array");
     test_hash("ht_i_time.csv", "ht_s_time.csv", "hash table");
