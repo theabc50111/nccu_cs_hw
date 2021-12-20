@@ -756,9 +756,9 @@ void test_sorted_array(string file_name_it, string file_name_st, string type_rec
 
 }
 
-    int var_range = 30; // the range of variable in skip list 
-    int min_data_qty = 10; // set the min amount of imput data
-    int max_data_qty = 30; // set the max amount of imput data
+int var_range = 30; // the range of variable in skip list 
+int min_data_qty = 10; // set the min amount of imput data
+int max_data_qty = 30; // set the max amount of imput data
 
 struct tester {
 int data_qty = 0;
