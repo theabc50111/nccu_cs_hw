@@ -773,47 +773,47 @@ TreapNode<int> *root = nullptr;
 template<typename DATA_STRUCTURE>
 void test(DATA_STRUCTURE& data_structure){
     clock_t i_begin_time, i_end_time, s_begin_time, s_end_time;
-          vector<int> data = gen_rand_array(pow(2,data_qty),var_range);
-        i_begin_time = clock();
-        for (int data_ind=0; data_ind<data.size(); data_ind++)
+    vector<int> data = gen_rand_array(pow(2,data_qty),var_range);
+    i_begin_time = clock();
+    for (int data_ind=0; data_ind<data.size(); data_ind++)
+    {
+        if constexpr (std::is_same<DATA_STRUCTURE, TreapNode<int>>::value)
         {
-            if constexpr (std::is_same<DATA_STRUCTURE, TreapNode<int>>::value)
-            {
 
-                root = data_structure.insert(root, data[data_ind]);
-            }
-            else
-            {
-                data_structure.insert(data[data_ind]);
-            }
-
+            root = data_structure.insert(root, data[data_ind]);
         }
-        i_end_time = clock();
-
-        s_begin_time = clock();
-        for (int s_data_ind=0; s_data_ind<search_data.size(); s_data_ind++)
+        else
         {
-            if constexpr (std::is_same<DATA_STRUCTURE, TreapNode<int>>::value)
-            {
-                TreapNode<int> *res =  data_structure.search(root, search_data[s_data_ind]);
-                // (res == NULL)? cout << "Not found\n" : cout << "found\n";
-            }
-            else
-            {
-                bool res = data_structure.search(search_data[s_data_ind]);
-                (res == false)? cout << search_data[s_data_ind] <<" is not found\n" : cout << search_data[s_data_ind] << " found\n";
-            }
+            data_structure.insert(data[data_ind]);
         }
-        s_end_time = clock();
 
-        double i_spend_time = (double)(i_end_time-i_begin_time) / CLOCKS_PER_SEC;
-        double s_spend_time = (double)(s_end_time-s_begin_time) / CLOCKS_PER_SEC;
-        cout << "K=" << data_qty << ", insert time: " << i_spend_time << ". search time: " << s_spend_time << endl;
-        i_time_records.push_back(i_spend_time);
-        s_time_records.push_back(s_spend_time);
-        output_file(file_name_it, type_record, i_time_records);
-        output_file(file_name_st, type_record, s_time_records);
-        // data_structure.print();
+    }
+    i_end_time = clock();
+
+    s_begin_time = clock();
+    for (int s_data_ind=0; s_data_ind<search_data.size(); s_data_ind++)
+    {
+        if constexpr (std::is_same<DATA_STRUCTURE, TreapNode<int>>::value)
+        {
+            TreapNode<int> *res =  data_structure.search(root, search_data[s_data_ind]);
+            // (res == NULL)? cout << "Not found\n" : cout << "found\n";
+        }
+        else
+        {
+            bool res = data_structure.search(search_data[s_data_ind]);
+            (res == false)? cout << search_data[s_data_ind] <<" is not found\n" : cout << search_data[s_data_ind] << " found\n";
+        }
+    }
+    s_end_time = clock();
+
+    double i_spend_time = (double)(i_end_time-i_begin_time) / CLOCKS_PER_SEC;
+    double s_spend_time = (double)(s_end_time-s_begin_time) / CLOCKS_PER_SEC;
+    cout << "K=" << data_qty << ", insert time: " << i_spend_time << ". search time: " << s_spend_time << endl;
+    i_time_records.push_back(i_spend_time);
+    s_time_records.push_back(s_spend_time);
+    output_file(file_name_it, type_record, i_time_records);
+    output_file(file_name_st, type_record, s_time_records);
+    // data_structure.print();
     }
 
 };
