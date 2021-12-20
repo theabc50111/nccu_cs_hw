@@ -1,16 +1,36 @@
-// vector::begin/end
 #include <iostream>
 #include <vector>
+#include <bitset>
+#include <string>
+#include <random>
 
-int main ()
+
+using namespace std;
+
+int main()
 {
-  std::vector<int> myvector;
-  for (int i=1; i<=5; i++) myvector.push_back(i);
+    int b = 99735;
+    int prime=b;
+    bool is_prime = true;
 
-  std::cout << "myvector contains:";
-  for (std::vector<int>::iterator it = myvector.begin() ; it != myvector.end(); ++it)
-    std::cout << it << ' & ' << *it << " ";
-  std::cout << '\n';
+    while(prime<2*b){
+        for (int i = 2; i <= prime/2; ++i) 
+        {
+            if (prime % i == 0) {
+                is_prime = false;
+                break;
+            }
+            is_prime = true;
+        }
+        if (is_prime){
+            break;
+        }
+        else
+        {
+            prime++;
+        }
+    }
 
-  return 0;
+    cout << prime << "\n";
+    return 0;
 }
