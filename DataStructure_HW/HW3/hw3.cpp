@@ -46,108 +46,6 @@ void output_file(string file_name, string type_record, vector<double> time_recor
     myfile.close();
 }
 
-struct tester {
-int data_qty = 0;
-vector<double> i_time_records;
-vector<double> s_time_records;
-string file_name_it;
-string file_name_st; 
-string type_record;
-vector<int> search_data; 
-TreapNode<int> *root = nullptr;
-
-template<typename DATA_STRUCTURE>
-void test(DATA_STRUCTURE& data_structure){
-    clock_t i_begin_time, i_end_time, s_begin_time, s_end_time;
-    vector<int> data = gen_rand_array(pow(2,data_qty),var_range);
-    i_begin_time = clock();
-    for (int data_ind=0; data_ind<data.size(); data_ind++)
-    {
-        if constexpr (std::is_same<DATA_STRUCTURE, TreapNode<int>>::value)
-        {
-
-            root = data_structure.insert(root, data[data_ind]);
-        }
-        else
-        {
-            data_structure.insert(data[data_ind]);
-        }
-
-    }
-    i_end_time = clock();
-
-    s_begin_time = clock();
-    for (int s_data_ind=0; s_data_ind<search_data.size(); s_data_ind++)
-    {
-        if constexpr (std::is_same<DATA_STRUCTURE, TreapNode<int>>::value)
-        {
-            TreapNode<int> *res =  data_structure.search(root, search_data[s_data_ind]);
-            // (res == NULL)? cout << "Not found\n" : cout << "found\n";    //  uncomment to watch if data is found
-        }
-        else
-        {
-            bool res = data_structure.search(search_data[s_data_ind]);
-            // (res == false)? cout << search_data[s_data_ind] <<" is not found\n" : cout << search_data[s_data_ind] << " found\n";    //  uncomment to watch if data is found
-        }
-    }
-    s_end_time = clock();
-
-    double i_spend_time = (double)(i_end_time-i_begin_time) / CLOCKS_PER_SEC;
-    double s_spend_time = (double)(s_end_time-s_begin_time) / CLOCKS_PER_SEC;
-    cout << "K=" << data_qty << ", insert time: " << i_spend_time << ". search time: " << s_spend_time << endl;
-    i_time_records.push_back(i_spend_time);
-    s_time_records.push_back(s_spend_time);
-    output_file(file_name_it, type_record, i_time_records);
-    output_file(file_name_st, type_record, s_time_records);
-    // data_structure.print();    // uncomment to show data structure
-    }
-
-};
-
-
-void test(string file_name_it, string file_name_st, string type_record)
-{
-	srand(time(NULL));
-    tester tester;
-    tester.file_name_it = file_name_it;
-    tester.file_name_st = file_name_st;
-    tester.type_record = type_record;
-    tester.search_data = gen_rand_array(100000, var_range); // generate search data
-
-    for (int data_qty=min_data_qty; data_qty<=max_data_qty; data_qty++)
-    {
-        tester.data_qty = data_qty;
-        if (type_record.compare("hash table")==0)
-        {
-            cout << type_record.compare("hash table") << endl;
-            Hash<int> data_structure(pow(2,data_qty));
-            cout << "start test hash table insert & search\n";
-            tester.test(data_structure);
-        }
-        else if (type_record.compare("skip list")==0)
-        {
-            cout << type_record.compare("skip list") << endl;
-            SkipList<int>  data_structure;
-            cout << "start test Skip List insert with probability :" <<  data_structure.p << endl;
-            tester.test(data_structure);
-        }
-        else if (type_record.compare("sorted array")==0)
-        {
-            cout << type_record.compare("sorted array") << endl;
-            SortedArray<int>  data_structure;
-            cout << "start test sorted array insert & search\n";
-            tester.test(data_structure);
-        }
-        else if (type_record.compare("treap")==0)
-        {
-            cout << type_record.compare("treap") << endl;
-            TreapNode<int> data_structure;
-            cout << "start test treap insert & search\n";
-            tester.test(data_structure);
-        }
-    }
-}
-
 
 template<typename T>
 class SkipList{
@@ -726,6 +624,109 @@ class Hash
             }
         }
 };
+
+
+struct tester {
+int data_qty = 0;
+vector<double> i_time_records;
+vector<double> s_time_records;
+string file_name_it;
+string file_name_st; 
+string type_record;
+vector<int> search_data; 
+TreapNode<int> *root = nullptr;
+
+template<typename DATA_STRUCTURE>
+void test(DATA_STRUCTURE& data_structure){
+    clock_t i_begin_time, i_end_time, s_begin_time, s_end_time;
+    vector<int> data = gen_rand_array(pow(2,data_qty),var_range);
+    i_begin_time = clock();
+    for (int data_ind=0; data_ind<data.size(); data_ind++)
+    {
+        if constexpr (std::is_same<DATA_STRUCTURE, TreapNode<int>>::value)
+        {
+
+            root = data_structure.insert(root, data[data_ind]);
+        }
+        else
+        {
+            data_structure.insert(data[data_ind]);
+        }
+
+    }
+    i_end_time = clock();
+
+    s_begin_time = clock();
+    for (int s_data_ind=0; s_data_ind<search_data.size(); s_data_ind++)
+    {
+        if constexpr (std::is_same<DATA_STRUCTURE, TreapNode<int>>::value)
+        {
+            TreapNode<int> *res =  data_structure.search(root, search_data[s_data_ind]);
+            // (res == NULL)? cout << "Not found\n" : cout << "found\n";    //  uncomment to watch if data is found
+        }
+        else
+        {
+            bool res = data_structure.search(search_data[s_data_ind]);
+            // (res == false)? cout << search_data[s_data_ind] <<" is not found\n" : cout << search_data[s_data_ind] << " found\n";    //  uncomment to watch if data is found
+        }
+    }
+    s_end_time = clock();
+
+    double i_spend_time = (double)(i_end_time-i_begin_time) / CLOCKS_PER_SEC;
+    double s_spend_time = (double)(s_end_time-s_begin_time) / CLOCKS_PER_SEC;
+    cout << "K=" << data_qty << ", insert time: " << i_spend_time << ". search time: " << s_spend_time << endl;
+    i_time_records.push_back(i_spend_time);
+    s_time_records.push_back(s_spend_time);
+    output_file(file_name_it, type_record, i_time_records);
+    output_file(file_name_st, type_record, s_time_records);
+    // data_structure.print();    // uncomment to show data structure
+    }
+
+};
+
+
+void test(string file_name_it, string file_name_st, string type_record)
+{
+	srand(time(NULL));
+    tester tester;
+    tester.file_name_it = file_name_it;
+    tester.file_name_st = file_name_st;
+    tester.type_record = type_record;
+    tester.search_data = gen_rand_array(100000, var_range); // generate search data
+
+    for (int data_qty=min_data_qty; data_qty<=max_data_qty; data_qty++)
+    {
+        tester.data_qty = data_qty;
+        if (type_record.compare("hash table")==0)
+        {
+            cout << type_record.compare("hash table") << endl;
+            Hash<int> data_structure(pow(2,data_qty));
+            cout << "start test hash table insert & search\n";
+            tester.test(data_structure);
+        }
+        else if (type_record.compare("skip list")==0)
+        {
+            cout << type_record.compare("skip list") << endl;
+            SkipList<int>  data_structure;
+            cout << "start test Skip List insert with probability :" <<  data_structure.p << endl;
+            tester.test(data_structure);
+        }
+        else if (type_record.compare("sorted array")==0)
+        {
+            cout << type_record.compare("sorted array") << endl;
+            SortedArray<int>  data_structure;
+            cout << "start test sorted array insert & search\n";
+            tester.test(data_structure);
+        }
+        else if (type_record.compare("treap")==0)
+        {
+            cout << type_record.compare("treap") << endl;
+            TreapNode<int> data_structure;
+            cout << "start test treap insert & search\n";
+            tester.test(data_structure);
+        }
+    }
+}
 
 
 int main(){
