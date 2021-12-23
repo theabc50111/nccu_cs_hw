@@ -534,7 +534,7 @@ class Hash
     private:
         int BUCKET;    // No. of buckets
         vector<int> rands;    //rand of hash (universal hash);
-        list<int> *table;    // Pointer to an array containing buckets
+        vector<list< int >> table;    // Pointer to an array containing buckets
         
         // hash function to map values to key
         int hash_function(int x) {    
@@ -591,7 +591,6 @@ class Hash
         void insert(const T& key)
         {
             int index = hash_function(key);
-            table[index].push_back(key);
             if (!(this->search(key)))
             {
                 table[index].push_back(key);
