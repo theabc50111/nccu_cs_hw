@@ -429,7 +429,7 @@ class TreapNode
         {
             if (root)
             {
-                inorder(root->left);
+                print(root->left);
                 cout << "key: "<< root->key << " | priority: %d "
                     << root->priority;
                 if (root->left)
@@ -437,7 +437,7 @@ class TreapNode
                 if (root->right)
                     cout << " | right child: " << root->right->key;
                 cout << endl;
-                inorder(root->right);
+                print(root->right);
             }
         }
 
@@ -534,7 +534,7 @@ class Hash
     private:
         int BUCKET;    // No. of buckets
         vector<int> rands;    //rand of hash (universal hash);
-        vector<list< int >> table;    // Pointer to an array containing buckets
+        list<int> *table;    // Pointer to an array containing buckets
         
         // hash function to map values to key
         int hash_function(int x) {    
@@ -678,7 +678,14 @@ void test(DATA_STRUCTURE& data_structure){
     s_time_records.push_back(s_spend_time);
     output_file(file_name_it, type_record, i_time_records);
     output_file(file_name_st, type_record, s_time_records);
-    // data_structure.print();    // uncomment to show data structure
+    // if constexpr (std::is_same<DATA_STRUCTURE, TreapNode<int>>::value)
+    // {
+    //     data_structure.print(root);    // uncomment to show data structure
+    // }
+    // else
+    // {
+    //     data_structure.print();    // uncomment to show data structure
+    // }
     }
 
 };
@@ -729,8 +736,8 @@ void test(string file_name_it, string file_name_st, string type_record)
 
 
 int main(){
-    test("sa_i_time.csv", "sa_s_time.csv", "sorted array");
-    // test("ht_i_time.csv", "ht_s_time.csv", "hash table");
+    // test("sa_i_time.csv", "sa_s_time.csv", "sorted array");
+    test("ht_i_time.csv", "ht_s_time.csv", "hash table");
     // test("tr_i_time.csv", "tr_s_time.csv", "treap");
     // test("sk_i_time.csv", "sk_s_time.csv", "skip list");
 
