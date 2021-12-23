@@ -592,10 +592,10 @@ class Hash
         {
             int index = hash_function(key);
             table[index].push_back(key);
-            // if (!(this->search(key)))
-            // {
-            //     table[index].push_back(key);
-            // }
+            if (!(this->search(key)))
+            {
+                table[index].push_back(key);
+            }
         }
 
         bool search(const T& key)
