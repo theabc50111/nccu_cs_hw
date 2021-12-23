@@ -731,9 +731,9 @@ void test(string file_name_it, string file_name_st, string type_record)
 
 int main(){
     test("sa_i_time.csv", "sa_s_time.csv", "sorted array");
-    test("ht_i_time.csv", "ht_s_time.csv", "hash table");
-    test("tr_i_time.csv", "tr_s_time.csv", "treap");
-    test("sk_i_time.csv", "sk_s_time.csv", "skip list");
+    // test("ht_i_time.csv", "ht_s_time.csv", "hash table");
+    // test("tr_i_time.csv", "tr_s_time.csv", "treap");
+    // test("sk_i_time.csv", "sk_s_time.csv", "skip list");
 
     return 0;
 }
