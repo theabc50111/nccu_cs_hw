@@ -9,10 +9,16 @@
 #include <bitset>
 #include <chrono>
 #include <unordered_set>
+#include <opencv2/core.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/highgui.hpp>
 
-#define NODE 100
-#define EDGE 100
+#define PIC_WIDTH 2000
+#define NODE 5
+#define EDGE 6
+
 using namespace std;
+using namespace cv;
 
 
 double graph_arr[NODE][NODE] = {0};
@@ -57,7 +63,7 @@ void print_coords(vector<vector<double>> &matrix){
     cout << endl;
 }
 
-void gen_graph(int n_edge, vector<vector<double>> coords_mat){
+vector<unordered_set<int>> gen_rand_edge_graph(int n_edge, vector<vector<double>> coords_mat){
     vector<unordered_set<int>> edges;
     // int graph[NODE][NODE] = {-1};
     int count=0;
@@ -86,7 +92,6 @@ void gen_graph(int n_edge, vector<vector<double>> coords_mat){
         vector<int> tmp;
         for (const auto &s : e) tmp.push_back(s);
         double edge_weight = sqrt(pow((coords_mat[tmp[0]][0]-coords_mat[tmp[1]][0]), 2) + pow((coords_mat[tmp[0]][1]-coords_mat[tmp[1]][1]), 2));
-        cout << edge_weight << endl ;
         graph_arr[tmp[0]][tmp[1]] = edge_weight;
         graph_arr[tmp[1]][tmp[0]] = edge_weight;
     }
@@ -103,7 +108,7 @@ void gen_graph(int n_edge, vector<vector<double>> coords_mat){
     //     }
     //     cout << endl;
     // }
-
+    return edges; 
 }
 
 void dfs_traverse(int u, bool visited[], double graph[][NODE]) {
@@ -134,15 +139,56 @@ bool is_strong_connected(double graph[][NODE]) {
    return true;
 }
 
+class DrawPic {
+    private:
+        Mat img;
+
+        void draw_circle( Mat img, Point center ){
+            circle(img,center,PIC_WIDTH/(PIC_WIDTH/10) ,Scalar(0, 0, 255),FILLED,LINE_8);
+        }
+
+        void draw_line( Mat img, Point start, Point end ){
+            int thickness = 2;
+            int lineType = FILLED;
+            line( img,start,end,Scalar( 0, 255, 0 ),thickness,lineType);
+        }
+
+    public:
+        DrawPic(Mat x){
+            this->img = x;
+        }
+
+        void draw_graph(vector<vector<double>> coords_mat, vector<unordered_set<int>> edges_vertex){
+            for(auto &p : coords_mat){
+                draw_circle(this->img, Point(p[0], p[1]));
+            }
+            for(auto &e : edges_vertex){
+                vector<int> tmp;
+                for (const auto &s : e) tmp.push_back(s);
+                draw_line(this->img, Point(coords_mat[tmp[0]][0], coords_mat[tmp[0]][1]), Point(coords_mat[tmp[1]][0], coords_mat[tmp[1]][1]));
+            }
+
+        }
+
+        void save_pic(string file_name){
+            imwrite(file_name, this->img);
+        }
+};
 
 int main(){
     vector<vector<double>> coords;
-    coords = gen_rand_coordinates(NODE, 0, 2); 
-    gen_graph(EDGE, coords);
+    vector<unordered_set<int>> edges_vertex;
+    coords = gen_rand_coordinates(NODE, 1000, 300); 
+    print_coords(coords);
+    edges_vertex = gen_rand_edge_graph(EDGE, coords);
 
     while(!is_strong_connected(graph_arr)){
-        gen_graph(EDGE, coords);
+        edges_vertex = gen_rand_edge_graph(EDGE, coords);
     }
+    Mat canvas = Mat::zeros(PIC_WIDTH, PIC_WIDTH, CV_8UC3);
+    DrawPic pic1(canvas);
+    pic1.draw_graph(coords, edges_vertex);
+    pic1.save_pic("grapht1.png");
     
 
 	return 0;
