@@ -1,62 +1,180 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+#include <ctime>
 #include <iostream>
+#include <bits/stdc++.h>
+#include <algorithm>
 #include <vector>
 #include <bitset>
-#include <string>
-#include <random>
 #include <chrono>
-#include <algorithm>
 #include <unordered_set>
-#include <typeinfo>
-#include <opencv2/core.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/highgui.hpp>
 
-#define PIC_WIDTH 2000
+#define NODE 7
 
 using namespace std;
-using namespace cv;
 
-class DrawPic {
-    private:
-        Mat img;
 
-        void draw_circle( Mat img, Point center ){
-            circle( img,center,PIC_WIDTH/(PIC_WIDTH/10) ,Scalar( 0, 0, 255 ),FILLED,LINE_8 );
+
+double graph[NODE][NODE]={
+    {0,   1.7,  2.3, 0,   0,   0,   1.2},
+    {1.7, 0,    0,   5.3, 1,   0,   10.6},
+    {2.3, 0,    0,   2,   3.7, 0,   2.1},
+    {0,   5.3,  2,   0,   2,   2,   7.3},
+    {0,   1,    3.7, 2,   0,   1.1, 0.2},
+    {0,   0,    0,   2,   1.1, 0,   1.9},
+    {1.2, 10.6, 2.1, 7.3, 0.2, 1.9, 0}};
+
+
+void output_file(string file_name, string type_record, vector<double> time_records){
+    ofstream myfile;
+    myfile.open (file_name);
+    myfile << "k, " << type_record << "\n";
+    for(int i=10; i<=30; i++){
+
+        myfile << "k=" << i << "," << time_records[i-10] << "," << "\n";
+    }
+    myfile.close();
+}
+
+
+// finding minimum distance
+int miniDist(double distance[], bool Tset[]){
+    double minimum=INT_MAX;
+    int ind;
+              
+    for(int k=0;k<NODE;k++) 
+    {
+        if(Tset[k]==false && distance[k]<=minimum)      
+        {
+            minimum=distance[k];
+            ind=k;
+        }
+    }
+    return ind;
+}
+
+double dijkstra_arr(double graph[][NODE], int src, bool show_path_to_each) // adjacency matrix 
+{
+    double distance[NODE]; // // array to calculate the minimum distance for each node                             
+    bool Tset[NODE];// boolean array to mark visited and unvisited for each node
+    double path_sum=0;    
+     
+    for(int k = 0; k<NODE; k++)
+    {
+        distance[k] = INT_MAX;
+        Tset[k] = false;    
+    }
+    
+    distance[src] = 0;   // Source vertex distance is set 0               
+    
+    for(int k = 0; k<NODE; k++)                           
+    {
+        int m=miniDist(distance,Tset); 
+        Tset[m]=true;
+        for(int k = 0; k<NODE; k++)                  
+        {
+            // updating the distance of neighbouring vertex
+            if(!Tset[k] && graph[m][k] && distance[m]!=INT_MAX && distance[m]+graph[m][k]<distance[k])
+                distance[k]=distance[m]+graph[m][k];
+        }
+    }
+    
+    if(show_path_to_each){
+        cout<<"Vertex\t\tDistance from source vertex"<<endl;
+        for(int k = 0; k<NODE; k++)                      
+        { 
+            char str=65+k; 
+            cout<<str<<"\t\t\t"<<distance[k]<<endl;
+        }
+    }
+
+    for(int i=0; i<NODE; i++) path_sum+=distance[i];
+
+    return path_sum;
+}
+
+struct tester {
+    vector<double> c_time_records;
+    vector<double> ave_path_records;
+    string file_name_ct;
+    string file_name_ave_path;
+    string type_record;
+    double each_nodes_path_sum=0;
+    double each_nodes_path_ave;
+
+    void test(){
+        clock_t c_begin_time, c_end_time;
+
+        for (int n_node=10; n_node<=50; n_node+=10){
+
+            switch (n_node){
+                case 10:
+                    #undef NODE
+                    #define NODE 10
+                    break;
+                
+                case 20:
+                    #undef NODE
+                    #define NODE 20
+                    break;
+                
+                case 30:
+                    #undef NODE
+                    #define NODE 30
+                    break;
+                
+                case 40:
+                    #undef NODE
+                    #define NODE 40
+                    break;
+                
+                case 50:
+                    #undef NODE
+                    #define NODE 50
+                    break;
+                
+                default:
+                    break;
+            }
+
+            if(type_record.compare("dijkstra_arr")==0) {
+                c_begin_time = clock();
+                for(int i=0; i<NODE; i++) each_nodes_path_sum+= dijkstra_arr(graph, i, true); 
+                each_nodes_path_ave = each_nodes_path_sum/((NODE*(NODE-1))/2);
+                c_end_time = clock();
+            }
+
+            double c_spend_time = (double)(c_end_time-c_begin_time) / CLOCKS_PER_SEC;
+            cout << "Number of nodes =" << NODE << ", counting time: " << c_spend_time << ", average path: " << each_nodes_path_ave << endl;
+            c_time_records.push_back(c_spend_time);
+            ave_path_records.push_back(each_nodes_path_ave);
+            output_file(file_name_ct, type_record, c_time_records);
+            output_file(file_name_ave_path, type_record, ave_path_records);
+
         }
 
-        void draw_line( Mat img, Point start, Point end ){
-            int thickness = 2;
-            int lineType = FILLED;
-            line( img,start,end,Scalar( 0, 255, 0 ),thickness,lineType);
-        }
+    }
 
-    public:
-        DrawPic(Mat x){
-            this->img = x;
-        }
-
-        void draw(){
-            draw_circle(this->img, Point( w/2, w/2));
-            draw_line(this->img, Point( 0, 15*w/16 ), Point( w, 15*w/16 ));
-        }
-
-        void save_pic(string file_name){
-            imwrite(file_name, this->img);
-        }
 };
 
 
 int main( void ){
-  char rook_window[] = "Drawing 2: Rook";
-  Mat rook_image = Mat::zeros( w, w, CV_8UC3 );
-  DrawPic pic1(rook_image);
-  pic1.draw();
-  pic1.save_pic("t1.png");
 
-//   imshow( rook_window, rook_image );
-//   imwrite("test.jpg", rook_image);
-//   moveWindow( rook_window, w, 200 );
-//   waitKey( 0 );
-  return(0);
+            const int a = 3; // I promisse i won't change a
+        int *ptr;
+        ptr = (int*)( &a );
+
+        printf( "A=%d\n", a );
+        *ptr = 5; // I'm a liar, a is now 5
+        printf( "A=%d\n", a );
+
+        *((int*)(&a)) = 6;
+        printf( "A=%d\n", a );
+
+        printf( "A=%d\n", a );
+
+    return(0);
+
 }
 

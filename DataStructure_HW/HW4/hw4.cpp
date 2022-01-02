@@ -1,4 +1,3 @@
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -13,10 +12,21 @@
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
+#include <climits>
 
 #define PIC_WIDTH 2000
-#define NODE 100
-#define EDGE 1000
+// const int NODE = 100;
+// const int EDGE = 250;
+const int NODE = 10;
+const int EDGE = 12;
+// const int NODE = 20;
+// const int EDGE = 48; 
+// const int NODE = 30;
+// const int EDGE = 109;
+// const int NODE = 40;
+// const int EDGE = 195;
+// const int NODE = 50;
+// const int EDGE = 307;
 
 using namespace std;
 using namespace cv;
@@ -24,14 +34,11 @@ using namespace cv;
 
 double graph_arr[NODE][NODE] = {0};
 
-void output_file(string file_name, string type_record, vector<double> time_records){
+void output_file(int n_node, string file_name, string type_record, vector<double> time_records){
     ofstream myfile;
     myfile.open (file_name);
-    myfile << "k, " << type_record << "\n";
-    for(int i=10; i<=30; i++){
-
-        myfile << "k=" << i << "," << time_records[i-10] << "," << "\n";
-    }
+    myfile << "n_node, " << type_record << "\n";
+    myfile << "n_node=" << n_node << "," << time_records[0] << "," << "\n";
     myfile.close();
 }
 
@@ -66,13 +73,14 @@ void print_coords(vector<vector<double>> &matrix){
 
 vector<unordered_set<int>> gen_rand_edge_graph(int n_edge, vector<vector<double>> coords_mat){
     vector<unordered_set<int>> edges;
-    // int graph[NODE][NODE] = {-1};
+    memset(graph_arr, 0, sizeof(graph_arr[0][0]) * NODE * NODE);
     int count=0;
     while(count<n_edge){
         srand(time(NULL));
         int src = (rand()%NODE);
         int dist = (rand()%NODE);
-        if(src!=dist){
+        double edge_weight = sqrt(pow((coords_mat[src][0]-coords_mat[dist][0]), 2) + pow((coords_mat[src][1]-coords_mat[dist][1]), 2));
+        if(src!=dist && (edge_weight<800)){
             unordered_set<int> insert_edge = {src, dist};
             if(edges.empty()){
                 edges.push_back(insert_edge);
@@ -130,7 +138,7 @@ bool is_strong_connected(double graph[][NODE]) {
       for(int i = 0; i<NODE; i++){
          vis[i] = false; //initialize as no node is visited
       }
-      dfs_traverse(u, vis, graph);
+      dfs_traverse(0, vis, graph);
       for(int i = 0; i<NODE; i++) {
          if(!vis[i]) //if there is a node, not visited by traversal, graph is not connected
             return false;
@@ -138,6 +146,108 @@ bool is_strong_connected(double graph[][NODE]) {
    }
    
    return true;
+}
+
+// finding minimum distance
+int miniDist(double distance[], bool Tset[]){
+    double minimum=INT_MAX;
+    int ind;
+              
+    for(int k=0;k<NODE;k++) 
+    {
+        if(Tset[k]==false && distance[k]<=minimum)      
+        {
+            minimum=distance[k];
+            ind=k;
+        }
+    }
+    return ind;
+}
+
+double dijkstra_arr(double graph[][NODE], int src, bool show_path_to_each) // adjacency matrix 
+{
+    double distance[NODE]; // // array to calculate the minimum distance for each node                             
+    bool Tset[NODE];// boolean array to mark visited and unvisited for each node
+    double path_sum=0;    
+     
+    for(int k = 0; k<NODE; k++)
+    {
+        distance[k] = INT_MAX;
+        Tset[k] = false;    
+    }
+    
+    distance[src] = 0;   // Source vertex distance is set 0               
+    
+    for(int k = 0; k<NODE; k++)                           
+    {
+        int m=miniDist(distance,Tset); 
+        Tset[m]=true;
+        for(int k = 0; k<NODE; k++)                  
+        {
+            // updating the distance of neighbouring vertex
+            if(!Tset[k] && graph[m][k] && distance[m]!=INT_MAX && distance[m]+graph[m][k]<distance[k])
+                distance[k]=distance[m]+graph[m][k];
+        }
+    }
+    
+    if(show_path_to_each){
+        cout<<"Vertex\t\tDistance from source vertex"<<endl;
+        for(int k = 0; k<NODE; k++)                      
+        { 
+            char str=65+k; 
+            cout<<str<<"\t\t\t"<<distance[k]<<endl;
+        }
+    }
+
+    for(int i=0; i<NODE; i++) path_sum+=distance[i];
+
+    return path_sum;
+}
+
+void gen_strong_con_graph(bool draw, string pic_name){
+    vector<vector<double>> coords;
+    vector<unordered_set<int>> edges_vertex;
+    cout << "Now operate dijkstra in arry, NODE: " << NODE << ", EDGE: " << EDGE << endl; 
+    int gen_count = 0;
+    coords = gen_rand_coordinates(NODE, 1000, 300); 
+    edges_vertex = gen_rand_edge_graph(EDGE, coords);
+
+    while(!is_strong_connected(graph_arr)){
+        edges_vertex = gen_rand_edge_graph(EDGE, coords);
+        cout << "NO." << gen_count << " generate edges & graph" << endl;
+        gen_count++;
+    }
+
+    if(draw){
+        Mat canvas = Mat::zeros(PIC_WIDTH, PIC_WIDTH, CV_8UC3);
+        DrawPic pic1(canvas);
+        pic1.draw_graph(coords, edges_vertex);
+        pic1.save_pic(pic_name);
+    }
+}
+
+void test(string file_name_ct, string file_name_ave_path, string type_record, string pic_name){
+    vector<double> c_time_records;
+    vector<double> ave_path_records;
+    double each_nodes_path_sum=0;
+    double each_nodes_path_ave;
+    clock_t c_begin_time, c_end_time;
+
+    gen_strong_con_graph(true, pic_name);
+    cout << "Start test with node number: " << NODE << ", EDGE: " << EDGE << endl;
+    c_begin_time = clock();
+    if(type_record.compare("dijkstra_arr")==0) {
+        for(int i=0; i<NODE; i++) each_nodes_path_sum+= dijkstra_arr(graph_arr, i, true); 
+        each_nodes_path_ave = each_nodes_path_sum/((NODE*(NODE-1))/2);
+    }
+    c_end_time = clock();
+
+    double c_spend_time = (double)(c_end_time-c_begin_time) / CLOCKS_PER_SEC;
+    cout << "Number of nodes =" << NODE << ", counting time: " << c_spend_time << ", average path: " << each_nodes_path_ave << endl;
+    c_time_records.push_back(c_spend_time);
+    ave_path_records.push_back(each_nodes_path_ave);
+    output_file(NODE, file_name_ct, type_record, c_time_records);
+    output_file(NODE, file_name_ave_path, type_record, ave_path_records);
 }
 
 class DrawPic {
@@ -177,20 +287,8 @@ class DrawPic {
 };
 
 int main(){
-    vector<vector<double>> coords;
-    vector<unordered_set<int>> edges_vertex;
-    coords = gen_rand_coordinates(NODE, 1000, 200); 
-    print_coords(coords);
-    edges_vertex = gen_rand_edge_graph(EDGE, coords);
 
-    while(!is_strong_connected(graph_arr)){
-        edges_vertex = gen_rand_edge_graph(EDGE, coords);
+    if(NODE==10){
+        test("dij_arr_10n_12e_ct.csv", "dij_arr_10n_12e_ap.csv", "dijkstra in array", "graph_10n_12e");
     }
-    Mat canvas = Mat::zeros(PIC_WIDTH, PIC_WIDTH, CV_8UC3);
-    DrawPic pic1(canvas);
-    pic1.draw_graph(coords, edges_vertex);
-    pic1.save_pic("graph1.png");
-    
-
-	return 0;
 }
