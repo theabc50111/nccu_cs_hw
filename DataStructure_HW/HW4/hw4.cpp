@@ -601,45 +601,48 @@ void gen_strong_con_graph(bool draw, string pic_name){
     }
 }
 
-void test(string file_name_ct, string file_name_ave_path, string type_record, string pic_name){
-    vector<double> c_time_records;
-    vector<double> ave_path_records;
-    double each_nodes_path_sum=0;
-    double each_nodes_path_ave;
-    clock_t c_begin_time, c_end_time;
+void test(string  dijarr_file_n_ct, string  dijarr_file_n_ave_path, string  dijbh_file_n_ct, string dijbh_file_n_ave_path, string pic_name){
+    vector<double> dijarr_c_time_records, dijbh_c_time_records;
+    vector<double> dijarr_ave_path_records, dijbh_ave_path_records;
+    double dijarr_each_nodes_path_sum=0, dijbh_each_nodes_path_sum=0;
+    double dijarr_each_nodes_path_ave,  dijbh_each_nodes_path_ave;
+    clock_t dijarr_c_begin_time, dijarr_c_end_time, dijbh_c_begin_time, dijbh_c_end_time;
 
     gen_strong_con_graph(true, pic_name);
     cout << "Start test with node number: " << NODE << ", EDGE: " << EDGE << endl;
-    c_begin_time = clock();
-    if(type_record.compare("dijkstra_arr")==0) {
-        for(int i=0; i<NODE; i++) each_nodes_path_sum+= dijkstra_arr(graph_arr, i, true); 
-        each_nodes_path_ave = each_nodes_path_sum/((NODE*(NODE-1))/2);
-    }
-    else if(type_record.compare("dijkstra_bin_heap")==0){
-        for(int i=0; i<NODE; i++) each_nodes_path_sum += dijkstra_bin_heap(graph_list, i, true);
-        each_nodes_path_ave = each_nodes_path_sum/((NODE*(NODE-1))/2);
-    }
-    c_end_time = clock();
+    dijarr_c_begin_time = clock();
+    for(int i=0; i<NODE; i++) dijarr_each_nodes_path_sum+= dijkstra_arr(graph_arr, i, true); 
+    dijarr_each_nodes_path_ave = dijarr_each_nodes_path_sum/((NODE*(NODE-1))/2);
+    dijarr_c_end_time = clock();
+    dijbh_c_begin_time = clock();
+    for(int i=0; i<NODE; i++) dijbh_each_nodes_path_sum += dijkstra_bin_heap(graph_list, i, true);
+    dijbh_each_nodes_path_ave = dijbh_each_nodes_path_sum/((NODE*(NODE-1))/2);
+    dijbh_c_end_time = clock();
 
-    double c_spend_time = (double)(c_end_time-c_begin_time) / CLOCKS_PER_SEC;
-    cout << "Number of nodes =" << NODE << ", counting time: " << c_spend_time << ", average path: " << each_nodes_path_ave << endl;
-    c_time_records.push_back(c_spend_time);
-    ave_path_records.push_back(each_nodes_path_ave);
-    output_file(NODE, file_name_ct, type_record, c_time_records);
-    output_file(NODE, file_name_ave_path, type_record, ave_path_records);
+    double dijarr_c_spend_time = (double)(dijarr_c_end_time-dijarr_c_begin_time) / CLOCKS_PER_SEC;
+    double dijbh_c_spend_time = (double)(dijbh_c_end_time-dijbh_c_begin_time) / CLOCKS_PER_SEC;
+    cout << "Number of nodes =" << NODE << "Number of EDGE =" << EDGE << endl;
+    cout << "dijkstra in array counting time: " << dijarr_c_spend_time << ", dijkstra in array average path: " << dijarr_each_nodes_path_ave << endl;
+    cout << "dijkstra in binary heap counting time: " << dijbh_c_spend_time << ", dijkstra in binary heap average path: " << dijbh_each_nodes_path_ave << endl;
+    dijarr_c_time_records.push_back(dijarr_c_spend_time);
+    dijarr_ave_path_records.push_back(dijarr_each_nodes_path_ave);
+    dijbh_c_time_records.push_back(dijbh_c_spend_time);
+    dijbh_ave_path_records.push_back(dijbh_each_nodes_path_ave);
+    output_file(NODE, dijarr_file_n_ct, "dijkstra_arr", dijarr_c_time_records);
+    output_file(NODE, dijarr_file_n_ave_path, "dijkstra_arr", dijarr_ave_path_records);
+    output_file(NODE, dijbh_file_n_ct, "dijkstra_bin_heap", dijbh_c_time_records);
+    output_file(NODE, dijbh_file_n_ave_path, "dijkstra_bin_heap", dijbh_ave_path_records);
 }
 
 int main(){
 
     if(NODE==10 && EDGE==12){
-        test("dij_arr_10n_12e_ct.csv", "dij_arr_10n_12e_ap.csv", "dijkstra_arr", "graph_10n_12e_dijarr.png");
-        test("dij_bin_heap_10n_12e_ct.csv", "dij_bin_heap_10n_12e_ap.csv", "dijkstra_bin_heap", "graph_10n_12e_dijbh.png");
+        test("dij_arr_10n_12e_ct.csv", "dij_arr_10n_12e_ap.csv", "dij_bin_heap_10n_12e_ct.csv", "dij_bin_heap_10n_12e_ap.csv", "graph_10n_12e.png");
     }
     else if(NODE==100 && EDGE==200){
-        test("dij_arr_100n_200e_ct.csv", "dij_arr_100n_200e_ap.csv", "dijkstra_arr", "graph_100n_200e_dijarr.png");
-        test("dij_bin_heap_100n_200e_ct.csv", "dij_bin_heap_100n_200e_ap.csv", "dijkstra_bin_heap", "graph_100n_200e_dijbh.png");
+        test("dij_arr_100n_200e_ct.csv", "dij_arr_100n_200e_ap.csv", "dij_bin_heap_100n_200e_ct.csv", "dij_bin_heap_100n_200e_ap.csv", "graph_100n_200e.png");
     }
     else if(NODE==100 && EDGE==500){
-        test("dij_arr_100n_500e_ct.csv", "dij_arr_100n_500e_ap.csv", "dijkstra_arr", "graph_100n_500e_v2.png");
+        test("dij_arr_100n_500e_ct.csv", "dij_arr_100n_500e_ap.csv", "dij_bin_heap_100n_500e_ct.csv", "dij_bin_heap_100n_500e_ap.csv", "graph_100n_500e.png");
     }
 }
