@@ -15,10 +15,10 @@
 #include <climits>
 
 #define PIC_WIDTH 2000
-// const int NODE = 100;
-// const int EDGE = 250;
-const int NODE = 10;
-const int EDGE = 12;
+const int NODE = 100;
+const int EDGE = 200;
+// const int NODE = 10;
+// const int EDGE = 12;
 // const int NODE = 20;
 // const int EDGE = 48; 
 // const int NODE = 30;
@@ -31,6 +31,43 @@ const int EDGE = 12;
 using namespace std;
 using namespace cv;
 
+
+
+class DrawPic {
+    private:
+        Mat img;
+
+        void draw_circle( Mat img, Point center ){
+            circle(img,center,PIC_WIDTH/(PIC_WIDTH/10) ,Scalar(0, 0, 255),FILLED,LINE_8);
+        }
+
+        void draw_line( Mat img, Point start, Point end ){
+            int thickness = 2;
+            int lineType = FILLED;
+            line( img,start,end,Scalar( 0, 255, 0 ),thickness,lineType);
+        }
+
+    public:
+        DrawPic(Mat x){
+            this->img = x;
+        }
+
+        void draw_graph(vector<vector<double>> coords_mat, vector<unordered_set<int>> edges_vertex){
+            for(auto &p : coords_mat){
+                draw_circle(this->img, Point(p[0], p[1]));
+            }
+            for(auto &e : edges_vertex){
+                vector<int> tmp;
+                for (const auto &s : e) tmp.push_back(s);
+                draw_line(this->img, Point(coords_mat[tmp[0]][0], coords_mat[tmp[0]][1]), Point(coords_mat[tmp[1]][0], coords_mat[tmp[1]][1]));
+            }
+
+        }
+
+        void save_pic(string file_name){
+            imwrite(file_name, this->img);
+        }
+};
 
 double graph_arr[NODE][NODE] = {0};
 
@@ -250,45 +287,15 @@ void test(string file_name_ct, string file_name_ave_path, string type_record, st
     output_file(NODE, file_name_ave_path, type_record, ave_path_records);
 }
 
-class DrawPic {
-    private:
-        Mat img;
-
-        void draw_circle( Mat img, Point center ){
-            circle(img,center,PIC_WIDTH/(PIC_WIDTH/10) ,Scalar(0, 0, 255),FILLED,LINE_8);
-        }
-
-        void draw_line( Mat img, Point start, Point end ){
-            int thickness = 2;
-            int lineType = FILLED;
-            line( img,start,end,Scalar( 0, 255, 0 ),thickness,lineType);
-        }
-
-    public:
-        DrawPic(Mat x){
-            this->img = x;
-        }
-
-        void draw_graph(vector<vector<double>> coords_mat, vector<unordered_set<int>> edges_vertex){
-            for(auto &p : coords_mat){
-                draw_circle(this->img, Point(p[0], p[1]));
-            }
-            for(auto &e : edges_vertex){
-                vector<int> tmp;
-                for (const auto &s : e) tmp.push_back(s);
-                draw_line(this->img, Point(coords_mat[tmp[0]][0], coords_mat[tmp[0]][1]), Point(coords_mat[tmp[1]][0], coords_mat[tmp[1]][1]));
-            }
-
-        }
-
-        void save_pic(string file_name){
-            imwrite(file_name, this->img);
-        }
-};
-
 int main(){
 
-    if(NODE==10){
-        test("dij_arr_10n_12e_ct.csv", "dij_arr_10n_12e_ap.csv", "dijkstra in array", "graph_10n_12e");
+    if(NODE==10 && EDGE==12){
+        test("dij_arr_10n_12e_ct.csv", "dij_arr_10n_12e_ap.csv", "dijkstra in array", "graph_10n_12e.png");
+    }
+    else if(NODE==100 && EDGE==200){
+        test("dij_arr_100n_200e_ct.csv", "dij_arr_100n_200e_ap.csv", "dijkstra in array", "graph_100n_200e.png");
+    }
+    else if(NODE==100 && EDGE==500){
+        test("dij_arr_100n_500e_ct.csv", "dij_arr_100n_500e_ap.csv", "dijkstra in array", "graph_100n_500e.png");
     }
 }
