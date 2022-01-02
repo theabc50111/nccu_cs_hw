@@ -355,7 +355,7 @@ vector<unordered_set<int>> gen_rand_edge_graph(int n_edge, vector<vector<double>
 
     // Create an array of adjacency lists.  
     // Size of array will be V
-    graph_list->array = (struct AdjList*) malloc(V * sizeof(struct AdjList));
+    graph_list->array = (struct AdjList*) malloc(NODE * sizeof(struct AdjList));
   
     // Initialize each adjacency list 
     // as empty by making head as NULL
