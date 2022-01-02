@@ -279,6 +279,10 @@ void printArr(double dist[], int n){
         printf("%d \t\t %f\n", i, dist[i]);
 }
   
+
+double graph_arr[NODE][NODE] = {0};
+struct Graph* graph_list = createGraph(NODE);
+
 void output_file(int n_node, string file_name, string type_record, vector<double> time_records){
     ofstream myfile;
     myfile.open (file_name);
@@ -287,8 +291,6 @@ void output_file(int n_node, string file_name, string type_record, vector<double
     myfile.close();
 }
 
-double graph_arr[NODE][NODE] = {0};
-struct Graph* graph_list = createGraph(NODE);
 
 vector<vector<double>> gen_rand_coordinates(int n_node, float mean, float std){
     unsigned seed = chrono::system_clock::now().time_since_epoch().count();
@@ -320,7 +322,6 @@ void print_coords(vector<vector<double>> &matrix){
 }
 
 vector<unordered_set<int>> gen_rand_edge_graph(int n_edge, vector<vector<double>> coords_mat){
-
     vector<unordered_set<int>> edges;
     memset(graph_arr, 0, sizeof(graph_arr[0][0]) * NODE * NODE); // reset
     graph_list = {}; // reset 
