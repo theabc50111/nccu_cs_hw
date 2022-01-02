@@ -5,19 +5,15 @@
             "label": "C/C++: g++ build active file",
             "command": "/usr/bin/g++",
             "args": [
-                // "-I/usr/local/include/opencv4",
+                "-I/usr/local/include/opencv4",
                 "-fdiagnostics-color=always",
                 "-g",
                 "${file}",
-                "-o",
-                "${fileDirname}/${fileBasenameNoExtension}",
-                // "`pkg-config --cflags --libs opencv4`",
-                // "-l",
-                // "opencv_core",
-                // "-l",
-                // "opencv_imgproc",
-                // "-l",
-                // "opencv_highgui"
+                "-o", "${fileDirname}/${fileBasenameNoExtension}",
+                "`pkg-config --cflags --libs opencv4`",
+                "-l","opencv_core", 
+                "-l","opencv_imgproc",
+                "-l","opencv_highgui"
             ],
             "options": {
                 "cwd": "${fileDirname}"
