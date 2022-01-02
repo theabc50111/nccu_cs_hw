@@ -290,12 +290,12 @@ void test(string file_name_ct, string file_name_ave_path, string type_record, st
 int main(){
 
     if(NODE==10 && EDGE==12){
-        test("dij_arr_10n_12e_ct.csv", "dij_arr_10n_12e_ap.csv", "dijkstra in array", "graph_10n_12e.png");
+        test("dij_arr_10n_12e_ct.csv", "dij_arr_10n_12e_ap.csv", "dijkstra_arr", "graph_10n_12e.png");
     }
     else if(NODE==100 && EDGE==200){
-        test("dij_arr_100n_200e_ct.csv", "dij_arr_100n_200e_ap.csv", "dijkstra in array", "graph_100n_200e.png");
+        test("dij_arr_100n_200e_ct.csv", "dij_arr_100n_200e_ap.csv", "dijkstra_arr", "graph_100n_200e.png");
     }
     else if(NODE==100 && EDGE==500){
-        test("dij_arr_100n_500e_ct.csv", "dij_arr_100n_500e_ap.csv", "dijkstra in array", "graph_100n_500e.png");
+        test("dij_arr_100n_500e_ct.csv", "dij_arr_100n_500e_ap.csv", "dijkstra_arr", "graph_100n_500e.png");
     }
 }
