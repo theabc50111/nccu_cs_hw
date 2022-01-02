@@ -71,14 +71,12 @@ struct AdjListNode* newAdjListNode(int dest, double weight){
 // A utility function that creates 
 // a graph of V vertices
 struct Graph* createGraph(int V){
-    struct Graph* graph = (struct Graph*) 
-            malloc(sizeof(struct Graph));
+    struct Graph* graph = (struct Graph*) malloc(sizeof(struct Graph));
     graph->V = V;
   
     // Create an array of adjacency lists.  
     // Size of array will be V
-    graph->array = (struct AdjList*) 
-       malloc(V * sizeof(struct AdjList));
+    graph->array = (struct AdjList*) malloc(V * sizeof(struct AdjList));
   
     // Initialize each adjacency list 
     // as empty by making head as NULL
@@ -354,7 +352,15 @@ void print_coords(vector<vector<double>> &matrix){
 vector<unordered_set<int>> gen_rand_edge_graph(int n_edge, vector<vector<double>> coords_mat){
     vector<unordered_set<int>> edges;
     memset(graph_arr, 0, sizeof(graph_arr[0][0]) * NODE * NODE); // reset
-    graph_list = {}; // reset 
+
+    // Create an array of adjacency lists.  
+    // Size of array will be V
+    graph_list->array = (struct AdjList*) malloc(V * sizeof(struct AdjList));
+  
+    // Initialize each adjacency list 
+    // as empty by making head as NULL
+    for (int i = 0; i < V; ++i) graph_list->array[i].head = NULL;
+
     int count=0;
     while(count<n_edge){
         srand(time(NULL));
