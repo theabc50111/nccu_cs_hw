@@ -582,7 +582,7 @@ double dijkstra_bin_heap(struct Graph* graph, int src, bool show_path_to_each){
 void gen_strong_con_graph(bool draw, string pic_name){
     vector<vector<double>> coords;
     vector<unordered_set<int>> edges_vertex;
-    cout << "Now operate dijkstra in arry, NODE: " << NODE << ", EDGE: " << EDGE << endl; 
+    cout << "Now generate a srtong connected graph with NODE: " << NODE << ", EDGE: " << EDGE << endl; 
     int gen_count = 0;
     coords = gen_rand_coordinates(NODE, 1000, 300); 
     edges_vertex = gen_rand_edge_graph(EDGE, coords);
@@ -632,10 +632,12 @@ void test(string file_name_ct, string file_name_ave_path, string type_record, st
 int main(){
 
     if(NODE==10 && EDGE==12){
-        test("dij_arr_10n_12e_ct.csv", "dij_arr_10n_12e_ap.csv", "dijkstra_arr", "graph_10n_12e_v2.png");
+        test("dij_arr_10n_12e_ct.csv", "dij_arr_10n_12e_ap.csv", "dijkstra_arr", "graph_10n_12e_dijarr.png");
+        test("dij_bin_heap_10n_12e_ct.csv", "dij_bin_heap_10n_12e_ap.csv", "dijkstra_bin_heap", "graph_10n_12e_dijbh.png");
     }
     else if(NODE==100 && EDGE==200){
-        test("dij_arr_100n_200e_ct.csv", "dij_arr_100n_200e_ap.csv", "dijkstra_arr", "graph_100n_200e_v2.png");
+        test("dij_arr_100n_200e_ct.csv", "dij_arr_100n_200e_ap.csv", "dijkstra_arr", "graph_100n_200e_dijarr.png");
+        test("dij_bin_heap_100n_200e_ct.csv", "dij_bin_heap_100n_200e_ap.csv", "dijkstra_bin_heap", "graph_100n_200e_dijbh.png");
     }
     else if(NODE==100 && EDGE==500){
         test("dij_arr_100n_500e_ct.csv", "dij_arr_100n_500e_ap.csv", "dijkstra_arr", "graph_100n_500e_v2.png");
