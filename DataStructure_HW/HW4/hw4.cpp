@@ -359,7 +359,7 @@ vector<unordered_set<int>> gen_rand_edge_graph(int n_edge, vector<vector<double>
   
     // Initialize each adjacency list 
     // as empty by making head as NULL
-    for (int i = 0; i < V; ++i) graph_list->array[i].head = NULL;
+    for (int i = 0; i < NODE; ++i) graph_list->array[i].head = NULL;
 
     int count=0;
     while(count<n_edge){
