@@ -1,2 +1,2 @@
-n_node, dijkstra in array
-n_node=100,3e-06,
+n_node, dijkstra_arr
+n_node=100,0.035006,
