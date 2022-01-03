@@ -16,12 +16,12 @@
 #include <limits.h>
 
 #define PIC_WIDTH 2000
-const int NODE = 100;
-const int EDGE = 200;
+// const int NODE = 100;
+// const int EDGE = 200;
 // const int NODE = 10;
 // const int EDGE = 12;
-// const int NODE = 20;
-// const int EDGE = 48; 
+const int NODE = 20;
+const int EDGE = 48; 
 // const int NODE = 30;
 // const int EDGE = 109;
 // const int NODE = 40;
@@ -638,6 +638,18 @@ int main(){
 
     if(NODE==10 && EDGE==12){
         test("dij_arr_10n_12e_ct.csv", "dij_arr_10n_12e_ap.csv", "dij_bin_heap_10n_12e_ct.csv", "dij_bin_heap_10n_12e_ap.csv", "graph_10n_12e.png");
+    }
+    else if(NODE==20 && EDGE==48){
+        test("dij_arr_20n_48e_ct.csv", "dij_arr_20n_48e_ap.csv", "dij_bin_heap_20n48e_ct.csv", "dij_bin_heap_20n_48e_ap.csv", "graph_20n_48e.png");
+    }
+    else if(NODE==30 && EDGE==109){
+        test("dij_arr_30n_109e_ct.csv", "dij_arr_30n_109e_ap.csv", "dij_bin_heap_30n109e_ct.csv", "dij_bin_heap_30n_109e_ap.csv", "graph_30n_109e.png");
+    }
+    else if(NODE==40 && EDGE==195){
+        test("dij_arr_40n_195e_ct.csv", "dij_arr_40n_195e_ap.csv", "dij_bin_heap_40n_195e_ct.csv", "dij_bin_heap_40n_195e_ap.csv", "graph_40n_195e.png");
+    }
+    else if(NODE==50 && EDGE==307){
+        test("dij_arr_50n_307e_ct.csv", "dij_arr_50n_307e_ap.csv", "dij_bin_heap_50n_307e_ct.csv", "dij_bin_heap_50n_307e_ap.csv", "graph_50n_307e.png");
     }
     else if(NODE==100 && EDGE==200){
         test("dij_arr_100n_200e_ct.csv", "dij_arr_100n_200e_ap.csv", "dij_bin_heap_100n_200e_ct.csv", "dij_bin_heap_100n_200e_ap.csv", "graph_100n_200e.png");
