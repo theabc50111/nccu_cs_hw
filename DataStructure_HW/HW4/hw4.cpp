@@ -20,10 +20,10 @@
 // const int EDGE = 200;
 // const int NODE = 10;
 // const int EDGE = 12;
-const int NODE = 20;
-const int EDGE = 48; 
-// const int NODE = 30;
-// const int EDGE = 109;
+// const int NODE = 20;
+// const int EDGE = 48; 
+const int NODE = 30;
+const int EDGE = 109;
 // const int NODE = 40;
 // const int EDGE = 195;
 // const int NODE = 50;
