@@ -22,12 +22,20 @@
 // const int EDGE = 12;
 // const int NODE = 20;
 // const int EDGE = 48; 
-const int NODE = 30;
-const int EDGE = 109;
+// const int NODE = 30;
+// const int EDGE = 109;
 // const int NODE = 40;
 // const int EDGE = 195;
 // const int NODE = 50;
 // const int EDGE = 307;
+// const int NODE = 60;
+// const int EDGE = 443;
+// const int NODE = 70;
+// const int EDGE = 603;
+// const int NODE = 80;
+// const int EDGE = 790;
+const int NODE = 90;
+const int EDGE = 1000;
 
 using namespace std;
 using namespace cv;
@@ -372,6 +380,8 @@ vector<unordered_set<int>> gen_rand_edge_graph(int n_edge, vector<vector<double>
             if(edges.empty()){
                 edges.push_back(insert_edge);
                 addEdge(graph_list, src, dist, edge_weight);
+                graph_arr[src][dist] = edge_weight;
+                graph_arr[dist][src] = edge_weight;
             }
             for (int i=0; i<edges.size(); i++){
                 if(insert_edge==edges[i]){
@@ -380,19 +390,21 @@ vector<unordered_set<int>> gen_rand_edge_graph(int n_edge, vector<vector<double>
                 if(i==(edges.size()-1)){
                     edges.push_back(insert_edge);
                     addEdge(graph_list, src, dist, edge_weight);
+                    graph_arr[src][dist] = edge_weight;
+                    graph_arr[dist][src] = edge_weight;
                     count++;
                 }
             }
         }
     }
 
-    for(auto &e : edges){
-        vector<int> tmp;
-        for (const auto &s : e) tmp.push_back(s);
-        double edge_weight = sqrt(pow((coords_mat[tmp[0]][0]-coords_mat[tmp[1]][0]), 2) + pow((coords_mat[tmp[0]][1]-coords_mat[tmp[1]][1]), 2));
-        graph_arr[tmp[0]][tmp[1]] = edge_weight;
-        graph_arr[tmp[1]][tmp[0]] = edge_weight;
-    }
+    // for(auto &e : edges){
+    //     vector<int> tmp;
+    //     for (const auto &s : e) tmp.push_back(s);
+    //     double edge_weight = sqrt(pow((coords_mat[tmp[0]][0]-coords_mat[tmp[1]][0]), 2) + pow((coords_mat[tmp[0]][1]-coords_mat[tmp[1]][1]), 2));
+    //     graph_arr[tmp[0]][tmp[1]] = edge_weight;
+    //     graph_arr[tmp[1]][tmp[0]] = edge_weight;
+    // }
 
     // for(auto &e : edges){
     //     for(const auto &s : e){
@@ -650,6 +662,18 @@ int main(){
     }
     else if(NODE==50 && EDGE==307){
         test("dij_arr_50n_307e_ct.csv", "dij_arr_50n_307e_ap.csv", "dij_bin_heap_50n_307e_ct.csv", "dij_bin_heap_50n_307e_ap.csv", "graph_50n_307e.png");
+    }
+    else if(NODE==60 && EDGE==443){
+        test("dij_arr_60n_443e_ct.csv", "dij_arr_60n_443e_ap.csv", "dij_bin_heap_60n_443e_ct.csv", "dij_bin_heap_60n_443e_ap.csv", "graph_60n_443e.png");
+    }
+    else if(NODE==70 && EDGE==603){
+        test("dij_arr_70n_603e_ct.csv", "dij_arr_70n_603e_ap.csv", "dij_bin_heap_70n_603e_ct.csv", "dij_bin_heap_70n_603e_ap.csv", "graph_70n_603e.png");
+    }
+    else if(NODE==80 && EDGE==790){
+        test("dij_arr_80n_790e_ct.csv", "dij_arr_80n_790e_ap.csv", "dij_bin_heap_80n_790e_ct.csv", "dij_bin_heap_80n_790e_ap.csv", "graph_80n_790e.png");
+    }
+    else if(NODE==90 && EDGE==1000){
+        test("dij_arr_90n_1000e_ct.csv", "dij_arr_90n_1000e_ap.csv", "dij_bin_heap_90n_1000e_ct.csv", "dij_bin_heap_90n_1000e_ap.csv", "graph_90n_1000e.png");
     }
     else if(NODE==100 && EDGE==200){
         test("dij_arr_100n_200e_ct.csv", "dij_arr_100n_200e_ap.csv", "dij_bin_heap_100n_200e_ct.csv", "dij_bin_heap_100n_200e_ap.csv", "graph_100n_200e.png");
