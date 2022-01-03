@@ -16,10 +16,10 @@
 #include <limits.h>
 
 #define PIC_WIDTH 2000
-// const int NODE = 100;
-// const int EDGE = 200;
-const int NODE = 10;
-const int EDGE = 12;
+const int NODE = 100;
+const int EDGE = 200;
+// const int NODE = 10;
+// const int EDGE = 12;
 // const int NODE = 20;
 // const int EDGE = 48; 
 // const int NODE = 30;
