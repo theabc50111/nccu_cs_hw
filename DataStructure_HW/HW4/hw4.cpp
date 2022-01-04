@@ -375,7 +375,7 @@ vector<unordered_set<int>> gen_rand_edge_graph(int n_edge, vector<vector<double>
         int src = (rand()%NODE);
         int dist = (rand()%NODE);
         double edge_weight = sqrt(pow((coords_mat[src][0]-coords_mat[dist][0]), 2) + pow((coords_mat[src][1]-coords_mat[dist][1]), 2));
-        if(src!=dist && (edge_weight<200)){
+        if(src!=dist && (edge_weight<500)){
             unordered_set<int> insert_edge = {src, dist};
             if(edges.empty()){
                 edges.push_back(insert_edge);
