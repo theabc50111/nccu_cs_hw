@@ -20,8 +20,8 @@
 // const int EDGE = 200;
 // const int NODE = 10;
 // const int EDGE = 12;
-// const int NODE = 20;
-// const int EDGE = 48; 
+const int NODE = 20;
+const int EDGE = 48; 
 // const int NODE = 30;
 // const int EDGE = 109;
 // const int NODE = 40;
@@ -34,8 +34,8 @@
 // const int EDGE = 603;
 // const int NODE = 80;
 // const int EDGE = 790;
-const int NODE = 90;
-const int EDGE = 1000;
+// const int NODE = 90;
+// const int EDGE = 1000;
 
 using namespace std;
 using namespace cv;
@@ -375,7 +375,7 @@ vector<unordered_set<int>> gen_rand_edge_graph(int n_edge, vector<vector<double>
         int src = (rand()%NODE);
         int dist = (rand()%NODE);
         double edge_weight = sqrt(pow((coords_mat[src][0]-coords_mat[dist][0]), 2) + pow((coords_mat[src][1]-coords_mat[dist][1]), 2));
-        if(src!=dist && (edge_weight<800)){
+        if(src!=dist && (edge_weight<200)){
             unordered_set<int> insert_edge = {src, dist};
             if(edges.empty()){
                 edges.push_back(insert_edge);
