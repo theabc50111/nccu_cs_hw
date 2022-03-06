@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>110753201_hw1</title>
+    <script src="https://d3js.org/d3.v7.js"></script> <!-- 採用第七版d3.js -->
+</head>
+
+<body align="center">
+    <div>
+        <h1> 國際主要股市本益比圖表 </h1>
+    </div>
+    <div class="canvas"></div>
+    <div>
+        <h2 style="margin-bottom: 5px;">資料說明與視覺化分析：</h2>
+    </div>
+    <div>以 <a href="https://www.cs.ubc.ca/~tmm/vadbook/">Visualization Analysis and Design</a> 一書所提出的視覺化分析架構中的Data abstraction 與 Task abstraction來說明：</div>
+    <div style="margin-top: 5px; display: flex; justify-content: center;">
+        <ul style="margin-top: 5px; text-align: left;">
+            <li>
+                資料說明：本資料集是收集截至2021年底止，各國股市的總體本益比數值
+            </li>
+            <li>
+                Data abstraction:
+                <ul>
+                    <li>
+                        本圖表所使用的資料類別:items&attribute
+                    </li>
+                    <li>
+                        資料集類別：Table
+                    </li>
+                    <li>
+                        資料屬性：Quantitative
+                    </li>
+                </ul>
+            </li>
+            <li>
+                Task abstraction:
+                <ul>
+                    <li>
+                        Action: Present ➡ Browse
+                    </li>
+                    <li>
+                        Target: All Data—Trends 
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <h3>
+            <a href="https://www.twse.com.tw/zh/">
+                資料參考來源
+            </a>
+        </h3>
+    </div>
+
+    <script>
+        let data = [{ "country": "韓國", "pe_ratio": 12.72, "pb_ratio": 1.09 }, { "country": "新加坡", "pe_ratio": 13.66, "pb_ratio": 1.07 },
+        { "country": "英國", "pe_ratio": 14.29, "pb_ratio": 1.84 }, { "country": "臺灣", "pe_ratio": 14.94, "pb_ratio": 2.38 },
+        { "country": "香港", "pe_ratio": 15.06, "pb_ratio": 0.97 }, { "country": "上海", "pe_ratio": 18.02, "pb_ratio": 1.68 },
+        { "country": "日本", "pe_ratio": 21.90, "pb_ratio": 1.91 }, { "country": "美國", "pe_ratio": 26.51, "pb_ratio": 4.90 },
+        { "country": "深圳", "pe_ratio": 33.03, "pb_ratio": 3.14 }]; // ref: https://www.twse.com.tw/zh/
+
+
+        // 設定畫布
+        let margin = { top: 30, right: 100, bottom: 30, left: 100 };
+        let width = 800 - margin.left - margin.right;
+        let height = 800 - margin.top - margin.bottom;
+        let color = d3.scaleOrdinal(d3.schemeCategory10);
+
+        //製作svg
+        let canvas = d3.select("body").select(".canvas")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+
+        //製作比例尺
+        let x_scale = d3.scaleBand()
+            .domain(data.map(function (d) { return d.country; }))
+            //.range([0, width])
+            .rangeRound([0, width]).padding(0.3)
+        let y_scale = d3.scaleLinear()
+            .domain([0, 40])
+            .range([height, 0])
+        let colors = d3.scaleOrdinal(d3.schemePastel1);
+
+        // tip of bar 
+        let tip = d3.select("body")
+            .append("div")
+            .attr("class", "tip")
+            .style("position", "absolute")
+            .style("z-index", "10")
+            .style("margin", "auto")
+            .style("visibility", "hidden");
+
+        // 建立axis 群組
+        let axis_g = canvas.append("g").attr("class", "axis");
+        // 繪製軸線
+        axis_g.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x_scale))
+            .style("font-size", "20px");
+        axis_g.append("text")
+            .attr("y", height)
+            .attr("x", width + 20)
+            .attr("text-anchor", "start")
+            .text("國家");
+        axis_g.append("g")
+            .call(d3.axisLeft(y_scale))
+            .style("font-size", "20px");
+        axis_g.append("text")
+            .attr("y", 0)
+            .attr("x", 10)
+            .attr("text-anchor", "start")
+            .text("本益比");
+
+        // 繪製bar
+        let bar_g = canvas.append('g').attr("class", "bar_g");
+        bar_g.selectAll(".bar").data(data).enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", (d, i) => { return x_scale(d.country) })
+            .attr("y", (d, i) => { return y_scale(d.pe_ratio) })
+            .attr("width", x_scale.bandwidth())
+            .attr("height", (d, i) => { return height - y_scale(d.pe_ratio) })
+            .attr("fill", (d, i) => { return colors('0.' + i) })
+
+        let bar_nums = canvas.selectAll(".barnum")
+            .data(data)
+            .enter()
+            .append("text")
+            .attr("class", "barnum")
+            .attr('fill', '#525156')
+            .attr('font-size', '15px')
+            .attr("x", (d, i) => { return x_scale(d.country) })
+            .attr("y", (d, i) => { return y_scale(d.pe_ratio); })
+            .attr("dy", "-0.5em")
+            .text((d, i) => { return d.pe_ratio; })
+
+    </script>
+</body>
+
+</html>
