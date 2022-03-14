@@ -1,0 +1,8 @@
+{
+  "name": "2021-dslab-rest",
+  "version": "1.0.0",
+  "dependencies": {
+    "fastify": "^3.11.0",
+    "node-fetch": "^2.6.1"
+  }
+}
