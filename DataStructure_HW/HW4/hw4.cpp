@@ -20,8 +20,8 @@
 // const int EDGE = 200;
 // const int NODE = 10;
 // const int EDGE = 12;
-const int NODE = 20;
-const int EDGE = 48; 
+// const int NODE = 20;
+// const int EDGE = 48; 
 // const int NODE = 30;
 // const int EDGE = 109;
 // const int NODE = 40;
@@ -34,8 +34,8 @@ const int EDGE = 48;
 // const int EDGE = 603;
 // const int NODE = 80;
 // const int EDGE = 790;
-// const int NODE = 90;
-// const int EDGE = 1000;
+const int NODE = 90;
+const int EDGE = 1000;
 
 using namespace std;
 using namespace cv;
