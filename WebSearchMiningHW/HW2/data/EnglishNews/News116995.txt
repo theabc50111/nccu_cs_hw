@@ -1,0 +1,2 @@
+Twitter grants academics full access to public data, but not for suspended accounts
+(Reuters) - Twitter Inc on Tuesday opened free access to its new application programming interface (API) software for academic researchers, enabling them to study public conversations on its platform, but is not providing data from suspended accounts as part of the product.

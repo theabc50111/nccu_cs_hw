@@ -1,0 +1,2 @@
+More than 20,000 U.S. organizations compromised through Microsoft flaw
+WASHINGTON (Reuters) - More than 20,000 U.S. organizations have been compromised through a back door installed via recently patched flaws in Microsoft Corp’s email software, a person familiar with the U.S. government’s response said on Friday.

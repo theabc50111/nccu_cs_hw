@@ -1,0 +1,2 @@
+Exclusive: Microsoft breached in suspected Russian hack using SolarWinds -sources
+WASHINGTON (Reuters) - Microsoft was hacked as part of the suspected Russian campaign that has hit multiple U.S. government agencies by taking advantage of the widespread use of software from SolarWinds Corp, according to people familiar with the matter.

@@ -1,0 +1,2 @@
+White House says closely tracking Microsoft's emergency patch
+WASHINGTON (Reuters) - The White House is closely tracking an emergency patch Microsoft Corp has released, U.S. national security adviser Jake Sullivan said on Thursday, after an unknown hacking group recently broke into organizations using a flaw in the company’s mail server software.

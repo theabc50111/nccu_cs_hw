@@ -1,0 +1,2 @@
+Nokia's COVID detection system automatically scans for temperature, mask
+STOCKHOLM (Reuters) - Nokia has created an automated system that uses a thermal camera and real-time video analytics to determine if a person has COVID-19 symptoms and is wearing a mask, part of efforts to protect employees as they return to work.
