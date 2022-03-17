@@ -16,6 +16,10 @@ int max_con_seq(int *arr, int arr_len){
             suffix_max=0;
         }
     } 
+    
+    if (global_max <= 0){
+        global_max=0;
+    }
 
     return global_max;
 }
@@ -27,8 +31,12 @@ int circle_max(int *arr, int arr_len){
         for(j=0; j<arr_len; j++){
             circle_arr[j] = arr[(j+i)%arr_len];
         }
+        // for(j=0; j<arr_len; j++){
+        //     printf("%d, ", circle_arr[j]);
+        // }
+        // printf("\n");
         res = max_con_seq(circle_arr, arr_len);
-        if(max_res < res){
+        if(max_res <= res){
             max_res = res;
         }
     }
@@ -36,33 +44,26 @@ int circle_max(int *arr, int arr_len){
     return max_res;
 }
 
-int * rec_seq(int *arr_len){
+int main(){
     char buffer[1000];
-    static int *arr;
-    *arr_len=0;
+    int *arr;
+    int result, arr_len=0;
 
     if (fgets(buffer, sizeof(buffer), stdin) != 0){
         int i, n, num;
         char *p = buffer;
         for(i=0; sscanf(buffer+i,"%d%n",&num,&n)!=EOF; i+=n){
-            *arr_len+=1;
+            arr_len+=1;
         }
-        arr = malloc(*arr_len * sizeof(int));
+        arr = malloc(arr_len * sizeof(int));
         for(i=0; sscanf(p,"%d%n",&num,&n)!=EOF; i++){
             p += n;
             arr[i] = num;
         }
     }
-    return arr;
-}
 
-int main(){
-    int *arr, *arr_len;
-    int result;
-
-    arr = rec_seq(arr_len);
-    result = circle_max(arr, *arr_len);
-    printf("ans= %d", result);
+    result = circle_max(arr, arr_len);
+    printf("%d", result);
 
     return 0;
 }
