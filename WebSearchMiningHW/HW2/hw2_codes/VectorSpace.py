@@ -9,7 +9,7 @@ from pathlib import Path
 import time
 
 logging_format = '%(levelname)s: \n %(message)s'
-logging.basicConfig(level=logging.WARNING, format=logging_format)
+logging.basicConfig(level=logging.INFO, format=logging_format)
 
 class VectorSpace:
     """ A algebraic model for representing text documents as vectors of identifiers. 
@@ -121,8 +121,8 @@ if __name__ == '__main__':
             doc_name_list.append(doc_name)
             documents.append(f.read())
     read_end = time.time()
-    logging.debug(f"read time:{read_end-read_start}")
-    logging.debug(f"doc_name_list len:{len(doc_name_list)}, documents len:{len(documents)}")
+    logging.info(f"read time:{read_end-read_start}")
+    logging.info(f"doc_name_list len:{len(doc_name_list)}, documents len:{len(documents)}")
 
     # #test data
     # documents = ["The cat in the hat disabled",
@@ -131,13 +131,11 @@ if __name__ == '__main__':
     #              "I get haven't got a hat."]
 
     vector_build_start = time.time()
-    vectorSpace = VectorSpace("tf-idf", "cosine", documents)
+    vectorSpace = VectorSpace("tf", "cosine", documents)
     vector_build_end = time.time()
-    logging.warning(f"vector_build time:{vector_build_end - vector_build_start}")
+    logging.info(f"vector_build time:{vector_build_end - vector_build_start}")
 
     print("-"*50)
     print(vectorSpace.related(1))
-
-    print(vectorSpace.search(["cat"]))
 
 ###################################################
