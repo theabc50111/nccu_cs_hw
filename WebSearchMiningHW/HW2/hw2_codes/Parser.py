@@ -1,5 +1,6 @@
 #http://tartarus.org/~martin/PorterStemmer/python.txt
 from PorterStemmer import PorterStemmer
+from pathlib import Path
 
 class Parser:
 
@@ -12,7 +13,7 @@ class Parser:
 		self.stemmer = PorterStemmer()
 
 		#English stopwords from ftp://ftp.cs.cornell.edu/pub/smart/english.stop
-		self.stopwords = open('EnglishStopwords.txt', 'r').read().split()
+		self.stopwords = open(Path('./data/EnglishStopwords.txt'), 'r').read().split()
 
 
 	def clean(self, string):

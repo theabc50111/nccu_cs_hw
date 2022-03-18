@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 int max_con_seq(int *arr, int arr_len, int *sk_pos){
-    int global_max=0, suffix_max=0, i=0;
+    int global_max=0, suffix_max=0, suffix_nega_min=0, i=0;
 
     for (i=0; i<arr_len; i++){
         if (arr[i]+suffix_max > global_max){
@@ -49,7 +49,7 @@ int circle_max(int *arr, int arr_len){
         if(max_res <= res){
             max_res = res;
         }
-        // for(j=0; j<arr_len; j++){
+        // for(j=1; j<arr_len; j++){
         //     printf("%d, ", circle_arr[j]);
         // }
         // printf("No. %d round, max_con_seq=%d, ", i, res);

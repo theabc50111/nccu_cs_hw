@@ -3,6 +3,13 @@ from Parser import Parser
 import util
 from tfidf import tfidf
 from textblob import TextBlob as tb
+import logging
+import os
+from pathlib import Path
+import time
+
+logging_format = '%(levelname)s: \n %(message)s'
+logging.basicConfig(level=logging.WARNING, format=logging_format)
 
 class VectorSpace:
     """ A algebraic model for representing text documents as vectors of identifiers. 
@@ -20,22 +27,22 @@ class VectorSpace:
     parser=None
 
 
-    def __init__(self, weight, similarity, doc_list=[]):
+    def __init__(self, weight, similarity, documents=[]):
         self.documentVectors=[]
         self.parser = Parser()
         self.w_method = weight
         self.s_method = similarity
-        self.tb_doc_list = [tb(doc) for doc in doc_list]
-        if(len(doc_list)>0):
-            self.build(doc_list)
+        self.tb_documents = [tb(doc) for doc in documents]
+        if(len(documents)>0):
+            self.build(documents)
 
-    def build(self,doc_list):
+    def build(self,documents):
         """ Create the vector space for the passed document strings """
-        self.vectorKeywordIndex = self.getVectorKeywordIndex(doc_list)
-        self.documentVectors = [self.makeVector(document) for document in doc_list]
+        self.vectorKeywordIndex = self.getVectorKeywordIndex(documents)
+        self.documentVectors = [self.makeVector(document) for document in documents]
+        logging.debug(f'vector keyword index:  {self.vectorKeywordIndex}')
+        logging.debug(f'document vector:  {self.documentVectors}')
 
-        #print(self.vectorKeywordIndex)
-        print(self.documentVectors)
 
 
     def getVectorKeywordIndex(self, documentList):
@@ -73,7 +80,7 @@ class VectorSpace:
         elif self.w_method=="tf-idf":
             tb_doc = tb(doc)
             for word in wordList:
-                vector[self.vectorKeywordIndex[word]] = tfidf(word, tb_doc, self.tb_doc_list) #Use simple Term Count Model
+                vector[self.vectorKeywordIndex[word]] = tfidf(word, tb_doc, self.tb_documents) #Use simple Term Count Model
             return vector
 
         else:
@@ -103,20 +110,34 @@ class VectorSpace:
 
 
 if __name__ == '__main__':
-    #test data
-    documents = ["The cat in the hat disabled",
-                 "A cat is a fine pet ponies.",
-                 "Dogs and cats make good pets.",
-                 "I get haven't got a hat."]
 
-    vectorSpace = VectorSpace("tf", "cosine", documents)
+    read_start = time.time()
+    doc_dir = Path('./data/EnglishNews')
+    doc_name_list = []
+    documents = []
+    count=0
+    for doc_name in os.listdir(doc_dir): 
+        with open(doc_dir/doc_name, 'r') as f:
+            doc_name_list.append(doc_name)
+            documents.append(f.read())
+    read_end = time.time()
+    logging.debug(f"read time:{read_end-read_start}")
+    logging.debug(f"doc_name_list len:{len(doc_name_list)}, documents len:{len(documents)}")
 
-    print(vectorSpace.vectorKeywordIndex)
+    # #test data
+    # documents = ["The cat in the hat disabled",
+    #              "A cat is a fine pet ponies.",
+    #              "Dogs and cats make good pets.",
+    #              "I get haven't got a hat."]
 
-    #print(vectorSpace.documentVectors)
+    vector_build_start = time.time()
+    vectorSpace = VectorSpace("tf-idf", "cosine", documents)
+    vector_build_end = time.time()
+    logging.warning(f"vector_build time:{vector_build_end - vector_build_start}")
 
+    print("-"*50)
     print(vectorSpace.related(1))
 
-    #print(vectorSpace.search(["cat"]))
+    print(vectorSpace.search(["cat"]))
 
 ###################################################
