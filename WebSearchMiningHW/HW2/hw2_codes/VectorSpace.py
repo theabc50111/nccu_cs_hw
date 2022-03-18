@@ -71,9 +71,9 @@ class VectorSpace:
             return vector
 
         elif self.w_method=="tf-idf":
-            tb_doc_list = []
+            tb_doc = tb(doc)
             for word in wordList:
-                vector[self.vectorKeywordIndex[word]] = tfidf(word, doc, self.doc_list) #Use simple Term Count Model
+                vector[self.vectorKeywordIndex[word]] = tfidf(word, tb_doc, self.tb_doc_list) #Use simple Term Count Model
             return vector
 
         else:
@@ -109,7 +109,7 @@ if __name__ == '__main__':
                  "Dogs and cats make good pets.",
                  "I get haven't got a hat."]
 
-    vectorSpace = VectorSpace(documents)
+    vectorSpace = VectorSpace("tf", "cosine", documents)
 
     print(vectorSpace.vectorKeywordIndex)
 
