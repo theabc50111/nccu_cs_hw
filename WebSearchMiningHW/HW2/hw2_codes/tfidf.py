@@ -1,8 +1,11 @@
 from __future__ import division, unicode_literals
 import math
 from textblob import TextBlob as tb
+import logging
 
 def tf(word, blob):
+    logging.debug(f"blob: {blob},   blob.words: {blob.words},  blob.words.count(word): {blob.words.count(word)}")
+    logging.debug(f"{word}'tf : {blob.words.count(word) / len(blob.words)}")
     return blob.words.count(word) / len(blob.words)
 
 def n_containing(word, bloblist):

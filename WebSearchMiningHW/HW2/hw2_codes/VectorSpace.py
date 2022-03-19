@@ -7,9 +7,10 @@ import logging
 import os
 from pathlib import Path
 import time
+from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
 
 logging_format = '%(levelname)s: \n %(message)s'
-logging.basicConfig(level=logging.INFO, format=logging_format)
+logging.basicConfig(level=logging.DEBUG, format=logging_format)
 
 class VectorSpace:
     """ A algebraic model for representing text documents as vectors of identifiers. 
@@ -40,6 +41,7 @@ class VectorSpace:
         """ Create the vector space for the passed document strings """
         self.vectorKeywordIndex = self.getVectorKeywordIndex(documents)
         self.documentVectors = [self.makeVector(document) for document in documents]
+        # self.documentVectors = self.makeVector(documents)
         logging.debug(f'vector keyword index:  {self.vectorKeywordIndex}')
         logging.debug(f'document vector:  {self.documentVectors}')
 
@@ -78,9 +80,10 @@ class VectorSpace:
             return vector
 
         elif self.w_method=="tf-idf":
-            tb_doc = tb(doc)
+            tb_doc = tb(" ".join(wordList))
+            self.tb_documents = [tb(doc) for doc in documents]
             for word in wordList:
-                vector[self.vectorKeywordIndex[word]] = tfidf(word, tb_doc, self.tb_documents) #Use simple Term Count Model
+                vector[self.vectorKeywordIndex[word]] = tfidf(word, tb_doc, self.tb_documents)
             return vector
 
         else:
@@ -111,24 +114,24 @@ class VectorSpace:
 
 if __name__ == '__main__':
 
-    read_start = time.time()
-    doc_dir = Path('./data/EnglishNews')
-    doc_name_list = []
-    documents = []
-    count=0
-    for doc_name in os.listdir(doc_dir): 
-        with open(doc_dir/doc_name, 'r') as f:
-            doc_name_list.append(doc_name)
-            documents.append(f.read())
-    read_end = time.time()
-    logging.info(f"read time:{read_end-read_start}")
-    logging.info(f"doc_name_list len:{len(doc_name_list)}, documents len:{len(documents)}")
+    # read_start = time.time()
+    # doc_dir = Path('./data/EnglishNews')
+    # doc_name_list = []
+    # documents = []
+    # count=0
+    # for doc_name in os.listdir(doc_dir)[:5]: 
+    #     with open(doc_dir/doc_name, 'r') as f:
+    #         doc_name_list.append(doc_name)
+    #         documents.append(f.read())
+    # read_end = time.time()
+    # logging.info(f"read time:{read_end-read_start}")
+    # logging.info(f"doc_name_list len:{len(doc_name_list)}, documents len:{len(documents)}")
 
-    # #test data
-    # documents = ["The cat in the hat disabled",
-    #              "A cat is a fine pet ponies.",
-    #              "Dogs and cats make good pets.",
-    #              "I get haven't got a hat."]
+    #test data
+    documents = ["The cat in the hat disabled",
+                 "A cat is a fine pet ponies.",
+                 "Dogs and cats make good pets.",
+                 "I get haven't got a hat."]
 
     vector_build_start = time.time()
     vectorSpace = VectorSpace("tf", "cosine", documents)
@@ -136,6 +139,6 @@ if __name__ == '__main__':
     logging.info(f"vector_build time:{vector_build_end - vector_build_start}")
 
     print("-"*50)
-    print(vectorSpace.related(1))
+    # print(vectorSpace.related(1))
 
 ###################################################

@@ -100,8 +100,8 @@ if __name__ == '__main__':
 
     #print(vectorSpace.documentVectors)
 
-    print(vectorSpace.related(1))
+    # print(vectorSpace.related(1))
 
-    #print(vectorSpace.search(["cat"]))
+    print(vectorSpace.search(["fine", "cat", "is", "expensive"]))
 
 ###################################################
