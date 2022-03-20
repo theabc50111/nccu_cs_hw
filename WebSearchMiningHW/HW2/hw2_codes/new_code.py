@@ -4,11 +4,18 @@ from pathlib import Path
 import time
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity, euclidean_distances 
+from sklearn.metrics.pairwise import cosine_similarity, euclidean_distances
 from nltk.stem.porter import PorterStemmer
+import argparse
 
 logging_format = '%(levelname)s: \n %(message)s'
 logging.basicConfig(level=logging.WARNING, format=logging_format)
+ap = argparse.ArgumentParser()
+ap.add_argument("-q", "--query", required = True, help = "Input a query string")
+ap.add_argument("-d", "--display", required = True, type=int, help = "Input the amount of display results")
+args = vars(ap.parse_args())
+
+# print(type(args["query"]))
 
 class VectorSpace:
     """ A algebraic model for representing text corpus as vectors of identifiers. 
@@ -28,7 +35,8 @@ class VectorSpace:
         if (self.w_method == "TF Weighting"):
             self.doc_vectorizer = CountVectorizer(analyzer = lambda doc: (self.stemmer.stem(w) for w in self.analyzer(doc) if w not in self.stop_words_list)) 
         elif (self.w_method == "TF-IDF Weighting"):
-            self.doc_vectorizer = TfidfVectorizer(analyzer = lambda doc: (self.stemmer.stem(w) for w in self.analyzer(doc) if w not in self.stop_words_list)) 
+            self.doc_vectorizer = TfidfVectorizer(analyzer = lambda doc: (self.stemmer.stem(w) for w in self.analyzer(doc) if w not in self.stop_words_list),
+                                                  norm = None, ngram_range=(1,1)) 
 
         if (self.s_method == "Cosine Similarity"):
             self.distance = cosine_similarity 
@@ -51,6 +59,7 @@ class VectorSpace:
         vector = self.doc_vectorizer.fit_transform(corpus)
         return vector.toarray()
 
+
     def related(self,documentId):
         """ find corpus that are related to the document indexed by passed Id within the document Vectors"""
         ratings = [util.cosine(self.documentVectors[documentId], documentVector) for documentVector in self.documentVectors]
@@ -62,28 +71,30 @@ class VectorSpace:
         query_vector = self.doc_vectorizer.transform(searchList)
         logging.debug(f"query vector={query_vector.toarray()}")
         ratings = self.distance(query_vector.toarray(), self.documentVectors)
+        logging.debug(f"query ratings shape: {ratings.shape}")
         return ratings[0]
 
 
 if __name__ == '__main__':
 
-    read_start = time.time()
-    doc_dir = Path('./data/EnglishNews')
-    doc_name_list = []
-    corpus = []
-    for doc_name in os.listdir(doc_dir): 
-        with open(doc_dir/doc_name, 'r') as f:
-            doc_name_list.append(doc_name[:-4])
-            corpus.append(f.read())
-    read_end = time.time()
-    logging.info(f"read time:{read_end-read_start}")
+    # read_start = time.time()
+    # doc_dir = Path('./data/EnglishNews')
+    # doc_name_list = []
+    # corpus = []
+    # for doc_name in os.listdir(doc_dir): 
+    #     with open(doc_dir/doc_name, 'r') as f:
+    #         doc_name_list.append(doc_name[:-4])
+    #         corpus.append(f.read())
+    # read_end = time.time()
+    # logging.info(f"read time:{read_end-read_start}")
+    # logging.info(f"doc_name_list len:{len(doc_name_list)}, corpus len:{len(corpus)}")
 
-    # # test data
-    # doc_name_list = ["A", "B", "C", "D"]
-    # corpus = ["The cat in the hat disabled",
-    #           "A cat is a fine pet ponies.",
-    #           "Dogs and cats make good pets.",
-    #           "I get haven't got a hat."]
+    # test data
+    doc_name_list = ["A", "B", "C", "D"]
+    corpus = ["The cat in the hat disabled",
+              "A cat is a fine pet ponies.",
+              "Dogs and cats make good pets.",
+              "I get haven't got a hat."]
 
 
     test_settings = [["TF Weighting", "Cosine Similarity"],
@@ -97,10 +108,10 @@ if __name__ == '__main__':
         vector_space = VectorSpace(weight, relavance_cal, corpus)
         vector_build_end = time.time()
 
-        unsorted_result = vector_space.search(["Trump Biden Taiwan China"])
+        unsorted_result = vector_space.search([args["query"]])
         sorted_doc_name_list = [doc_name_list[r] for r in unsorted_result.argsort()] 
         result = np.sort(unsorted_result)
-        print_order = range(0,10) if (relavance_cal == "Euclidean Distance") else range(-1, -11, -1)
+        print_order = range(0,args["display"]) if (relavance_cal == "Euclidean Distance") else range(-1, -1*args["display"]-1, -1)
 
         print((f"{weight} + {relavance_cal}\n"
                f"NewsID          Score\n"
