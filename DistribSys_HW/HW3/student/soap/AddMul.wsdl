@@ -1,0 +1,56 @@
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://soap.advsd.nccu/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="CalculatorImplService" targetNamespace="http://soap.advsd.nccu/">
+    <wsdl:message name="add">
+        <wsdl:part name="x" type="xsd:int"> </wsdl:part>
+        <wsdl:part name="y" type="xsd:int"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="addResponse">
+        <wsdl:part name="return" type="xsd:int"> </wsdl:part>
+    </wsdl:message>
+    <!-- insert "multiply" and "multiplyResponse" message tags here-->
+    <wsdl:message name="multiply">
+        <wsdl:part name="x" type="xsd:int"> </wsdl:part>
+        <wsdl:part name="y" type="xsd:int"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="multiplyResponse">
+        <wsdl:part name="return" type="xsd:int"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="Calculator">
+        <wsdl:operation name="add">
+            <wsdl:input message="tns:add" name="add"> </wsdl:input>
+            <wsdl:output message="tns:addResponse" name="addResponse"> </wsdl:output>
+        </wsdl:operation>
+        <!-- insert "multiply" operation here-->
+        <wsdl:operation name="multiply">
+            <wsdl:input message="tns:multiply" name="multiply"> </wsdl:input>
+            <wsdl:output message="tns:multiplyResponse" name="multiplyResponse"> </wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="CalculatorImplServiceSoapBinding" type="tns:Calculator">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="add">
+            <soap:operation soapAction="" style="rpc"/>
+            <wsdl:input name="add">
+                <soap:body namespace="http://soap.advsd.nccu/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="addResponse">
+                <soap:body namespace="http://soap.advsd.nccu/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <!-- insert "multiply" operation here-->
+        <wsdl:operation name="multiply">
+            <soap:operation soapAction="" style="rpc"/>
+            <wsdl:input name="multiply">
+                <soap:body namespace="http://soap.advsd.nccu/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="multiplyResponse">
+                <soap:body namespace="http://soap.advsd.nccu/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="CalculatorImplService">
+        <wsdl:port binding="tns:CalculatorImplServiceSoapBinding" name="CalculatorImplPort">
+           <!-- modify the following url to be "http://localhost:8192/AddMul" -->           
+		   <soap:address location="http://172.17.0.2:8192/AddMul"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

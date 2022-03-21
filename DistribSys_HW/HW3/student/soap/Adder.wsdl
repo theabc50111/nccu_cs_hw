@@ -1,0 +1,32 @@
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://soap.advsd.nccu/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="CalculatorImplService" targetNamespace="http://soap.advsd.nccu/">
+    <wsdl:message name="add">
+        <wsdl:part name="x" type="xsd:int"> </wsdl:part>
+        <wsdl:part name="y" type="xsd:int"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="addResponse">
+        <wsdl:part name="return" type="xsd:int"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="Calculator">
+        <wsdl:operation name="add">
+            <wsdl:input message="tns:add" name="add"> </wsdl:input>
+            <wsdl:output message="tns:addResponse" name="addResponse"> </wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="CalculatorImplServiceSoapBinding" type="tns:Calculator">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="add">
+            <soap:operation soapAction="" style="rpc"/>
+            <wsdl:input name="add">
+                <soap:body namespace="http://soap.advsd.nccu/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="addResponse">
+                <soap:body namespace="http://soap.advsd.nccu/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="CalculatorImplService">
+        <wsdl:port binding="tns:CalculatorImplServiceSoapBinding" name="CalculatorImplPort">
+            <soap:address location="http://172.17.0.2:8192/Adder"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
