@@ -17,10 +17,10 @@ logger_jieba_2 = logging.getLogger('jieba._compat')
 logger_jieba_1.setLevel(logging.WARNING)
 logger_jieba_2.setLevel(logging.WARNING)
 ap = argparse.ArgumentParser()
-ap.add_argument("--query", required = True, help = "Input a query string")
+ap.add_argument("--query", required = True, help = "Input a query string, remember to add double quote")
 ap.add_argument("-d", "--display", required = True, type=int, default=10, help = "Input the amount of display results")
-ap.add_argument("--chinese", action='store_true', help = "Input whether to detect Chinese news or not")
-ap.add_argument("--no-chinese", dest='chinese', action='store_false', help = "Input whether to detect Chinese news or not")
+ap.add_argument("--chinese", action='store_true', help = "Turn on this to rank Chinese|English documents")
+ap.add_argument("--no-chinese", dest='chinese', action='store_false', help = "Turn on this to rank only English documents")
 args = vars(ap.parse_args())
 
 
