@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 int max_con_seq(int *arr, int arr_len, int *sk_pos){
-    int global_max=0, suffix_max=0, suffix_nega_min=0, i=0;
+    int global_max=0, suffix_max=0, i=0;
 
     for (i=0; i<arr_len; i++){
         if (arr[i]+suffix_max > global_max){
@@ -26,19 +26,6 @@ int circle_max(int *arr, int arr_len){
     int i, j, res, max_res=0, sk_pos=0;
     int *p_sk_pos=&sk_pos;
     int circle_arr[arr_len];
-
-    // int circle_arr[2*arr_len];
-    // for (i=0; i<2*arr_len; i++){
-    //     circle_arr[i] = arr[i%arr_len];
-    // }
-
-    // for (i=0; i<arr_len; i++){
-    //     res = max_con_seq(circle_arr, arr_len, p_sk_pos);
-    //     if(max_res <= res){
-    //         max_res = res;
-    //     }
-    //     i+=sk_pos;
-    // }
 
     for(i=0; i<arr_len; i++){
         for(j=0; j<arr_len; j++){
