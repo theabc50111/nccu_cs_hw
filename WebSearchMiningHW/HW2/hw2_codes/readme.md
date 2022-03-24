@@ -1,5 +1,6 @@
 # HW2 of WSM 
 ## Directory structure
+```
 .
 ├── data
 │   ├── ChineseStopwords.txt
@@ -10,6 +11,7 @@
 ├── main.py
 ├── readme.md
 └── requirements.txt
+```
 
 ## Dependency
 
