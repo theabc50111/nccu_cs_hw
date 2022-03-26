@@ -54,21 +54,22 @@ int circle_max(int *arr, int arr_len){
 }
 
 int main(){
-    char buffer[1000000];
     int *arr;
-    arr = malloc(1000000000000);
     int result, arr_len=0;
+    int num, i;
+    int input[100000];
 
-    if (fgets(buffer, sizeof(buffer), stdin) != 0){
-        int i, n, num;
-        char *p = buffer;
-        for(i=0; sscanf(p,"%d%n",&num,&n)!=EOF; i++){
-            p += n;
-            arr_len+=1;
-            arr = realloc(arr, arr_len * sizeof(int));
-            arr[i] = num;
-        }
+    while (scanf("%d", &num)==1)
+    {
+        input[arr_len] = num;
+        arr_len++;
     }
+    arr = malloc(arr_len * sizeof(int));
+    for(i=0; i<arr_len; i++){
+        arr[i] = input[i];
+    }
+
+
 
     result = circle_max(arr, arr_len);
     printf("%d", result);
