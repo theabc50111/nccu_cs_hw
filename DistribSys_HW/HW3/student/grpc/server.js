@@ -23,7 +23,8 @@ function sayHello(call, callback) {
 
 // add function here: sum x and y and return as {result: ...}
 function add(call, callback) {
- // you can use call.request.x and call.request.y to obtain x and y
+    // you can use call.request.x and call.request.y to obtain x and y
+    callback(null, {result: call.request.x + call.request.y});
 }
 
 
@@ -35,7 +36,7 @@ function main() {
     var server = new grpc.Server();
     // step 5-(6): change the following statment to :
 	// server.addService(hello_proto.Greeter.service, {sayHello: sayHello, add:add});
-	server.addService(hello_proto.Greeter.service, {sayHello: sayHello});
+	server.addService(hello_proto.Greeter.service, {sayHello: sayHello, Add: add});
 	
     server.bindAsync('0.0.0.0:50051', grpc.ServerCredentials.createInsecure(), () => {
         server.start();

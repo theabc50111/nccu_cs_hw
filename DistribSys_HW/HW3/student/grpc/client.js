@@ -24,6 +24,9 @@ function main() {
     // step 5-(2): client.add({x: 3, y: 2}, function (err, response) {...
 	//                                      });
 	// note that you should use response.result to get the outcome
+    client.add({x: 3, y: 2}, function (err, response) {
+        console.log('Result:', response.result);
+    });
 }
 
 main();
