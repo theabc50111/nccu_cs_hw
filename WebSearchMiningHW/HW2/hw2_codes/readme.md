@@ -1,6 +1,5 @@
 # HW2 of WSM 
 ## Directory structure
-
 ```
 .
 ├── data
