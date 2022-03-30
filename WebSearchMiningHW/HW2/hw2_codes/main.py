@@ -18,7 +18,7 @@ logger_jieba_1.setLevel(logging.WARNING)
 logger_jieba_2.setLevel(logging.WARNING)
 ap = argparse.ArgumentParser()
 ap.add_argument("--query", required = True, help = "Input a query string, remember to add double quote")
-ap.add_argument("-d", "--display", required = True, type=int, default=10, help = "Input the amount of display results")
+ap.add_argument("-d", "--display", type=int, default=10, help = "Input the amount of display results")
 ap.add_argument("--chinese", action='store_true', help = "Turn on this to rank Chinese|English documents")
 ap.add_argument("--no-chinese", dest='chinese', action='store_false', help = "Turn on this to rank only English documents")
 args = vars(ap.parse_args())
@@ -65,13 +65,6 @@ class VectorSpace:
 
         vector = self.doc_vectorizer.fit_transform(corpus)
         return vector.toarray()
-
-
-    def related(self,documentId):
-        """ find corpus that are related to the document indexed by passed Id within the document Vectors"""
-        ratings = [util.cosine(self.documentVectors[documentId], documentVector) for documentVector in self.documentVectors]
-        #ratings.sort(reverse=True)
-        return ratings
 
     def search(self,search_list, feedback_list):
         """ search for documents that match based on a list of terms """
