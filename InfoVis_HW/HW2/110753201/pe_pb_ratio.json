@@ -1,0 +1,47 @@
+[
+    {
+        "country": "韓國",
+        "pe_ratio": 12.72,
+        "pb_ratio": 1.09
+    },
+    {
+        "country": "新加坡",
+        "pe_ratio": 13.66,
+        "pb_ratio": 1.07
+    },
+    {
+        "country": "英國",
+        "pe_ratio": 14.29,
+        "pb_ratio": 1.84
+    },
+    {
+        "country": "臺灣",
+        "pe_ratio": 14.94,
+        "pb_ratio": 2.38
+    },
+    {
+        "country": "香港",
+        "pe_ratio": 15.06,
+        "pb_ratio": 0.97
+    },
+    {
+        "country": "上海",
+        "pe_ratio": 18.02,
+        "pb_ratio": 1.68
+    },
+    {
+        "country": "日本",
+        "pe_ratio": 21.90,
+        "pb_ratio": 1.91
+    },
+    {
+        "country": "美國",
+        "pe_ratio": 26.51,
+        "pb_ratio": 4.90
+    },
+    {
+        "country": "深圳",
+        "pe_ratio": 33.03,
+        "pb_ratio": 3.14
+    }
+]
