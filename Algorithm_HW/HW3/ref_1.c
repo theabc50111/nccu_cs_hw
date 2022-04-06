@@ -29,7 +29,7 @@ int main(){
             for(k=dir[i].x1;k<=dir[i].x2;k++){  
                 if(k>=dir[j].x1 && k<=dir[j].x2){  
                       
-    //              printf("i:%d,k:%d,j:%d\n",i,j,k);  
+                    printf("i:%d,k:%d,j:%d\n",i,j,k);  
                       
                     dir[j].adj[dir[j].counter] = i;  
                     dir[j].counter++;  
@@ -40,13 +40,13 @@ int main(){
         }  
     }  
   
-/*  for(i=0;i<n;i++){ 
+    for(i=0;i<n;i++){ 
         printf("\nnumber:%d\nx1:%d,x2:%d\ncounter:%d\n",i,dir[i].x1,dir[i].x2,dir[i].counter); 
         for(j=0;j<dir[i].counter;j++){ 
             printf("%d,",dir[i].adj[j]); 
         } 
-    }*/  
-    printf("%d\n",shortest(0,n,dir)-1);  
+    } 
+    // printf("%d\n",shortest(0,n,dir)-1);  
   
     return 0;  
 }  
