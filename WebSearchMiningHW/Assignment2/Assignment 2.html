@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!-- saved from url=(0077)https://wm5.nccu.edu.tw/base/10001/course/10025914/content/asgmt02/index.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=Big5">
+    
+
+    <title>Assignment 2</title>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+      </script>
+<style type="text/css">
+<!--
+body
+{
+	margin-top: 15px;
+	margin-right: 15px;
+	margin-bottom: 15px;
+	margin-left: 15px;
+	color: #000066;
+	background-color: #FFFFFF;
+	font-family: "verdana"; serif;
+}
+li
+{
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+-->
+</style>
+
+</head>
+
+<body>
+<h1 align="center">WSM Assignment 2: Probabilistic Information Retrieval and Language Model for Information Retrieval</h1>
+<hr color="blue" size="10">
+
+<ol>
+<li>
+[20 points] <strong>Probabilistic Information Retrieval</strong>
+
+<p>
+Consider the RSJ retrieval model, the contingency table of counts of documents, and the statements below:
+
+</p><dl>
+    <dd><img src="./Assignment 2_files/ex1-1.png" height="60"></dd>
+    <dd><img src="./Assignment 2_files/ex1-2.png" height="90"></dd>
+    <dd><img src="./Assignment 2_files/ex1-3.png" height="100"></dd>
+</dl>
+
+<!--p>
+where \(p_t\) is the probability of a term appearing in a document relevant to the query, 
+$u_t$ is the probability of a term appearing in a non-relevant document, 
+$df_t$ is the document frequency of term $t$, $S$ is the number of relevant documents, 
+and $N$ is the total number of documents.
+</p-->
+<p></p>
+
+<p>
+</p><ul>
+    <li>[5/20 points] What are the differences between standard VSM with tf-idf weightings and the RSJ probabilistic retrieval model (in the case where no relevance information is provided)?</li>
+    <li>[5/20 points] Describe the differences of relevance feedback used in VSM and probabilistic retrieval models.</li>
+    <li>[10/20 points] Please show that based on the model above, documents can be ranked via the following formula:
+        <dl>
+            <dd><img src="./Assignment 2_files/ex1-4.png" height="65"></dd>
+        </dl>
+        (Hint: Try to prove that such a formula is equivalent to the RSJ model that states above.)</li>
+</ul>
+<p></p>
+
+</li>
+
+<li>
+[10 points] <strong>Language Model</strong>
+
+<p>
+Consider making a language model from the following training text:
+
+</p><dl>
+    <!--dd><font size="4" color="blue"><b>the martian has landed on the latin pop sensation ricky martin</b></font></dd-->
+    <dd><font size="4" color="blue"><b>how much wood would a woodchuck chuck</b></font></dd>
+    <dd><font size="4" color="blue"><b>if a woodchuck could chuck wood</b></font></dd>
+    <dd><font size="4" color="blue"><b>he would chuck he would as much as he could</b></font></dd>
+    <dd><font size="4" color="blue"><b>and chuck as much as a woodchuck would</b></font></dd>
+    <dd><font size="4" color="blue"><b>if a woodchuck could chuck wood</b></font></dd>
+</dl>
+<p></p>
+
+<p>
+</p><ul>
+    <li> [5/10 points] Under a MLE-estimated unigram probability model, what are <b>P(would)</b> and <b>P(chuck)</b>?  </li>
+    <li> [5/10 points] Under a MLE-estimated bigram model, what are <b>P(wood | chuck)</b> and <b>P(chuck | would)</b>? </li>
+</ul>
+<p></p>
+</li>
+
+<li>
+[15 points] <strong>Language Model</strong>
+
+<p>
+Suppose we have a collection that consists of the 4 documents given in the below table.
+</p><dl>
+    <dd><img src="./Assignment 2_files/ex3.png" height="110"></dd>
+</dl>
+<p></p>
+
+<p>
+Build a query likelihood language model for this document collection. Assume a mixture model between the documents and the collection,
+with both weighted at 0.5.  Maximum Likelihood Estimation (MLE) is used to estimate both as unigram models.  Work out the model probabilities
+of the queries <strong><i>click</i></strong>, <strong><i>shears</i></strong>, and hence <strong><i>click shears</i></strong> for each document,
+and use those probabilities to rank the documents returned by following query.
+</p>
+
+<p>
+</p><ul>
+    <li>[5/15 points] <strong><i>click</i></strong> </li>
+    <li>[5/15 points] <strong><i>shears</i></strong> </li>
+    <li>[5/15 points] <strong><i>click shears</i></strong> </li>
+</ul>
+<p></p>
+</li>
+
+<li>
+[5 points] <strong>Mixture model</strong>
+
+<p>
+Given the query "Taipei Taiwan", please compute the ranking of the three documents by MLE unigram models from the documents and collection, mixed with lambda = 1/2
+</p>
+
+<p>
+</p><ul>
+    <!--li> He moved from Taiwan, Hsinchu, to Taiwan, Taichung.</li-->
+    <!--li> He moved from Taiwan, Taichung, to Taiwan, Hsinchu.</li-->
+    <!--li> He moved from Taichung to Taiwan, Hsinchu.</li-->
+    <li> He moved from Taiwan, Taipei, to Taiwan, Nantou.</li>
+    <li> He moved from Taiwan, Nantou, to Taiwan, Taipei.</li>
+    <li> He moved from Nantou to Taiwan, Taipei.</li>
+</ul>
+<p></p>
+</li>
+
+<li>
+[20 points] <strong>Text Classification</strong>
+
+<p>
+On the basis of the following data in the table: <br>
+<img src="./Assignment 2_files/ex5.png" height="130" style="padding-top: 10px; apdding-bottom: 10px;"> 
+
+</p><ul>
+    <li>[5/20 points] Estimate a multinomial Naive Bayes (NB) classifier</li>
+    <li>[5/20 points] Apply the classifier to the test document (docID = 5)</li>
+    <li>[5/20 points] Estimate a multivariate Bernoulli NB classifier</li>
+    <li>[5/20 points] Apply the classifier to the test document (docID = 5)</li>
+</ul>
+<p></p>
+
+<p>
+Hint: You do not need to estimate the parameters that are needed for the classifier.
+</p>
+</li>
+
+<li>
+[30 points] <strong>Classic Probabilistic Retrieval Model.</strong>
+
+<p>
+</p><ul>
+    <li>[10/30 points] In the derivation of the Robertson-Sparck-Jones (RSJ)
+     model (see the slides and the survey paper by Norbert Fuhr for detail 
+    about this derivation), a multi-variate Bernoulli model was used to 
+    model term presence/absence in a relevant document and a non-relevant 
+    document. Suppose, we change the model to a multinomial model (see the 
+    slide that covers both models for computing query likelihood). Using a 
+    similar independence assumption as we used in deriving RSJ, show that 
+    ranking based on probability that a document is relevant to a query Q, 
+    i.e., p(R=1 | D,Q), is equivalent to ranking based on the following 
+    formula:
+    <dl>
+        <dd><img src="./Assignment 2_files/ex6.png" height="50"></dd>
+    </dl>
+    where the sum is taken over all the word in our vocabulary (denoted by 
+    V). How many parameters are there in such a retrieval model? </li>
+
+    <li>[5/30 points] The retrieval function above won't work unless we can 
+    estimate all the parameters. Suppose we use the entire collection 
+    C={D1,...,Dn} as an approximation of the examples of non-relevant 
+    documents. Propose an estimate of p(w|Q,R=0). (Hint: study the slide 
+    about how to do this for the RSJ model.)</li>
+
+    <li>[5/30 points] Suppose we use the query as the only example of a relevant document. Propose an estimate of p(w|Q,R=1). </li>
+    
+    <li>[5/30 points] With the two estimates you proposed, we should now 
+    have a retrieval function that can be used to compute a score for any 
+    document D and any query Q. Write down your retrieval function by 
+    plugging in the two estimates. Can your retrieval function capture the 
+    three major retrieval heuristics (i.e., TF, IDF, and document length 
+    normalization)? How? </li>
+
+    <li>[5/30 points] Do you believe your formula would work well as 
+    compared with a state of the art formula such as BM25? Can you propose a
+     way to further improve your formula? (While it's the best if you could 
+    improve your formula through using an improved estimate of p(w|Q,R=1), 
+    it would also be fine to propose any reasonable heuristic modification 
+    of the formula.)</li>
+</ul>
+<p></p>
+</li>
+</ol>
+
+
+
+<hr ,="" color="blue" size="10">
+<h3>Submission Details</h3>
+<ul>
+    <li> Due: 23:59, Tuesday, 5 April 2022.</li>
+    <li> What to turn in: <br><br>
+    Please turn in a <b>PDF</b> file of your written answers in "English" at WM5. 
+
+    <p></p>
+    </li><li> Late policy:
+    <p> In general, late homework may receive fewer points than incomplete
+    homework. The penalty for late homework is about 20 points per day.  Please
+    DO comment and format your codes to avoid any penalty imposed by the
+    grader.</p>
+
+
+
+</li></ul><div id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd"></div>
+
+
+
+</body></html>
