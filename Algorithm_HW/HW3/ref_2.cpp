@@ -49,8 +49,8 @@ int findMaxProfitRec(Job arr[], int n)
     // Find profit when current job is excluded
     int exclProf = findMaxProfitRec(arr, n-1);
 
-    temp[n] = max(inclProf,  exclProf);
-    cout << "Now is saving no." << n << " data to temp[], the data is: " << temp[n]<< endl ;
+    temp[n-1] = max(inclProf,  exclProf);
+    cout << "temp[" << n-1 << "] choose to : 『" << ((inclProf>exclProf) ? true:false) << "』 include no." << n-1 << " jobs(" << arr[n-1].start << "~" << arr[n-1].finish << "), and its profit is:" << arr[n-1].profit << ", so the max profit at " << n-1 << " round is:" << temp[n-1] << endl ;
  
     return max(inclProf,  exclProf);
 }
@@ -73,6 +73,7 @@ int findMaxProfit(Job arr[], int n)
 // Driver program
 int main()
 {
+    int result;
     int n = 0;  
     scanf("%d",&n); // n = number of schedule
     Job arr[n]; 
@@ -86,7 +87,8 @@ int main()
         arr[i].profit = arr[i].finish - arr[i].start; // count start, end, duration of scheduled
         cout << "number" << i << "job:" << arr[i].start << "~" << arr[i].finish << " = " << arr[i].profit << endl;
     }
-    cout << "The optimal profit is " << findMaxProfit(arr, n) << endl;
+    result = findMaxProfit(arr, n);
+    cout << "The optimal profit is " << result << endl;
 
     for (int i=0; i<100 ;i++){
 
