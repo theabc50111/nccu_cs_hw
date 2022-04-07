@@ -15,7 +15,7 @@ int main(){
     int n = 0;  
     scanf("%d",&n); // n = number of schedule
   
-    sched skd[n]; // array of schedule 
+    sched sched_arr[n]; // array of schedule 
   
     int i,j,date,s;  
     for(i=0;i<n;i++){
