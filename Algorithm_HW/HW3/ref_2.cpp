@@ -38,7 +38,11 @@ int latestNonConflict(Job arr[], int i)
 int findMaxProfitRec(Job arr[], int n)
 {
     // Base case
-    if (n == 1) return arr[n-1].profit;
+    if (n == 1){
+        temp[n] = arr[n-1].profit;
+        cout << "temp[" << n << "] choose to : 『include』 no." << n << " jobs(" << arr[n-1].start << "~" << arr[n-1].finish << "), and its profit is:" << arr[n-1].profit << ", so the max profit at " << n << " round is:" << temp[n] << endl ;
+        return arr[n-1].profit;
+    } 
  
     // Find profit when current job is included
     int inclProf = arr[n-1].profit;
@@ -49,8 +53,8 @@ int findMaxProfitRec(Job arr[], int n)
     // Find profit when current job is excluded
     int exclProf = findMaxProfitRec(arr, n-1);
 
-    temp[n-1] = max(inclProf,  exclProf);
-    cout << "temp[" << n-1 << "] choose to : 『" << ((inclProf>exclProf) ? true:false) << "』 include no." << n-1 << " jobs(" << arr[n-1].start << "~" << arr[n-1].finish << "), and its profit is:" << arr[n-1].profit << ", so the max profit at " << n-1 << " round is:" << temp[n-1] << endl ;
+    temp[n] = max(inclProf,  exclProf);
+    cout << "temp[" << n << "] choose to : 『" << ((inclProf>exclProf) ? "include":"not include") << "』 no." << n << " jobs(" << arr[n-1].start << "~" << arr[n-1].finish << "), and its profit is:" << arr[n-1].profit << ", so the max profit at " << n << " round is:" << temp[n] << endl ;
  
     return max(inclProf,  exclProf);
 }
