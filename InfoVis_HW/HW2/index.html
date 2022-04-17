@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>110753201_hw2</title>
+    <script src="https://d3js.org/d3.v7.js"></script> <!-- 採用第七版d3.js -->
+    <style>
+    div.center{
+    margin: auto;
+    justify-content: center;
+    display: flex;
+    width: 100%;
+    text-align: center;
+    }
+    div.rel_left{
+    position: relative;
+    left: 500px;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="center">
+        <h1> 國際主要股市本益比/股價淨值比圖表 </h1>
+    </div>
+    <div class="canvas1 center"></div>
+    <div class="canvas2 center"></div>
+    <div class="rel_left">
+        <h2>資料說明：</h2>
+    </div>
+    <div class="rel_left" style="margin-top: 5px">
+        <ul style="margin-top: 5px; text-align: left;">
+            <li>
+                資料說明：本資料集是收集截至2021年底止，各國股市的總體本益比與股價淨值比數值 
+            </li>
+            <li>
+                資料參考來源:<a href="https://www.twse.com.tw/zh/">證交所網站</a>
+            </li>
+        </ul>
+    </div>
+    <div class="rel_left" style="margin-top: 5px">
+        <h2 style="margin-bottom: 5px;">視覺化分析：</h2>
+    </div>
+    <div class="rel_left" style="margin-top: 5px">
+        <h3>下列所述皆以 <a href="https://www.cs.ubc.ca/~tmm/vadbook/">Visualization Analysis and Design</a> 一書所提出的視覺化分析架構來進行分析</h3>
+        <ul style="width: 1600px; margin-top: 5px; text-align: left;">
+            <li>
+                設計選擇&#8213;marks and channel:
+                <ul>
+                    <li>
+                        Marks
+                        <ul>
+                            <li>
+                                line
+                            </li>
+                            <li>
+                                point
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Channel:
+                        <ul>
+                            <li>
+                                Magnitude channel:
+                                <ul>
+                                    <li>
+                                        vertical position
+                                    </li>
+                                    <li>
+                                        length
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                Identical channel:
+                                <ul>
+                                    <li>
+                                         color hue
+                                    </li>
+                                    <li>
+                                        shape
+                                    </li>
+                                    <li>
+                                         motion
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                設計過程考量相關的經驗法則&#8213;rule of thumb:
+                <ul>
+                    <li>
+                        eye beat memory: <br> 
+                        將相同國家的股價淨值比與本益比聚在一起，如此便可以從圖中快速得知一個國家的股票市場在兩個股市指標上的個別表現
+                    </li>
+                    <li>
+                        Overview first, zoom and filter, details on demand: <br>
+                        將所有國家的數值擺在一起，如此便可以從圖上快速比較所有國家的在同一個指標上的趨勢，而當需要知道確切數值時只需要將滑鼠移至該長條圖上即可得知
+                    </li>
+                    <li>
+                        Responsiveness is required: <br>
+                        由於是將兩個指標擺在同一張圖上，且兩個指標的數值範圍又不相同，所以就設計了一個小動畫，當鼠標移動到該長條圖時，該長條圖所對應的座標軸也會一起變化，在這樣的情況下就可以透過簡單的動畫來提示看圖人現在所看的數值是對應到那一個股市指標
+                    </li>
+                </ul>
+            </li>
+            <li>
+                資料性質與視覺化任務目標&#8213;Data abstraction 與 Task abstraction：
+                <ul>
+                    <li>
+                        Data abstraction:
+                        <ul>
+                            <li>
+                                本圖表所使用的資料類別:items&attribute
+                            </li>
+                            <li>
+                                資料集類別：Table
+                            </li>
+                            <li>
+                                資料屬性：Quantitative
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Task abstraction:
+                        <ul>
+                            <li>
+                                Action: Present ➡ Browse
+                            </li>
+                            <li>
+                                Target: All Data—Trends 
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <h3>
+        </h3>
+    </div>
+
+    <script>
+
+        // load data
+        let data = []; // ref: https://www.twse.com.tw/zh/
+        const d3_load = d3.json("./pe_pb_ratio.json")
+                        .then(function(d){
+                            for(let i=0; i<d.length; i++){
+                                data.push(d[i]);
+                            }
+                        });
+
+
+        // 設定畫布
+        let margin = { top: 100, right: 300, bottom: 80, left: 100 };
+        let width = 1800 - margin.left - margin.right;
+        let height = 800 - margin.top - margin.bottom;
+        let color = d3.scaleOrdinal(d3.schemeCategory10);
+
+        //製作svg
+        let canvas = d3.select("body").select(".canvas1")
+            .append("svg")
+            .attr("id", "bar_canvas")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        // create legend
+        let legend = canvas.append("g")
+        legend.append('rect')
+              .attr("x", 100)
+              .attr("y", 50)
+              .attr("width", "200")
+              .attr("height", "80")
+              .attr("fill", "black")
+              .style("stroke-width", "3")
+              .style("stroke", "red");
+        legend.append('text')
+              .attr("x", 200)
+              .attr("y", 75)
+              .attr("fill", "white")
+              .style("text-anchor", "end")
+              .text("PE_ratio:");
+        legend.append('text')
+              .attr("x", 200)
+              .attr("y", 110)
+              .attr("fill", "white")
+              .style("text-anchor", "end")
+              .text("PB_ratio:");
+        legend.append('polygon')
+              .attr("id", "pe_legend")
+              .attr("fill", "white")
+              .attr("points", "210,80 220,60 230,80")
+              .style("stroke-width", "1")
+              .style("stroke", "red");
+        legend.append('circle')
+              .attr("id", "pb_legend")
+              .attr("fill", "white")
+              .attr("cx", "220")
+              .attr("cy", "105")
+              .attr("r", "10")
+              .style("stroke-width", "1")
+              .style("stroke", "green");
+        
+
+        d3_load.then(function(res){
+
+            //製作比例尺
+            let x_scale = d3.scaleBand()
+                .domain(data.map(function (d) { return d.country; }))
+                //.range([0, width])
+                .rangeRound([0, width]).padding(0.2)
+            let y_pe_scale = d3.scaleLinear()
+                .domain([0, 40])
+                .range([height, 0])
+            let y_pb_scale = d3.scaleLinear()
+                .domain([0, 6])
+                .range([height, 0])
+            let colors = d3.scaleOrdinal(d3.schemePastel1);
+
+            // tip of bar 
+            let tip = d3.select("body")
+                .append("div")
+                .attr("class", "tip")
+                .style("position", "absolute")
+                .style("z-index", "10")
+                .style("margin", "auto")
+                .style("visibility", "hidden");
+
+            // 建立axis 群組
+            let axis_g = canvas.append("g").attr("class", "axis");
+            // 繪製軸線
+            axis_g.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x_scale))
+                .style("font-size", "20px");
+            axis_g.append("text")
+                .attr("y", height + 70)
+                .attr("x", width/2 -20)
+                .attr("text-anchor", "start")
+                .style("font-size", "24px")
+                .text("國家");
+            axis_g.append("g")
+                .attr("class", "y_l_axis")
+                .call(d3.axisLeft(y_pe_scale))
+                .style("font-size", "20px");
+            axis_g.append("g")
+                .attr("transform", "translate( " + width + ", 0 )")
+                .attr("class", "y_r_axis")
+                .call(d3.axisRight(y_pb_scale))
+                .style("font-size", "20px");
+            axis_g.append("text")
+                .attr("class", "y_l_axis")
+                .attr("y", 0)
+                .attr("x", 10)
+                .attr("text-anchor", "start")
+                .text("本益比");
+            axis_g.append("text")
+                .attr("class", "y_r_axis")
+                .attr("y", 0)
+                .attr("x", width + 60)
+                .attr("text-anchor", "start")
+                .text("股價淨值比");
+
+
+            // 繪製bar
+            let bar_pe_g = canvas.append('g').attr("class", "bar_pe_g");
+            bar_pe_g.selectAll(".bar").data(data).enter().append("rect")
+                .attr("class", "bar")
+                .attr("x", (d, i) => { return x_scale(d.country)+66 })
+                .attr("y", (d, i) => { return y_pe_scale(d.pe_ratio) })
+                .on("mouseover", function(e,d){
+                    d3.select(this).attr("fill", "red");
+                    
+                    canvas.select('.bar_pe_g')
+                    .insert("text")
+                    .attr("class", "barnum")
+                    .attr('fill', 'red')
+                    .attr('font-size', '20px')
+                    .attr("x", x_scale(d.country)+72)
+                    .attr("y", y_pe_scale(d.pe_ratio))
+                    .attr("dy", "-0.5em")
+                    .text(d.pe_ratio);
+
+                    axis_g.selectAll(".y_l_axis")
+                    .attr("stroke-width", 5)
+                    .style("color", "red")
+                    .style('fill', 'red')
+                    .style("font-size", 32);
+                })
+                .on("mouseout", function(){
+                    d3.select(this).attr("fill", function() {
+                        return d3.select(this).attr('c_record')
+                    });
+
+                    canvas.selectAll('.barnum')
+                    .remove();
+
+                    axis_g.selectAll(".y_l_axis")
+                    .attr("stroke-width", 1)
+                    .style("color", "black")
+                    .style('fill',"")
+                    .style("font-size", 20);
+                })
+                .attr("width", x_scale.bandwidth()/2)
+                .attr("height", (d,i) => { return 0})
+                .transition()
+                .duration('2000')
+                .attr("height", (d, i) => { return height - y_pe_scale(d.pe_ratio) })
+                .attr("fill",(d,i) => {return colors('0.'+ i)})
+                .attr("c_record",(d,i) => {return colors('0.'+ i)});
+
+            let bar_pe_mark_g = canvas.append('g').attr("class", "bar_pe_mark_g");
+            bar_pe_mark_g.selectAll(".bar_pe_mark").data(data).enter().append("polygon")
+                        .attr("class", "bar_pe_mark")
+                        .attr("fill", "white")
+                        .attr("points", (d,i) => {return `${x_scale(d.country)+86},${y_pe_scale(d.pe_ratio)+45} ${x_scale(d.country)+96},${y_pe_scale(d.pe_ratio)+25} ${x_scale(d.country)+106},${y_pe_scale(d.pe_ratio)+45}`})
+                        .style("stroke-width", "1")
+                        .style("stroke", "red");
+            
+            let bar_pb_g = canvas.append('g').attr("class", "bar_pb_g");
+            bar_pb_g.selectAll(".bar").data(data).enter().append("rect")
+                .attr("class", "bar")
+                .attr("x", (d, i) => { return x_scale(d.country)-1 })
+                .attr("y", (d, i) => { return y_pb_scale(d.pb_ratio) })
+                .on("mouseover", function(e,d){
+                    d3.select(this).attr("fill", "green");
+
+                    canvas.select('.bar_pb_g')
+                    .insert("text")
+                    .attr("class", "barnum")
+                    .attr('fill', 'green')
+                    .attr('font-size', '20px')
+                    .attr("x", x_scale(d.country)+10)
+                    .attr("y", y_pb_scale(d.pb_ratio))
+                    .attr("dy", "-0.5em")
+                    .text(d.pb_ratio);
+
+                    axis_g.selectAll(".y_r_axis")
+                    .attr("stroke-width", 5)
+                    .style("color", "green")
+                    .style('fill', 'green')
+                    .style("font-size", 32);
+
+                })
+                .on("mouseout", function(){
+                    d3.select(this).attr("fill", function() {
+                        return d3.select(this).attr('c_record')
+                    });
+
+                    canvas.selectAll('.barnum')
+                    .remove();
+
+                    axis_g.selectAll(".y_r_axis")
+                    .attr("stroke-width", 1)
+                    .style("color", "black")
+                    .style('fill',"")
+                    .style("font-size", 20);
+
+                })
+                .attr("width", x_scale.bandwidth()/2)
+                .attr("height", (d,i) => { return 0})
+                .transition()
+                .duration('2000')
+                .attr("height", (d, i) => { return height - y_pb_scale(d.pb_ratio) })
+                .attr("fill",(d,i) => {return colors('0.'+ i)})
+                .attr("c_record",(d,i) => { return colors('0'+ i)});
+
+            let bar_pb_mark_g = canvas.append('g').attr("class", "bar_pb_mark_g");
+            bar_pb_mark_g.selectAll(".bar_pb_mark").data(data).enter().append("circle")
+                        .attr("class", "bar_pb_mark")
+                        .attr("fill", "white")
+                        .attr("cx", (d,i)=>{return `${x_scale(d.country)+28}`})
+                        .attr("cy", (d,i)=>{return `${y_pb_scale(d.pb_ratio)+35}`})
+                        .attr("r", "10")
+                        .style("stroke-width", "1")
+                        .style("stroke", "green");
+
+        })
+
+
+    </script>
+</body>
+
+</html>

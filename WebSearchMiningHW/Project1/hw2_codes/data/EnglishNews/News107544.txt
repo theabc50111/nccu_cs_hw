@@ -1,0 +1,2 @@
+SolarWinds hackers accessed Microsoft source code, the company says
+WASHINGTON (Reuters) -The hacking group behind the SolarWinds compromise was able to break into Microsoft Corp and access some of its source code, Microsoft said on Thursday, something experts said sent a worrying signal about the spies’ ambition.

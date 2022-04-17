@@ -1,0 +1,2 @@
+Exclusive: Suspected Chinese hackers used SolarWinds bug to spy on U.S. payroll agency – sources
+WASHINGTON (Reuters) - Suspected Chinese hackers exploited a flaw in software made by SolarWinds Corp to help break into U.S. government computers last year, five people familiar with the matter told Reuters, marking a new twist in a sprawling cybersecurity breach that U.S. lawmakers have labeled a national security emergency.

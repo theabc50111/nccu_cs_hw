@@ -1,0 +1,2 @@
+VMware, Nvidia partner to make AI chips easier for businesses to use
+(Reuters) - VMware Inc and Nvidia Corp on Tuesday announced an effort to make VMware’s software for managing data centers work better with Nvidia’s artificial intelligence (AI) chips.

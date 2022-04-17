@@ -1,0 +1,2 @@
+Suspected Russian hackers used Microsoft vendors to breach customers
+WASHINGTON (Reuters) - The suspected Russian hackers behind the worst U.S. cyber attack in years leveraged reseller access to Microsoft Corp services to penetrate targets that had no compromised network software from SolarWinds Corp, investigators said.

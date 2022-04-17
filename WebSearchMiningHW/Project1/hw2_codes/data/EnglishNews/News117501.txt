@@ -1,0 +1,2 @@
+Experts who wrestled with SolarWinds hackers say cleanup could take months - or longer
+WASHINGTON (Reuters) - Cybersecurity expert Steven Adair and his team were in the final stages of purging the hackers from a think tank’s network earlier this year when a suspicious pattern in the log data caught their eye.

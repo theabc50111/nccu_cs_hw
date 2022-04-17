@@ -1,0 +1,2 @@
+Factbox: U.S. counties using automated signature verification software
+OAKLAND, Calif./WASHINGTON (Reuters) - U.S. election officials trying to deliver speedy results with limited staff have increasingly turned to software that matches signatures on ballot envelopes to voter records. At least 29 counties across eight states use the artificial intelligence technology on mail-in ballots to ease the workload of staff enforcing voter signature rules.

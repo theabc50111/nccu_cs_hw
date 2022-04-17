@@ -1,0 +1,2 @@
+Court orders seizure of ransomware botnet controls as U.S. election nears
+SAN FRANCISCO (Reuters) - Microsoft said Monday it had used a court order to take control of computers that were installing ransomware and other malicious software on local government networks and threatening to disrupt the November election.

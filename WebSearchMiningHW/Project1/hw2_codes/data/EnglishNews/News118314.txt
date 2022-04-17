@@ -1,0 +1,2 @@
+Amazon shifts some voice assistant, face recognition computing to its own chips
+(Reuters) - Amazon.com Inc AMZN.O on Thursday said it shifted part of the computing for its Alexa voice assistant to its own custom-designed chips, aiming to make the work faster and cheaper while moving it away from chips supplied by Nvidia Corp NVDA.O.
