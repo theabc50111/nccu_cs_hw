@@ -43,7 +43,7 @@ void insertion_sort(sched sched_arr[], int sched_arr_len){
 
 void print_sched_arr(sched sched_arr[], int sched_arr_len){
     for(int j=0;j<sched_arr_len;j++){  
-        printf("No. %d job:(%d~%d)\n", j, sched_arr[j].start, sched_arr[j].end);
+        printf("No. %d job:(%d~%d), its duration:%d\n", j, sched_arr[j].start, sched_arr[j].end, sched_arr[j].duration);
     }  
 }
 
@@ -55,7 +55,6 @@ int max_weighted_job_value(sched sched_arr[], int sched_arr_len){
     for (int i=0; i<sched_arr_len; i++){   // init profit_df_table
         value_dp_table[i] = sched_arr[i].duration;
     }
-
 
     for (int i=0; i<sched_arr_len; i++){
         for (int j=0; j<i; j++){
@@ -77,23 +76,36 @@ int main(){
     int n = 0;  
     scanf("%d",&n); // n = number of schedule
   
-    sched sched_arr[n]; // array of schedule 
-  
+    int input_arr[n*2]; // array of input
+    sched *sched_arr; // array of schedule 
+    sched_arr = malloc(sizeof(sched)*n);
+    int sched_arr_len=0;
     int s, result, t_bound, b_bound;
-    for(int i=0;i<n;i++){
-        scanf("%d",&s);  
-        sched_arr[i].start= s;  
-        scanf("%d",&s);  
-        sched_arr[i].end= s;  
-        sched_arr[i].duration = sched_arr[i].end - sched_arr[i].start; // count start, end, duration of scheduled
-    }  
+
+    for(int i=0; i<n*2; i+=2){
+        scanf("%d", &s);
+        input_arr[i] = s;
+        scanf("%d", &s);
+        input_arr[i+1] = s;
+    }
+
     scanf("%d",&t_bound);  
     scanf("%d",&b_bound);  
 
+    for(int i=0; i<n*2; i+=2){
+        if(input_arr[i]>=t_bound && input_arr[i+1]<=b_bound){
+            sched_arr = realloc(sched_arr, sizeof(sched)*(sched_arr_len+1));
+            sched_arr[sched_arr_len].start= input_arr[i];  
+            sched_arr[sched_arr_len].end= input_arr[i+1];  
+            sched_arr[sched_arr_len].duration = sched_arr[sched_arr_len].end - sched_arr[sched_arr_len].start; // count start, end, duration of scheduled
+            sched_arr_len++;
+        }
+    }
 
 
-    insertion_sort(sched_arr, n);
-    // print_sched_arr(sched_arr, n);
+
+    insertion_sort(sched_arr, sched_arr_len);
+    // print_sched_arr(sched_arr, sched_arr_len);
 
     result = max_weighted_job_value(sched_arr, n);
 
