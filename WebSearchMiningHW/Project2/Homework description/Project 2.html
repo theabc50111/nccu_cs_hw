@@ -1,0 +1,347 @@
+
+<!-- saved from url=(0076)https://wm5.nccu.edu.tw/base/10001/course/10025914/content/proj02/index.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+	<title>Project 2</title>
+<style type="text/css">
+<!--
+body
+{
+	margin-top: 15px;
+	margin-right: 15px;
+	margin-bottom: 15px;
+	margin-left: 15px;
+	color: #000066;
+	background-color: #FFFFFF;
+	font-family: "verdana"; serif;
+}
+-->
+</style>
+
+</head>
+
+<body>
+<h1 align="center">WSM Project 2: Building IR systems based on the Lemur Project</h1>
+<hr color="blue" size="10">
+<p>
+In this project you will implement several different retrieval methods, i.e. algorithms that given a user's request (query) and a corpus of documents assign a score to each document according to its relevance to the query. Some of these retrieval methods will be the implementation of the basic retrieval models studied in the class (e.g. TF-IDF, BM25, Language Models with different Smoothing). In this case, you will need the toolkits of <a href="http://www.lemurproject.org/" target="_blank">Lemur Project</a>, which includes search engines, browser toolbars, text analysis tools, and data resources that support research and development of information retrieval and text mining. You may also need to heavily read its wiki, <a href="http://sourceforge.net/p/lemur/wiki/Home/" target="_blank">Lemur Project and Indri Search Engine Wiki</a>, in order to understand how to use the toolkits.
+</p>
+
+<!--
+<p>
+The project is split into two different phases. During the first phase, you will have to implement a number of basic ranking functions, run a set of queries over the provided document corpus and finally evaluate the effectiveness of the different ranking functions. Finally, during the second phase you will have to enhance the basic retrieval models in a number of different ways, such as using learning techniques.
+</p>
+-->
+
+<hr color="blue" size="10">
+
+<h4>Document Corpus</h4>
+
+<p>
+Please download the <a href="https://www.dropbox.com/s/t49tdvdr0w0v2tw/WT2G.tbz?dl=0" target="_blank">WT2g</a> data collection for this project (<strong>Don't distribute it!!!</strong>).
+The collection contains Web documents, with being a 2GB corpus. 
+(<a href="http://ir.dcs.gla.ac.uk/test_collections/wt10g.html" target="_blank">Here</a>
+you can find details about the corpus (WT10g instead), in case you are interested.) Use the corpus to test your algorithms, and run your experiments.
+</p>
+
+<p>
+For the corpus, you need to construct two indexes, (a) with stemming, and (b) without stemming. Both indexes contain stopwords.
+For stemming, you can use the porter (Porter) or the kstem (Korvatz) stemmer. Below is an example of index information:
+</p>
+
+<table border="1">
+<tbody><tr><th>IndexID </th> <th>Index Description</th><th>Statistics</th></tr>
+<tr><td>0</td><td> WT2G with stemming     </td><td> terms=&nbsp;&nbsp; 261,742,791  unique_terms=&nbsp;&nbsp;&nbsp;1,391,908 docs=&nbsp;&nbsp;&nbsp;247,491</td></tr>
+<tr><td>1</td><td> WT2G without stemming  </td><td> terms=&nbsp;&nbsp; 261,742,791  unique_terms=&nbsp;&nbsp;&nbsp;1,526,004 docs=&nbsp;&nbsp;&nbsp;247,491</td></tr>
+</tbody></table>
+
+
+<h4>Queries</h4>
+
+<p><a href="https://wm5.nccu.edu.tw/base/10001/course/10025914/content/proj02/topics.401-450.txt" target="_blank">Here</a> is a set of 50 TREC queries for the corpus,
+with the standard TREC format having topic title, description and narrative. Documents from the corpus have been judged with respect to their relevance to these queries by NIST assessors.
+</p>
+
+<h4>Ranking Functions</h4>
+
+<p>
+Your task is to run the set of queries against the WT2g collection, return a ranked list of documents (the top 1000) in a particular format, and the nevaluate the ranked lists.
+</p>
+
+<p>
+Implement the following variations of a retrieval system:
+</p>
+
+<ol>
+    <li>
+        Vector space model, terms weighted by Okapi TF (see note) times an IDF value, and inner product similarity between vectors.
+
+        <p>
+        Note:
+        You will have to use for the weights <font face="Courier,monospace">OKAPI TF x IDF</font> where <font face="Courier, monospace">OKAPI TF = tf/(tf + 0.5 + 1.5 * doclen / avgdoclen).</font>
+        For queries, Okapi TF can also be computed in the same way, just use the length of the query to replace <font face="Courier, monospace">doclen.</font>
+        </p>
+
+        <p>
+        Also note that the definition of <font face="Courier, monospace">OKAPI TF</font> is <font face="Courier,monospace">tf / tf + k1((1 - b) + b * doclen / avgdoclen)</font>.
+        In the above formula, you can set k1 = 2 and b = 0.75, to end up with: <font face="Courier, monospace">tf / (tf + 0.5 + 1.5 * doclen / avgdoclen)</font>.
+        </p>
+    </li>
+    <li>
+        Language modeling, maximum likelihood estimates with Laplace smoothing only, query likelihood.
+        
+        <p>
+        Note:
+        If you use multinomial model, for every document, only the probabilities associated with terms in the query must be estimated because the others are missing from the query-likelihood formula (please refer to our slides).
+        </p>
+
+        <p>
+        For model estimation use maximum-likelihood and Laplace smoothing. Use formula (for term i)
+        </p>
+
+        <p style="margin-bottom: 0in">
+        <img src="./Project 2_files/laplace.png" name="Graphic1" align="left" width="130" height="45" border="0"><br clear="left">
+        </p>
+
+        <p>
+        where m = term frequency, n=number of terms in document (doc length) , k=number of unique terms in corpus.
+        </p>
+    </li>
+    <li>
+        <p>
+        Language modeling, Jelinek-Mercer smoothing using the corpus, 0.8 of the weight attached to the background probability, query likelihood.
+        </p>
+   
+        <p>
+        The formula for Jelinek-Mercer smoothing is,
+        </p>
+        
+        <p>
+        <img src="./Project 2_files/jelenik.png" name="Graphic2" align="left" width="210" height="25" border="0"><br clear="left">
+        </p>
+
+        <p>
+        where P is the estimated probability from document (max likelihood = m_i/n) and Q is the estimated probability from corpus (background probability = cf / terms in the corpus).
+        </p>
+    </li>
+    <li>
+        Implement any of your ideas to improve one of the above three IR models.
+        
+        <p>
+        You have to do something that can really improve the rank quality of the chosen IR models, and explain and showcase why your modifications can work.
+        </p>
+    </li>
+</ol>
+
+<h4>Evaluation</h4>
+
+<p>
+Run all 50 queries and return at top 1,000 documents for each query. Do not return documents with score equal to zero.
+If there are only N&lt;1000 documents with non-zero scores then only return these N documents.
+Save the 50 ranked lists of documents in a single file.
+Each file should contain at most 50*1000 = 50,000 lines in it. Each line in the file must have the following format:
+</p>
+
+<p>
+<i>query-number</i>    Q0   <i>document-id</i>   <i>rank</i>   <i>score</i>   Exp
+</p>
+
+<p>
+where <i>query-number</i> is the number of the query (i.e., 401 to 450), <i>document-id</i> is the <u>external </u>ID for the retrieved document,
+<i>rank</i> is the rank of the corresponding document in the returned ranked list (1 is the best and 1000 is the worst; break the ties either arbitrarily or lexicographically), and <i>score</i> is the score that your ranking function outputs for the document.
+Scores should descend while rank increases.
+"Q0" (Q zero) and "Exp" are constants that are used by some evaluation software.
+The overall file should be sorted by ascending <i>rank </i>(so descending <i>score</i>) within ascending <i>query-number</i>.
+</p>
+
+<p>
+Run all four retrieval models against the two WT2g indexes.
+This means you will generate 4 (models) * 2 (indexes) = 8 files, with at most 50,000 lines in total.
+</p>
+
+<p>
+To evaluate a single run (i.e. a single file containing 50,000 lines or less), first download the qrel file (<a href="https://wm5.nccu.edu.tw/base/10001/course/10025914/content/proj02/qrels.401-450.txt" target="_blank">here</a> you can find the qrel file for the WT2g corpus.
+Then, you can use the evaluation tool (ireval.jar) in Lemur Toolkit or you can download the script of <a href="https://wm5.nccu.edu.tw/base/10001/course/10025914/content/proj02/trec_eval.pl" target="_blank">trec_eval.pl</a> and run:
+</p>
+
+<p>
+<font face="Courier, monospace">perl trec_eval.pl [-q] qrel_file results_file</font>
+</p>
+
+<p>
+(The -q option outputs evaluation metrics values for each query; the average overall queries will be returned is -q is not used).
+trec_eval provides a number of statistics about how well the retrieval function corresponding to the results_file did on the corresponding queries) and includes average precision, precision at various recall cut-offs, and so on.
+You will need some of those statistics for this project's report, and you may find others useful.
+</p>
+
+<h4> OKAPI TF-IDF on query 401</h4>
+
+<p>
+We ran the okapi tf-idf model on query "401. foreign minorities, germany" for the WT2g collection (with stemming), without doing any fancy query processing (just word tokenization).
+Below you can find some of the statistics I got back by running trec-eval on the results for this query:
+</p>
+
+<pre>Queryid (Num):      401
+Total number of documents over all queries
+    Retrieved:     1000
+    Relevant:        45
+    Rel_ret:         42
+Interpolated Recall - Precision Averages:
+    at 0.00       1.0000
+    at 0.10       0.4375
+    at 0.20       0.3250
+    at 0.30       0.3182
+    at 0.40       0.2769
+    at 0.50       0.2604
+    at 0.60       0.2366
+    at 0.70       0.2361
+    at 0.80       0.2209
+    at 0.90       0.0586
+    at 1.00       0.0000
+Average precision (non-interpolated) for all rel docs(averaged over queries)
+                  0.2605
+Precision:
+  At    5 docs:   0.4000
+  At   10 docs:   0.4000
+  At   15 docs:   0.4000
+  At   20 docs:   0.3500
+  At   30 docs:   0.3000
+  At  100 docs:   0.2500
+  At  200 docs:   0.1850
+  At  500 docs:   0.0800
+  At 1000 docs:   0.0420
+R-Precision (precision after R (= num_rel for a query) docs retrieved):
+    Exact:        0.3111
+
+</pre>    
+
+<p>
+We ran the language model with Laplace smoothing "401. foreign minorities, germany" for the WT2g collection (with stemming), without doing any fancy query processing (just word tokenization).
+Below you can find some of the statistics I got back by running trec-eval on the results for this query:
+</p>
+
+<pre>Queryid (Num):      401
+Total number of documents over all queries
+    Retrieved:     1000
+    Relevant:        45
+    Rel_ret:         35
+Interpolated Recall - Precision Averages:
+    at 0.00       0.3333
+    at 0.10       0.3333
+    at 0.20       0.3333
+    at 0.30       0.2969
+    at 0.40       0.2969
+    at 0.50       0.2738
+    at 0.60       0.2547
+    at 0.70       0.0790
+    at 0.80       0.0000
+    at 0.90       0.0000
+    at 1.00       0.0000
+Average precision (non-interpolated) for all rel docs(averaged over queries)
+                  0.1818
+Precision:
+  At    5 docs:   0.2000
+  At   10 docs:   0.1000
+  At   15 docs:   0.1333
+  At   20 docs:   0.3000
+  At   30 docs:   0.3333
+  At  100 docs:   0.2500
+  At  200 docs:   0.1450
+  At  500 docs:   0.0660
+  At 1000 docs:   0.0350
+R-Precision (precision after R (= num_rel for a query) docs retrieved):
+    Exact:        0.2889
+    
+</pre>
+
+<p>
+We ran the language model with Jelinek-Mercer smoothing "401. foreign minorities, germany" for the WT2g collection (with stemming), without doing any fancy query processing (just word tokenization).
+Below you can find some of the statistics I got back by running trec-eval on the results for this query:
+</p>
+
+<pre>Queryid (Num):      401
+Total number of documents over all queries
+    Retrieved:     1000
+    Relevant:        45
+    Rel_ret:         39
+Interpolated Recall - Precision Averages:
+    at 0.00       0.2000
+    at 0.10       0.0795
+    at 0.20       0.0683
+    at 0.30       0.0677
+    at 0.40       0.0633
+    at 0.50       0.0562
+    at 0.60       0.0562
+    at 0.70       0.0514
+    at 0.80       0.0514
+    at 0.90       0.0000
+    at 1.00       0.0000
+Average precision (non-interpolated) for all rel docs(averaged over queries)
+                  0.0561
+Precision:
+  At    5 docs:   0.2000
+  At   10 docs:   0.1000
+  At   15 docs:   0.0667
+  At   20 docs:   0.1000
+  At   30 docs:   0.0667
+  At  100 docs:   0.0700
+  At  200 docs:   0.0600
+  At  500 docs:   0.0520
+  At 1000 docs:   0.0390
+R-Precision (precision after R (= num_rel for a query) docs retrieved):
+    Exact:        0.0889
+</pre>
+
+<p>
+If your system is dramatically under-performing that, you probably have a bug.
+</p>
+
+<h4>What to hand in</h4>
+
+<p>
+Provide a short description of what you did and some analysis of what you learned.
+You should include at least the following information:
+</p>
+
+<ul type="disc">
+    <li>Un-interpolated mean average precision numbers for all 8 runs.</li>
+    <li>Precision at rank 10 documents for all 8 runs.</li>
+    <li>An analysis of the advantages or disadvantages of stemming, IDF, and the different smoothing techniques.</li>
+</ul>
+
+<p>
+Feel free to try other runs to better explore issues like the last on mentioned above, e.g. how does Okapi tf compares to raw tf, what impact do different values of lamba have on smoothing, etc.
+</p>
+
+<p>
+Hand in a printed copy of the report (in English, one column with at least 5 pages).
+The report should not be much longer than 20 pages (if that long).
+In particular, do not include trec_eval output directly; instead, select the interesting information and put it in a nicely formatted table.
+</p>
+
+<h4>Grading</h4>
+
+<p>
+This project is worth 150 points.
+To get about 100 points, you need to do the things described above. 
+Additional points will be awarded for doing things such as:
+</p>
+
+<ul type="disc">
+    <li>Extra runs, particularly interesting runs that do more than vary parameters (up to 15 points).</li>
+    <li>Recall/precision graphs, per query or more interestingly averaged over all queries (up to 15 points).</li>
+    <li>
+    Analysis beyond the minimum required (up to 20 points).
+    A good analysis should investigates interesting phenomena in details.
+    For instance, failure analysis per query, i.e. looking at the query-by-query performance and explore what makes some queries fail, etc.
+    </li>
+</ul>
+
+<hr size="10" ,="" color="blue">
+<h3>Submission Details</h3>
+<ul>
+    <li> Due: 18:10 in class, Tuesday, 10 May</li>
+    <li> Late policy: the penalty for late homework is 20 points per day.</li>
+</ul>
+
+
+</body></html>
