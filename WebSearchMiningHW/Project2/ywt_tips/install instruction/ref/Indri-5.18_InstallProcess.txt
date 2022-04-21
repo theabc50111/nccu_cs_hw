@@ -1,0 +1,87 @@
+VirtualBox6.1
+Ubuntu 20.04
+
+
+Hint
+(https://sourceforge.net/projects/lemur/files/lemur/indri-5.18/)
+
+This Lemur project release is for Indri 5.18.
+
+No further development is being done with Indri.  Please check out our latest project,
+Lucindri, which is the Indri search logic built on the Lucene search engine.
+http://www.lemurproject.org/lucindri.php
+https://github.com/lemurproject/Lucindri
+
+This version of Indri was built with gcc version 5.4.  GCC 7+ is not supported.
+The java jar files were built with Java 8 (jdk 1.8.0). The java UIs require Java 8.
+We have tested using GCC 4.4.7 (CentOS 6.7 linux), 4.8.4 (16.04 linux),
+4.2.1 (OS/X 10.11.3), 5.4.0 (16.04 linux), and Visual Studio 2012 (Windows 7, WIN32 and x86_64).  
+
+We suggest creating a Docker container with a tested version of gcc for systems 
+that do not support gcc versions lower than gcc 7.
+Applications compiled with the Indri API require the following libraries:
+   build-essential, g++ (5.4 or earlier), make, zlib1g-dev on linux. 
+
+Indri built with Visual Studio beyond version 2012 has not been tested.   
+Applications built in Visual Studio require the additional library wsock32.lib.
+
+Note that OS/X 10.12+ is not supported.  There C++ library
+issues for Indri compilation.  Indri built with Visual Studio
+beyond version 2012 has not been tested.
+
+Source: ReadMe.txt, updated 2020-12-16
+
+
+$ sudo apt-get update
+$ sudo apt-get upgrade
+$ sudo apt-get install build-essential
+
+
+在ubuntu軟體源裡zlib和zlib-devel叫做zlib1g zlib1g.dev
+(https://www.itread01.com/content/1550607843.html)
+$ sudo apt-get install zlib1g  <沒裝>
+$ sudo apt-get install zlib1g.dev  <有裝>
+
+$ sudo apt-get install zlibc  <有裝>
+
+
+
+
+ubuntu20 gcc降级
+(https://blog.csdn.net/wubing9356/article/details/113755957)
+
+1.检查 /etc/apt/sources.list 与 sudo
+
+$ sudo gedit /etc/apt/sources.list
+
+2.向文件中添加如下代码：(置第 1行)
+
+$ deb http://dk.archive.ubuntu.com/ubuntu/ trusty main universe
+
+3.更新
+
+$ sudo apt-get update
+
+4.安装gcc和g++
+
+$ sudo apt-get install gcc-4.4 g++-4.4 g++-4.4-multilib
+
+5.添加版本仓库
+
+$ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.4 2
+$ sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.4 2
+$ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 1
+$ sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 1
+
+6.选择使用的版本
+
+$ sudo update-alternatives --config gcc
+$ sudo update-alternatives --config g++
+
+
+$ ./configure
+$ make
+$ sudo make install
+
+
+
