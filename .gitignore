@@ -1,8 +1,7 @@
 # set ignore directories
 Database_HW/hw3/IMDB
 node_modules/
-node_modules/*
-datasets/*
+datasets/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
