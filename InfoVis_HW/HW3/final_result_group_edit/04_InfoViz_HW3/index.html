@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v6.js"></script>
+    
+    <!-- bootsrap5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+       
+</head>
+
+<style type="text/css">
+     body{ margin: 0; padding: 0px; }
+
+    .a {
+        background-color: EEEEEE;
+        width:100%;
+        height:300px;
+    }
+
+    .rectangle:hover{
+        fill:orange;
+        opacity: 0.66;
+    }
+    .text_red{
+      color:red;
+      font-weight:bold;
+    }
+    .text_blue{
+      color:blue;
+      font-weight:bold;
+    }
+    .text_white{
+      color:white;
+      font-weight:bold;
+    }
+</style>
+
+<body onload="racingBarChart()">
+    
+    <div class="border border-dark border-4" style="margin:50px; background-color:#fff2e6">
+        <div class="row">
+            <div class="col-6">
+                <h3 align="center">原圖：</h3>
+                <div class="rol">
+                    <div class="col">
+                        <img src="./png/ori_bar_chart.png" class="rounded mx-auto d-block img-fluid" style="max-width: 80%;"
+                            alt="...">
+                    </div>
+                    <div class="col" align="center">
+                        <div>原始資料：
+                            <a href="http://www.newscatcher.org.tw/site/news/detail/1919?fbclid=IwAR1JCgEjoN6O_hjBdmzWtGy_7kI1ZQt2sK2uoN0lOLE8UkVJzFS793Z3ako">
+                                【新聞稿】台少盟2018兒少權益與媒體識讀問卷調查結果公布
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <h3 align="center">改良圖：</h3>
+                <!-- Create a div where the graph will take place -->
+                <div id="my_dataviz"></div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <h4 align="center">製圖:110753201 曹昱維</h4>
+            <div class="text-center">
+                說明:
+                原圖是集結33位兒少專業工作者對各個兒少議題的投票計數統計圖表。
+                我認為原圖需要改良的地方有：<br>
+                <p class="text-start mx-auto" style="width: 1000px;">
+                    (1) 在每個計數次數之後還另外寫了百分比，而這個百分比反而容易令人混淆<br>
+                    (2) 原圖的資料(每個兒少議題)可以視為categorical，所以color map 的部份可以採用hue的形式，會令圖表更好辨認<br>
+                    (3) X軸, Y軸標示不明確<br>
+                </p>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-6">
+                <h3 align="center">原圖：</h3>
+                <br />  
+                <br />  
+                <br /> 
+                <br />
+                <br />     
+                <div class="rol">
+                    <div class="col">
+                        <img id="png" src="./png/q1.png" class="rounded mx-auto d-block img-fluid" style="max-width: 100%;"
+                            alt="...">
+                    </div>
+                    <br /> 
+                    <br />   
+                    <div class="col" align="center">
+                        <div>原始資料：
+                            <a href="http://www.newscatcher.org.tw/site/news/detail/1919?fbclid=IwAR1JCgEjoN6O_hjBdmzWtGy_7kI1ZQt2sK2uoN0lOLE8UkVJzFS793Z3ako">
+                                【新聞稿】台少盟2018兒少權益與媒體識讀問卷調查結果公布
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <h3 align="center">改良圖：</h3> 
+                <br />               
+		        <!-- Clickable button -->
+		        <button type="button" id="dataviz_buttonTriger" style="background-color:yellow"><span class="text_red">點我換下一題</span></button>
+                <button type="button.auto" id="dataviz_buttonTriger_auto" style="background-color:blue"><span class="text_white">點我連續動態</span></button>
+                
+                <div >
+                    <br />
+                    <h2 id="myQuestion">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;問卷題目：
+                        <span class="text_blue">常使用的申訴管道？</span></h2>
+                </div>
+                <!-- Create a div where the graph will take place -->
+                <div id="david_dataviz"></div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <h4 align="center">製圖:109753207 謝政彥</h4>
+            <div class="text-center">
+                說明:
+                原圖取自台灣少年權益與福利促進聯盟2018兒少權益與媒體識讀問卷調查結果。
+                我認為原圖有關圓餅圖部分需要改良的地方有：<br>
+                <p class="text-start mx-auto" style="width: 1000px;">
+                    (1) 圓餅圖大小不一且標示不一致，有些缺少標題、有些標註在圖內、有些在圖外等，不易閱讀。<br>
+                    (2) 百分比位數有些取小數點2位、有些取小數點1位，不夠嚴謹。<br>
+                    (3) 問卷結果未按順序排列，需多花時間判讀。<br>
+                </p>
+            </div>
+        </div>        
+    </div>
+
+    
+    <!-- bar_chart1 -->
+    <script src="./bar_data1.js"></script>
+    <script src="./bar_data2.js"></script>
+
+</body>
+
+</html>
