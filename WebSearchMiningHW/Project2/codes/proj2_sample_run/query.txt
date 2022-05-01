@@ -1,0 +1,11 @@
+<parameters>
+    <query>
+        foreign minorities Germany
+    </query>
+    <query>
+        behavioral genetics
+    </query>
+    <query>
+        osteoporosis
+    </query>
+</parameters>

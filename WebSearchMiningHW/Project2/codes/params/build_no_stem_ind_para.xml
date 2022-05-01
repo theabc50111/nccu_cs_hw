@@ -1,0 +1,14 @@
+<parameters>
+
+    <index>./corpus_index/no_stem_index</index>
+
+    <memory>1G</memory>
+
+    <corpus>
+        <path>./datasets/WT2G</path>
+        <class>trecweb</class>
+    </corpus>
+
+    <field><name>p</name></field>
+
+</parameters>
