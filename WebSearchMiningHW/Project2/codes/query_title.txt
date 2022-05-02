@@ -1,0 +1,152 @@
+<parameters>
+    <query>
+        foreign minorities, Germany 
+    </query>
+    <query>
+        behavioral genetics 
+    </query>
+    <query>
+        osteoporosis 
+    </query>
+    <query>
+        Ireland, peace talks 
+    </query>
+    <query>
+        cosmic events 
+    </query>
+    <query>
+        Parkinson's disease 
+    </query>
+    <query>
+        poaching, wildlife preserves 
+    </query>
+    <query>
+        tropical storms 
+    </query>
+    <query>
+        legal, Pan Am, 103 
+    </query>
+    <query>
+        Schengen agreement 
+    </query>
+    <query>
+        salvaging, shipwreck, treasure 
+    </query>
+    <query>
+        airport security 
+    </query>
+    <query>
+        steel production 
+    </query>
+    <query>
+        Cuba, sugar, exports 
+    </query>
+    <query>
+        drugs, Golden Triangle 
+    </query>
+    <query>
+        Three Gorges Project 
+    </query>
+    <query>
+        creativity 
+    </query>
+    <query>
+        quilts, income 
+    </query>
+    <query>
+        recycle, automobile tires 
+    </query>
+    <query>
+        carbon monoxide poisoning 
+    </query>
+    <query>
+        industrial waste disposal 
+    </query>
+    <query>
+        art, stolen, forged
+    </query>
+    <query>
+        Milosevic, Mirjana Markovic 
+    </query>
+    <query>
+        suicides 
+    </query>
+    <query>
+        counterfeiting money 
+    </query>
+    <query>
+        law enforcement, dogs 
+    </query>
+    <query>
+        UV damage, eyes 
+    </query>
+    <query>
+        declining birth rates 
+    </query>
+    <query>
+        Legionnaires' disease 
+    </query>
+    <query>
+        killer bee attacks 
+    </query>
+    <query>
+        robotic technology 
+    </query>
+    <query>
+        profiling, motorists, police 
+    </query>
+    <query>
+        Greek, philosophy, stoicism 
+    </query>
+    <query>
+        Estonia, economy 
+    </query>
+    <query>
+        curbing population growth 
+    </query>
+    <query>
+        railway accidents 
+    </query>
+    <query>
+        deregulation, gas, electric 
+    </query>
+    <query>
+        tourism, increase 
+    </query>
+    <query>
+        inventions, scientific discoveries 
+    </query>
+    <query>
+        child labor 
+    </query>
+    <query>
+        Lyme disease 
+    </query>
+    <query>
+        heroic acts 
+    </query>
+    <query>
+        U.S., investment, Africa 
+    </query>
+    <query>
+        supercritical fluids
+    </query>
+    <query>
+        women clergy 
+    </query>
+    <query>
+        tourists, violence 
+    </query>
+    <query>
+        Stirling engine 
+    </query>
+    <query>
+        ship losses 
+    </query>
+    <query>
+        antibiotics ineffectiveness 
+    </query>
+    <query>
+        King Hussein, peace 
+    </query>
+</parameters>
