@@ -1,0 +1,8 @@
+<parameters>
+    <index>index/no_stem_index</index>
+    <count>1000</count>
+    <rule>method:jm,collectionLambda:0.8</rule>
+    <trecFormat>true</trecFormat>
+    <queryOffset>401</queryOffset>
+    <runID>Exp</runID>
+</parameters>

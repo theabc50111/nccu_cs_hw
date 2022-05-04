@@ -1,0 +1,8 @@
+<parameters>
+    <index>index/porter_index</index>
+    <count>1000</count>
+    <baseline>okapi,k1:1.5,b:0.75,k3:1.5</baseline>
+    <trecFormat>true</trecFormat>
+    <queryOffset>401</queryOffset>
+    <runID>Exp</runID>
+</parameters>

@@ -1,4 +1,13 @@
 <parameters>
+   <index>index/porter_index</index>
+   <corpus>
+      <path>WT2G</path>
+      <class>trecweb</class>
+   </corpus>
+   <memory>1000m</memory>
+   <stemmer>
+      <name>porter</name>
+   </stemmer>
    <stopper>
         <word>a</word>
         <word>about</word>

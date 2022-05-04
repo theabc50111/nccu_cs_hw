@@ -1,6 +1,6 @@
 <parameters>
     <query>
-        foreign minorities, Germany 
+        foreign minorities Germany 
     </query>
     <query>
         behavioral genetics 
@@ -9,28 +9,28 @@
         osteoporosis 
     </query>
     <query>
-        Ireland, peace talks 
+        Ireland peace talks 
     </query>
     <query>
         cosmic events 
     </query>
     <query>
-        Parkinson's disease 
+        Parkinsons disease 
     </query>
     <query>
-        poaching, wildlife preserves 
+        poaching wildlife preserves 
     </query>
     <query>
         tropical storms 
     </query>
     <query>
-        legal, Pan Am, 103 
+        legal Pan Am 103 
     </query>
     <query>
         Schengen agreement 
     </query>
     <query>
-        salvaging, shipwreck, treasure 
+        salvaging shipwreck treasure 
     </query>
     <query>
         airport security 
@@ -39,10 +39,10 @@
         steel production 
     </query>
     <query>
-        Cuba, sugar, exports 
+        Cuba sugar exports 
     </query>
     <query>
-        drugs, Golden Triangle 
+        drugs Golden Triangle 
     </query>
     <query>
         Three Gorges Project 
@@ -51,10 +51,10 @@
         creativity 
     </query>
     <query>
-        quilts, income 
+        quilts income 
     </query>
     <query>
-        recycle, automobile tires 
+        recycle automobile tires 
     </query>
     <query>
         carbon monoxide poisoning 
@@ -63,10 +63,10 @@
         industrial waste disposal 
     </query>
     <query>
-        art, stolen, forged
+        art stolen forged
     </query>
     <query>
-        Milosevic, Mirjana Markovic 
+        Milosevic Mirjana Markovic 
     </query>
     <query>
         suicides 
@@ -75,16 +75,16 @@
         counterfeiting money 
     </query>
     <query>
-        law enforcement, dogs 
+        law enforcement dogs 
     </query>
     <query>
-        UV damage, eyes 
+        UV damage eyes 
     </query>
     <query>
         declining birth rates 
     </query>
     <query>
-        Legionnaires' disease 
+        Legionnaires disease 
     </query>
     <query>
         killer bee attacks 
@@ -93,13 +93,13 @@
         robotic technology 
     </query>
     <query>
-        profiling, motorists, police 
+        profiling motorists police 
     </query>
     <query>
-        Greek, philosophy, stoicism 
+        Greek philosophy stoicism 
     </query>
     <query>
-        Estonia, economy 
+        Estonia economy 
     </query>
     <query>
         curbing population growth 
@@ -108,13 +108,13 @@
         railway accidents 
     </query>
     <query>
-        deregulation, gas, electric 
+        deregulation gas electric 
     </query>
     <query>
-        tourism, increase 
+        tourism increase 
     </query>
     <query>
-        inventions, scientific discoveries 
+        inventions scientific discoveries 
     </query>
     <query>
         child labor 
@@ -126,7 +126,7 @@
         heroic acts 
     </query>
     <query>
-        U.S., investment, Africa 
+        US investment Africa 
     </query>
     <query>
         supercritical fluids
@@ -135,7 +135,7 @@
         women clergy 
     </query>
     <query>
-        tourists, violence 
+        tourists violence 
     </query>
     <query>
         Stirling engine 
@@ -147,6 +147,6 @@
         antibiotics ineffectiveness 
     </query>
     <query>
-        King Hussein, peace 
+        King Hussein peace 
     </query>
 </parameters>

@@ -3,7 +3,8 @@ Database_HW/hw3/IMDB
 node_modules/
 datasets/
 WebSearchMiningHW/Project2/codes/corpus_index
-WT2G/
+WT2G
+index
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

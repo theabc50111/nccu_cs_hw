@@ -1,0 +1,8 @@
+<parameters>
+    <index>index/porter_index</index>
+    <count>1000</count>
+    <baseline>tfidf,k1:1.0,b:0.3</baseline>
+    <trecFormat>true</trecFormat>
+    <queryOffset>401</queryOffset>
+    <runID>Exp</runID>
+</parameters>

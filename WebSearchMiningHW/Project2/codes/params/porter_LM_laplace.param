@@ -1,0 +1,8 @@
+<parameters>
+    <index>index/porter_index</index>
+    <count>1000</count>
+    <rule>method:dirichlet,mu: unique terms</rule>
+    <trecFormat>true</trecFormat>
+    <queryOffset>401</queryOffset>
+    <runID>Exp</runID>
+</parameters>
