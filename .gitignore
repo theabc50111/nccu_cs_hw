@@ -1,10 +1,12 @@
 # set ignore directories
 Database_HW/hw3/IMDB
-node_modules/
-datasets/
+node_modules
+datasets
 WebSearchMiningHW/Project2/codes/corpus_index
 WT2G
 index
+data
+cscope*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -88,6 +90,7 @@ target/
 # IPython
 profile_default/
 ipython_config.py
+checkpoint
 
 # pyenv
 .python-version
