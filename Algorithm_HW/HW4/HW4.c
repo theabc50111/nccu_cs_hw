@@ -82,12 +82,12 @@ int main(){
             local_max=1;
             mine_type=map[i][j];
             local_max = dfs(i, j, map, map_mark);
-            printf("%d ", local_max);
+            // printf("%d ", local_max);
             global_max = (global_max>local_max) ? global_max:local_max;
 
         }
     } 
-    printf("\n");
+    // printf("\n");
     // print_arr(map_mark, row, col);
     printf("%d", global_max);
 
