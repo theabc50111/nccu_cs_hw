@@ -34,7 +34,8 @@ spark.driver.cores 12
 spark.driver.memory 22g
 
 # spark executor setting
-spark.executor.memory 1g
+spark.executor.memory 3g
+spark.executor.cores 2
 
 # For Java 11, required settings
 # for Apache Arrow library
