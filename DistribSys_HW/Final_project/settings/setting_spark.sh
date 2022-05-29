@@ -17,6 +17,7 @@ export PYSPARK_DRIVER_PYTHON_OPTS=\"lab --no-browser --port=8888\"
 # set config spark
 cp $SPARK_HOME/conf/spark-env.sh.template $SPARK_HOME/conf/spark-env.sh
 mkdir $SPARK_HOME/pids
+mkdir $SPARK_HOME/recovery
 echo "
 # Set pyspark python
 export PYSPARK_PYTHON=/usr/bin/python3
@@ -25,6 +26,7 @@ export PYSPARK_PYTHON=/usr/bin/python3
 SPARK_WORKER_CORES=4
 SPARK_WORKER_MEMORY=7g
 export SPARK_PID_DIR=$SPARK_HOME/pids
+export SPARK_DAEMON_JAVA_OPTS=\"-Dspark.deploy.recoveryMode=FILESYSTEM -Dspark.deploy.recoveryDirectory=$SPARK_HOME/recovery\"
 " >> $SPARK_HOME/conf/spark-env.sh
 
 cp $SPARK_HOME/conf/spark-defaults.conf.template $SPARK_HOME/conf/spark-defaults.conf
