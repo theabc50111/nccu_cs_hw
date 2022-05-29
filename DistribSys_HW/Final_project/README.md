@@ -22,7 +22,7 @@ Our spark install and setting script store in forder- `settings`, you can execua
 3. `start_3_worker.sh -m <link of master node>` 
 4. Change your directory to where store spark codes
    - We stored some spark example codes in `sparkcodes/example` 
-6. `pyspark`
+6. `pyspark --master <link of master node>`
 7. Connect to `localhost:8888` 
    - You will see the jupyter lab interface
    - Input the password `dis1102`
