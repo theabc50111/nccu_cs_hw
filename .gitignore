@@ -228,3 +228,4 @@ dkms.conf
 *.exe
 *.out
 *.app
+.Rproj.user
