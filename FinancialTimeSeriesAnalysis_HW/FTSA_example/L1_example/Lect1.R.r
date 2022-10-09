@@ -99,7 +99,7 @@ all.equal(1.9 - 0.9, 1)
 identical(1.9 - 0.9, 1)
 
 # Data Input & Plotting
-tse<-read.table("~/workspace/nccu_cs_hw/FinancialTimeSeries_HW/tse.prn", header=T)
+tse<-read.table("~/workspace/nccu_cs_hw/FinancialTimeSeriesAnalysis_HW/FTSA_example/L1_example/tse.prn", header=T)
 tse<-read.table(file.choose(), header=T)
 dim(tse)
 class(tse)
@@ -199,6 +199,14 @@ abline(h=c(min(tse.ts[,"JS"]),max(tse.ts[,"JS"])),lty=3)
 text(locator(1), "Historical High", col="red")
 text(locator(1), "Historical Low", col="red")
 
+# plot linear model
+x <- rnorm(100)
+y <- 3-5*x+rnorm(100)
+plot(x,y)
+lr_model <- lm(y~x)
+summary(lr_model)
+abline(lr_model, col="red")
+
 # Multiple Plots on the Same Page
 par(mfrow=c(2,2), oma=c(1,1,2,1))
 plot(tse.ts[,"JS"], ylab="TSE Index")
@@ -236,6 +244,17 @@ start(DEXJPUS)
 end(DEXJPUS)
 chartSeries(DEXJPUS,theme="white")
 
+
+install.packages("dplyr")
+install.packages("magrittr")
+library("dplyr")
+library("magrittr")
+a_f <- function(x){x^2 + 2*x+1}
+b_f <- function(y){2*y}
+b_f(y=2)
+2 %>% b_f() # equal to b_f(y=2)
+a_f(b_f(y=2)) # F(G(x=3))
+2 %>% b_f() %>% a_f() # equal to a_f(b_f(y=2))
 
 
 
