@@ -192,6 +192,7 @@ head(x.ts.Fri); tail(x.ts.Fri)
 # Plot Again
 library(zoo)
 tse.ts<-zoo(tse.dat[,-1], as.Date(as.character(tse.dat[,1]), format="%Y%m%d"))
+head(tse.ts)
 plot(tse.ts[,"JS"], main="Taiwan Stock Exchange Value-Weighted Index",col="slateblue1",ylab="TSE Index", xlab="",las=0, cex=2)
 abline(v=as.numeric(as.Date("1999/09/21")),lty=2)
 text(as.numeric(as.Date("1999/09/21")), 4000,"921 Earthquake", col="red")
