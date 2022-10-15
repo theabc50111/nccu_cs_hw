@@ -79,6 +79,13 @@ test.f(x=3)
 # Create a function using the ??fix?? command, e.g.
 fix(test.f). 
 
+# Writing a Function
+test.f<-function(param){
+  param^2 + 1
+}
+x<-seq(from=-10, to=10, by=1)
+test.f(param=x)
+
 # Plotting a Function
 x<-seq(from=-10, to=10, by=1)
 plot(x, test.f(x=x), type="l")
@@ -91,7 +98,7 @@ x<-seq(from=-3, to=3, by=0.01)
 a.f<-function(x){x^3+3*x^2+1}
 b.f<-function(x){x^2+1}
 plot(x, a.f(x=x), type="l", ylab="Y", main="Functions on top of Each Other")
-lines(x, b.f(x=x)+0.5, lty=2, col=2)
+lines(x, b.f(x=x), lty=2, col=2)
 legend(locator(1), lty=1:3, c(expression(x^3+3*x^2+1), expression(x^2+1)), col=1:2)
 
 # Computing Asset Returns (log-return, continues return)
@@ -103,7 +110,7 @@ logret.f<-function(x){
 
 simple_ret <- function(x){
   n <- length(x)
-  ret <- (x[2:n] - x[1:(n-1)])/ x[1:(n-1)]
+  ret <- (x[2:n] - x[1:(n-1)])/ x[1:(n-1)] # ret <- (x[2:n]/x[1:(n-1)])-1 work as well
   return(ret)
 }
 
@@ -113,12 +120,15 @@ plot.ts(logret.dat)
 title("TSE Index Log-Returns")
 
 simple_ret_dat <- simple_ret(tse.dat[,"JS"])
+simple_ret_dat
 plot.ts(simple_ret_dat) 
 title("TSE Index Simple-Returns")
 
 summary(logret.dat); summary(simple_ret_dat); summary((logret.dat - simple_ret_dat))
 # draw return with date
 library(zoo)
+tse<-read.table("~/workspace/nccu_cs_hw/FinancialTimeSeriesAnalysis_HW/FTSA_example/L1_example/tse.prn", header=T)
+tse.dat<-na.omit(tse)
 tse_date <- as.Date(as.character(tse.dat$DATE), format="%Y%m%d")[2:length(tse.dat$JS)]
 tse_js <-tse.dat$JS[2:length(tse.dat$JS)]
 tse_zoo <- zoo(cbind(tse_js, logret.dat, simple_ret_dat), tse_date)
