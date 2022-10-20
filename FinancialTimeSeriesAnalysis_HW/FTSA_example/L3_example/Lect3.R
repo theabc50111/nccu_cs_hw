@@ -17,9 +17,8 @@ td <- as.POSIXct(paste(fx$Date, fx$Time, sep=" "), format="%m.%d.%Y %H:%M:%S") #
 library(zoo)
 for (j in Bank.names) { # Conversion to zoo objects
   z <- eval(as.symbol(j)) # Make R recognize a character name as an existing variable 
-  w <- zoo(z[,-c(1,2,5)], as.POSIXct(paste(z$Date, z$Time,   
-                                         sep=" "), format="%d.%m.%Y %H:%M:%S"))
-  assign(paste(j, ".ts",sep=""),w, envir = .GlobalEnv)
+  w <- zoo(z[,-c(1,2,5)], as.POSIXct(paste(z$Date, z$Time, sep=" "), format="%d.%m.%Y %H:%M:%S"))  # only take bid & ask 
+  assign(paste(j, ".ts",sep=""), w, envir = .GlobalEnv)
 }
 
 ###### Remove data with non-uique indices
@@ -28,19 +27,21 @@ for (j in Bank.names) { # Remove data with non-uique indices
   dp <- duplicated(index(z)) == 1
   if (sum(dp) > 0) {#???P?_dp?̦??S??TRUE(1)?????G?C?p?G?????ܡA?~?Q??which???X???ƪ????m 
     dp <- which(duplicated(index(z)) == 1)
-    assign(paste(j, ".ts2",sep=""),z[-dp,], envir    
-           = .GlobalEnv)
+    assign(paste(j, ".ts2",sep=""),z[-dp,], envir = .GlobalEnv)
   } else {#?p?G?S?????ƪ??ܡA?N??.ts?????󪽱????㪺??????.ts2??????
-    assign(paste(j, ".ts2",sep=""),z, envir    
-           = .GlobalEnv)
+    assign(paste(j, ".ts2",sep=""),z, envir = .GlobalEnv)
   }
 }
 
 
 ###### Aggregate a time series
+install.packages("xts")
+install.packages("highfrequency")
 library(xts)
 library(highfrequency)
+head(SGOX.ts2)
 SGOX.10min <- aggregateTS(as.xts(SGOX.ts2), alignBy = "minutes", alignPeriod = 10) # Aggregate tick-by-tick to 10 minutes data
+head(SGOX.10min)
 plot(SGOX.10min)
 
 
