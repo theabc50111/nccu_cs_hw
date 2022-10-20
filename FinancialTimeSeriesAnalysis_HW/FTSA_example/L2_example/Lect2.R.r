@@ -163,7 +163,7 @@ z
 # while Loop
 w <- x
 sum(w) 
-while(sum(w) < 200) {  w <- 2 # w }
+while(sum(w) < 200) {  w <- 2 } # w 
 sum(w) 
 cbind(x,w)
 rbind(x,w)
@@ -207,9 +207,9 @@ irr.f<-function(cashflow, seqn, ra=0.01, rb=0.2,rby=0.01){
 	cbind(seq(ra, rb, by =rby), results)
 }
 
-irr.f(cashflow=c(-18000,rep(5600,5)), seqn=0:5,ra=0.01, rb=0.2,rby=0.01)
+irr.f(cashflow=c(-18000,rep(5600,5)), seqn=0:5,ra=0.01, rb=0.2,rby=0.01)  # find out the IRR is between 0.16 and 0.17
 
-irr.f(cashflow=c(-18000,rep(5600,5)), seqn=0:5,ra=0.16, rb=0.17,rby=0.001)
+irr.f(cashflow=c(-18000,rep(5600,5)), seqn=0:5,ra=0.16, rb=0.17,rby=0.001)  # find out the IRR is between 0.167 and 0.168
 
 irr.f(cashflow=c(-18000,rep(5600,5)), seqn=0:5,ra=0.167, rb=0.168,rby=0.0001)
 

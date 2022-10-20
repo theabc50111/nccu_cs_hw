@@ -1,7 +1,7 @@
 ### An FX Rate Example
 
-fx<-read.csv(file.choose(),sep=" ", stringsAsFactors =F, strip.white = T, header=F,na.strings="N.A.")
-# fx<-read.csv("c:/temp/fx.txt",sep=" ", stringsAsFactors =F, strip.white = T, header=F,na.strings="N.A.")
+# fx<-read.csv(file.choose(),sep=" ", stringsAsFactors =F, strip.white = T, header=F,na.strings="N.A.")
+fx<-read.csv("~/workspace/nccu_cs_hw/FinancialTimeSeriesAnalysis_HW/FTSA_example/L3_example/fx.txt",sep=" ", stringsAsFactors =F, strip.white = T, header=F,na.strings="N.A.")
 names(fx)<-c("Date","Time", "Bid", "Ask", "Bank")
 Bank.names<-unique(fx$Bank)
 table(fx[,"Bank"])
@@ -26,11 +26,11 @@ for (j in Bank.names) { # Conversion to zoo objects
 for (j in Bank.names) { # Remove data with non-uique indices
   z <- eval(as.symbol(paste(j, ".ts",sep="")))
   dp <- duplicated(index(z)) == 1
-  if (sum(dp) > 0) {#¥ý§PÂ_dp¸Ì¦³¨S¦³TRUE(1)ªºµ²ªG¡C¦pªG¦³ªº¸Ü¡A¤~§Q¥Îwhich§ä¥X­«½Æªº¦ì¸m 
+  if (sum(dp) > 0) {#???P?_dp?Ì¦??S??TRUE(1)?????G?C?p?G?????Ü¡A?~?Q??which???X???Æª????m 
     dp <- which(duplicated(index(z)) == 1)
     assign(paste(j, ".ts2",sep=""),z[-dp,], envir    
            = .GlobalEnv)
-  } else {#¦pªG¨S¦³­«½Æªº¸Ü¡A´N§â.tsªºª«¥óª½±µ§¹¾ãªº«þ¨©¬°.ts2ªºª«¥ó
+  } else {#?p?G?S?????Æª??Ü¡A?N??.ts?????óª½±????ãªº??????.ts2??????
     assign(paste(j, ".ts2",sep=""),z, envir    
            = .GlobalEnv)
   }
@@ -46,7 +46,7 @@ plot(SGOX.10min)
 
 ### TFE Example
 
-###### «Å§iÄæ¦ì¦û¼e¸ò¦WºÙ
+###### ?Å§i???????e???W??
 fields.widths =c(7,20,6,8,rep(2,4),9,rep(c(9,8),11),rep(8,3))
 fields.names =c("FUTR_ID", "NAME", "SETT_YM", "DATE", "DEAK.HR", "DEAK.Min", "DEAK.Sec", "DEAK.Ms", "STRIKE", "PRC", "QTY", "BUY_P1", "BUY_Q1", "BUY_P2", "BUY_Q2", "BUY_P3", "BUY_Q3", "BUY_P4", "BUY_Q4", "BUY_P5", "BUY_Q5", "SEL_P1", "SEL_Q1", "SEL_P2", "SEL_Q2", "SEL_P3", "SEL_Q3", "SEL_P4", "SEL_Q4", "SEL_P5", "SEL_Q5", "DEALQTY", "DEALBUY_N", "DEALSEL_N")
 
@@ -61,19 +61,19 @@ library(readr)
 df<-data.frame(read_fwf(file.choose(), fwf_widths(widths=fields.widths, fields.names)))
 #df<-data.frame(read_fwf("c:\\temp\\f9112312.ftm", fwf_widths(widths=fields.widths, fields.names)))
 
-df = df[df$QTY!=0,] # ¥ý§R°£±¼¨S¦³¦¨¥æ¶qªº¬ö¿ý¡A³q±`¤]´N¤£·|¦³¦¨¥æ®É¶¡
-table(df$SETT_YM) # ¨C¤Ñ³£¦³¤­­Ó¤£¦P¨ì´Á¤éªº«´¬ù¦b¥æ©ö¡A¦ý¥u¦³¤@­Óªñ¤ë«´¬ù nearby contract¥æ©öªº³Ì¼öµ¸
+df = df[df$QTY!=0,] # ???R?????S???????q???????A?q?`?]?N???|???????É¶?
+table(df$SETT_YM) # ?C?Ñ³??????Ó¤??P???Á¤éªº?????b?????A???u???@?Óª??ë«´?? nearby contract???????Ì¼???
 
 df<-df[df$SETT_YM==200301,] 
-# ¥u¨úªñ¤ë«´¬ù nearby contract
+# ?u?????ë«´?? nearby contract
 td.input0 = paste(df$DEAK.HR, ":",df$DEAK.Min, ":", df$DEAK.Sec, ".", df$DEAK.Ms, sep ="")
-#§Q¥Îpaste«ü¥O§â³o¥|­ÓÄæ¦ì¦ê°_¨Ó¦¨¬°R as.POSITct ¥i¥HÅª±oÀ´±o®æ¦¡8:45:06.91¡C
-# %OS will input seconds including fractional seconds i.e. ·í¬í«á­±¦³¤p¼ÆÂI¬í®É¨Ï¥Î¡A
-# §_«h¥Î %S§Y¥i
+#?Q??paste???O???o?|?????????_?Ó¦???R as.POSITct ?i?HÅª?oÀ´?o?æ¦¡8:45:06.91?C
+# %OS will input seconds including fractional seconds i.e. ?????á­±???p???I???É¨Ï¥Î¡A
+# ?_?h?? %S?Y?i
 td.input = paste(df$DATE, td.input0, sep = " ")
-#¤é´Á¸ò®É¶¡§Q¥Îpaste¦ê°_¨Ó¡A¤¤¶¡¸m¤@ªÅ®æ
+#???Á¸??É¶??Q??paste???_?Ó¡A?????m?@?Å®?
 td.input = as.POSIXct(td.input, format="%Y%m%d %H:%M:%OS")
 df.ts = zoo(df[,-c(2, 4:8)], as.POSIXct(td.input, format="%Y%m%d %H:%M:%OS")) 
-#-c(2, 4:8)], ¤£­n«O¯d¤¤¤å«´¬ù¦W¸ò¤é´Á®É¶¡ªºÄæ¦ì
+#-c(2, 4:8)], ???n?O?d???å«´???W?????Á®É¶???????
 
 
