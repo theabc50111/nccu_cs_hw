@@ -1,0 +1,99 @@
+---
+title: "110753201-資科碩二-曹昱維"
+author: "YWT"
+date: "2022-10-27"
+output:
+  html_document:
+    toc: no
+  pdf_document:
+    toc: no
+  slidy_presentation: default
+  bookdown::epub_book:
+    number_sections: yes
+  word_document:
+    toc: yes
+  powerpoint_presentation:
+    slide_level: 3
+  ioslides_presentation: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+<style>
+.level-2 {
+    padding-left: 3em;
+}
+</style>
+
+<section class="level-1">
+# Observe the relationship between S&P500 and TWSE index by visaulization
+</section>
+
+<section class="level-2">
+### Retrieve data from yahoo finance
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+library(quantmod) # Load the package
+library(zoo)
+getSymbols("^TWII",from="2000-01-01", to=Sys.Date())
+getSymbols("^GSPC",from="2000-01-01", to=Sys.Date())
+TWII <- zoo(TWII[,"TWII.Adjusted"])
+GSPC <- zoo(GSPC[,"GSPC.Adjusted"])
+```
+
+### visaulizing two time-series
+- We can find that the <span style="color:blue">correlation between TWSE index & SP500 is **positive**</span> by the following picture.
+```{r, TWII, GSPC, echo=FALSE, message=FALSE}
+plot(TWII, ylim=c(1000, 20000), xlab="time", ylab="Index", type="l", col="red")
+lines(GSPC, lty=2, col="blue")
+legend(x="top", lty=1:2, legend=c(expression("TWSE index"), expression("SP500")), col=1:2)
+mtext("SP500 v.s TWSE index")
+```
+</section>
+
+<div>
+<section class="level-1">
+# 學習心得
+</section>
+
+<section class="level-2">
+### 學習收穫
+- 學習R語言基礎語法
+- 學習常用的時間序列處理套件, 例如：
+  - `zoo`
+  - `highfrequency`
+- 認識常見的財經資料庫，例如：
+  - [雅虎財經](https:// Finance.yahoo.com/)
+  - [FRED](https://fred.stlouisfed.org/)
+  - [TEJ Pro](https://www.tej.com.tw/trial/TEJ%E7%B3%BB%E7%B5%B1%E6%95%99%E5%AD%B8%E5%BD%B1%E7%89%87%28%E5%AD%B8%E6%A0%A1%E7%89%88%29)
+- 常見的財經領域方程式：
+
+:::::: {.columns}
+::: {.column}
+**IRR & NPV**
+$$\sum_{t=0}^n{\frac{A_t}{(1+r)^t}}=0$$
+:::
+
+::: {.column}
+**Black-Scholes model**\
+  call option price:
+    $$c=SN(d_1)-Xe^{-rT}N(d_2)$$
+  put option price:
+    $$p=Xe^{-rT}N(-d_2)-SN(-d_1)$$
+:::
+
+::::::
+
+### 我最感興趣的部份
+> 到目前為止的課程內容中我比較關注的部份是常見的財經資料庫，以及財經領域公式，但是我最感興趣的部份應該是課程後半段會提到的內容，也就是時間序列模型的部份。
+
+### 對我將來的學習跟論文寫作有何幫助
+1. 因為資科系的課程不太會使用R語言來做資料處理，但是在資料科學領域的工作中R語言是很常用到的工具，所以學習R語言雖然不是我修習這門課的主要目的，但也算是我對未來的工作規劃的準備之一
+2. 在這堂課中認識的財經資料庫對我未來的研究會有很大的幫助，因為這可以節省我大量蒐集資料的時間
+3. 因為我的論文主題會與時間序列分析有關，但是CS領域對於時間序列分析的方法與統計領域對於時間序列分析的方法有所不同，所以這堂課中所要學習的時間序列模型對我後續閱讀期刊或是實驗都會有很大的幫助。
+
+</section>
+</div>
+
+
+

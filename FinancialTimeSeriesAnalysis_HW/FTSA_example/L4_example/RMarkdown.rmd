@@ -1,0 +1,112 @@
+---
+title: "FTSA2022"
+author: "SJ Lin"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: yes
+  powerpoint_presentation:
+    slide_level: 3
+  word_document:
+    toc: yes
+  bookdown::epub_book:
+   number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+### Brief Overview
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+### Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+### Other Parameters
+
+- **echo = TRUE** :「程式碼」要含在文件輸出。   
+- **message = TRUE** : 程式碼執行的「附帶訊息」要含在文件輸出。   
+- **warning = TRUE** : 程式碼執行（若有）「錯誤訊息」要含在文件輸出。
+- **include = TRUE** : 執行程式碼後，「程式碼成果」要含在文件輸出；
+**include = TRUE** 執行程式碼後，「程式碼成果」不要含在文件輸出。
+
+## Math, Hyperlinks & Figures    
+
+### Math   
+
+:::::: {.columns}
+::: {.column}
+```
+Archimedes’ constant is another name for $\pi$ 
+It is used in Euler's equation: $$e^{i\pi} + 1 = 0$$
+```
+:::
+
+::: {.column}
+Archimedes’ constant is another name for $\pi$ 
+It is used in Euler's equation: $$e^{i\pi} + 1 = 0$$
+:::
+- `:::` this only work for Rmarkdown
+::::::
+
+### Hyperlinks   
+:::::: {.columns}
+::: {.column}
+```
+Click here to query the [Google](www.google.com) search engine.
+```
+:::
+
+::: {.column}
+Click here to query the [Google](www.google.com) search engine.
+:::
+
+::::::
+
+
+### Figure from File
+![政大雄鷹](gogriffins.png)
+
+### Figure from URL
+
+![](https://d33wubrfki0l68.cloudfront.net/57299a1dcd979c623325f11bf5e5ce60f3d4eb00/e4602/wp-content/uploads/2018/10/black.png)
+
+
+### References
+
+- [R Markdown](https://rmarkdown.rstudio.com/), which has
+  - [Markdown Basics](https://rmarkdown.rstudio.com/authoring_basics.html)
+  - [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)
+  - [R Code Chunks](https://rmarkdown.rstudio.com/authoring_rcodechunks.html)
+  - [Cheatsheets](https://rmarkdown.rstudio.com/lesson-15.html)
+-	[Markdown tutorial](https://www.markdowntutorial.com): This is a very nice tutorial (in several languages, including Chinese) that teach you essential markdown languages in 10 minutes.
+
+
+### Homework    
+
+- 自己產生另一個 RMD檔案，stocks.rmd，並從 [雅虎財經](https:// Finance.yahoo.com/) 或 [FRED](https://fred.stlouisfed.org/)下載資料來產生您的報告。
+
+- 截至目前為止你在本課程的學習心得：      
+   - 你學到哪些東西？   
+   - 哪一部份讓你最感興趣以及為什麼？   
+   - 那些內容對你將來的學習跟論文寫作有何可能的幫助？   
+
+- 請嘗試結合迄今為止您在本課程中學到的盡可能多的（R 和 R Markdown）功能。
+
+- 完成後將您的報告（RMD檔，輸出檔及其他附加檔案，如圖檔）上傳到 WM5本課程的作業區！
