@@ -163,7 +163,7 @@ z
 # while Loop
 w <- x
 sum(w) 
-while(sum(w) < 200) {  w <- 2 } # w 
+while(sum(w) < 200) {  w <- w + 2 } # w 
 sum(w) 
 cbind(x,w)
 rbind(x,w)

@@ -39,7 +39,7 @@ install.packages("xts")
 install.packages("highfrequency")
 library(xts)
 library(highfrequency)
-head(SGOX.ts2)
+head(SGOX.ts2, 100)
 SGOX.10min <- aggregateTS(as.xts(SGOX.ts2), alignBy = "minutes", alignPeriod = 10) # Aggregate tick-by-tick to 10 minutes data
 head(SGOX.10min)
 plot(SGOX.10min)

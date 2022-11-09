@@ -79,8 +79,10 @@ mylist[[3]]$sd
 ## What’s the difference? 
 mylist <- list(sample = c(1,2,3,4,5))
 class(mylist[["sample"]]) 
-class(mylist["sample"])
 length(mylist[["sample"]])
+class(c(1, 2, 3, 4, 5))
+length(c(1, 2, 3, 4, 5))
+class(mylist["sample"])
 length(mylist["sample"])
 
 # Logical comparisons
@@ -100,7 +102,7 @@ identical(1.9 - 0.9, 1)
 
 # Data Input & Plotting
 tse<-read.table("~/workspace/nccu_cs_hw/FinancialTimeSeriesAnalysis_HW/FTSA_example/L1_example/tse.prn", header=T)
-tse<-read.table(file.choose(), header=T)
+#tse<-read.table(file.choose(), header=T)
 dim(tse)
 class(tse)
 colnames(tse)
@@ -172,16 +174,14 @@ as.numeric(myYear); as.character(myYear)
 # Covert dataframe to timeseries object
 install.packages("zoo") # if not intsalled yet
 library(zoo) # load the package
-
 tse.ts<-zoo(tse[,-1],as.Date(as.character(tse[,"DATE"]), "%Y%m%d"))
 plot(tse.ts[, "JS"])
 
 # Get All Friday Data 
 Sys.getlocale("LC_TIME", "English")
-tse<-read.table("c:/temp/tse.prn", header=T) 
+#tse<-read.table("c:/temp/tse.prn", header=T) 
 x<-as.Date(as.character(tse$DATE),"%Y%m%d")
 WD<-weekdays(x) 
-library(zoo)
 x.ts<-zoo(cbind(tse[,-1],WD), x) 
 head(x.ts)
 x.ts.Fri<-x.ts[x.ts$WD=="星期五"] # does NOT work!
