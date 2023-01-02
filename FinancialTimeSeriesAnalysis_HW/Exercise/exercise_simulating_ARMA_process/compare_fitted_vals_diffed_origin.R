@@ -11,12 +11,12 @@ for (diff_ord in seq(1:3)) {
   fitted_val_r_forecast_arima <- fitted(fit.model)
   plot.ts(ori_time_series, xaxp = c(0, 21, 21), ylim = c(-2,2), ylab="y")
   lines(fitted_val_r_forecast_arima, col=2, lty=2)
-  legend(1, -0.5, c("origin", "fitted"), col=c(1, 2), lty=c(1,2), cex=0.8, ncol=2, y.intersp=0, x.intersp=0, text.width=0.9)
+  legend(1, -1.1, c("origin", "fitted"), col=c(1, 2), lty=c(1,2), cex=1, ncol=2, y.intersp=0, x.intersp=0, text.width=0.9)
   mtext(paste("Compare \"fitted vals\" and \"original time-series\" for diff order:", diff_ord))
 
 
   plot.ts(c(rep(0,diff_ord), diff(ori_time_series, differences=diff_ord)), xaxp = c(0, 21, 21), ylim = c(-3.5,3.5), ylab="y")
-  lines(fitted_val_r_forecast_arima, col=2, lty=3)
-  legend(1, -2, c("differed origin", "fitted"), col=c(1, 2), lty=c(1,2), cex=0.8, ncol=2, y.intersp=0, x.intersp=0, text.width=0.9)
+  lines(fitted_val_r_forecast_arima, col=2, lty=2)
+  legend(1, -2, c("differed origin", "fitted"), col=c(1, 2), lty=c(1,2), cex=1, ncol=2, y.intersp=0, x.intersp=0, text.width=0.9)
   mtext(paste("Compare \"fitted vals\" and \"diffed original time-series\" for diff order:", diff_ord))
 }

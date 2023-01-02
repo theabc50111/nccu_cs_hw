@@ -26,7 +26,7 @@ for (dif_ord in seq(1:3)) {
   axis(1, at = 1:21, tck = 1, lty = 2, col = "grey", labels = NA)  # Add vertical grid
   lines(resid_r_forecast_arima, col=2, lty=2)
   lines(resid_py, col=3, lty=3)
-  legend(16, -1, c("origin", "resid_r", "resid_py"), col=1:3, lty=1:3, cex=0.8, ncol=2, y.intersp=0.2, x.intersp=0, text.width=0.9)
+  legend(13, -1, c("origin", "resid_r", "resid_py"), col=1:3, lty=1:3, cex=1, ncol=3, y.intersp=0, x.intersp=0, text.width=0.9)
   mtext(paste("Check residual series trend for diff order:", dif_ord))
   
   
@@ -38,7 +38,7 @@ for (dif_ord in seq(1:3)) {
   axis(1, at = 1:21, tck = 1, lty = 2, col = "grey", labels = NA)  # Add vertical grid
   lines(fitted_val_r_forecast_arima, col=2, lty=2)
   lines(fitted_val_py, col=3, lty=3)
-  legend(16, -1, c("origin", "fitted_r", "fitted_py"), col=1:3, lty=1:3, cex=0.8, ncol=2, y.intersp=0.2, x.intersp=0, text.width=0.9)
+  legend(13, -1, c("origin", "fitted_r", "fitted_py"), col=1:3, lty=1:3, cex=1, ncol=3, y.intersp=0, x.intersp=0, text.width=1)
   mtext(paste("Check fitted series trend for diff order:", dif_ord))
 }
 
