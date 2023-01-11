@@ -1,0 +1,10 @@
+par(mfrow=c(1,2)); 
+set.seed(0)
+x <- arima.sim(10000,model=list(ar=c(-.5,.5)))
+x <- arima.sim(10000,model=list(ar=c(-.1,.05), ma=c(-.06,-.1)))
+x <- arima.sim(10000,model=list(ar=c(-.1,.05), ma=c(-.06,-.1, .2, -.07, .09, .11, -.08, .2, -.03, .04)))
+x <- arima.sim(10000,model=list(ar=c(-.1,.05,.09,.13,-.05,.07,-.15,.02,.04,.06), ma=c(-.06,-.1)))
+x <- arima.sim(10000,model=list(ar=c(-.1,.05,.09,.13,-.05,.07,-.15,.02,.04,.06), ma=c(-.06,-.1, .2, -.07, .09, .11, -.08, .2, -.03, .04)))
+x <- arima.sim(10000,model=list(ma=c(.7, -.6, .5, .7)))
+y<-acf(x, lag.max=20)
+y<-acf(x, type="partial", lag.max=20)
